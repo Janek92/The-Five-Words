@@ -11,16 +11,8 @@ html {
 }
 :root {
   --basic-font-family: "Montserrat", sans-serif;
-  /* --primary-color: rgb(255, 255, 255);
-  --card-color: rgb(34, 34, 34);
-  --cards-letters-color: rgb(28, 255, 47);
-  --titles-letters-color: rgb(0, 0, 0);
-  --btns-focus: rgb(255, 120, 0);
-  --btn-focus: 0 0 10px 2px var(--btns-focus);
-  --titles-font-size: 1.7rem;
-  --cards-border-radius: 0.5rem;
-  --titles-font-type: "Silkscreen", "arial", sans-serif;
-  --cards-font-type: "Yeon Sung", "arial", sans-serif; */
+  /* height of navbar in portrait, width in landscape and left value for positioning menu in landscape (all must be the same): */
+  --bar-menu: 4rem;
 }
 body {
   /* background-color: var(--primary-color); */
