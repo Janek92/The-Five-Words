@@ -5,31 +5,20 @@ import WordPreview from "../UI/WordPreview";
 
 const NewWords = () => {
   const dispatch = useDispatch();
-  const endPoints = useSelector((state) => state.draw.endPoints);
-  const endPointsFiltered = useSelector(
-    (state) => state.draw.endPointsFiltered
+  const endpoints = useSelector((state) => state.draw.endpoints);
+  const endpointsFiltered = useSelector(
+    (state) => state.draw.endpointsFiltered
   );
   const [fetchedWord, setFetchedWord] = useState([]);
   const [translated, SetTranslated] = useState(false);
 
-  //losowanie indeksu
-  const onDraw = () => {
-    const nr = Math.floor(Math.random() * endPoints.length);
-    console.log(endPoints.length);
-    return nr;
-  };
-
-  const whichWord = (value) => {
-    return endPoints[value];
-  };
-
   //wysyłanie nowej tablicy z linkami
-  const onSend = () => {
+  const sendNewEndpoints = () => {
     fetch(
       "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json",
       {
         method: "PUT",
-        body: JSON.stringify(endPoints),
+        body: JSON.stringify(endpointsFiltered),
       }
     )
       .then((res) => {
@@ -39,17 +28,13 @@ const NewWords = () => {
           throw new Error("Wystąpił błąd przy wysyłaniu");
         }
       })
-      .then((res) => {
-        console.log("Nowa tablica słówek do losowania wysłana z powodzeniem");
-        console.log(res);
-      })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  //pobranie przed wylosowaniem, to samo co w useEffect
-  const takeWordsForDraw = () => {
+  // Pobranie endpointów po wejsciu w komponent
+  useEffect(() => {
     fetch(
       "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json"
     )
@@ -61,28 +46,26 @@ const NewWords = () => {
         }
       })
       .then((res) => {
-        console.log(res);
-        dispatch(drawWordsActions.wordsForFetch(res));
+        dispatch(drawWordsActions.saveFetched(res));
       })
       .catch((error) => console.log(error));
+  }, [dispatch]);
+
+  //Losowanie indeksu endpointa
+  const drawIndex = (endpointsArray) => {
+    const nr = Math.floor(Math.random() * endpointsArray.length);
+    return nr;
   };
 
-  // useEffect żeby pobrać po wejsciu w komponent
-  useEffect(() => {
-    takeWordsForDraw();
-  }, []);
+  //Zwrócenie konkretnego endpointa
+  const whichWord = (value, endpointsArray) => {
+    return endpointsArray[value];
+  };
 
-  useEffect(() => {
-    if (fetchedWord.length === 0) return;
-    console.log(fetchedWord);
-    //TUTAJ COS CO RENDERUJE KOMPONENT ZE SŁÓWKIEM
-  }, [fetchedWord]);
-
-  //______POBRANIE SŁOWA
-  const takeSpecificWord = (value) => {
+  //Pobranie słówka
+  const takeSpecificWord = (value, endpointsArray) => {
     SetTranslated(false);
-    //Przefiltrowanie aktualnej listy endpointów w celu usunięcia z niej wylosowanego endpointa:
-    const filtered = endPoints.filter((el) => el !== value);
+    const filtered = endpointsArray.filter((el) => el !== value);
     dispatch(drawWordsActions.saveFiltered(filtered));
     fetch(
       `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${value}.json`
@@ -104,78 +87,59 @@ const NewWords = () => {
             type: res[key].type,
           });
         }
-        console.log(loadedWord);
         setFetchedWord(...loadedWord);
       })
       .catch((error) => alert(error.name));
   };
 
+  //Metody dla komponentu ze słówkiem
   const onGenerate = async () => {
     try {
-      // await takeWordsForDraw();
-      const value = await whichWord(onDraw());
-      await takeSpecificWord(value);
+      const value = await whichWord(drawIndex(endpoints), endpoints);
+      await takeSpecificWord(value, endpoints);
     } catch {
       alert("Wystapił błąd");
     }
   };
-  //_________________________
 
-  // const activist = {
-  //   eng: "activist",
-  //   id: 32,
-  //   pl: "aktywista",
-  //   type: "rzeczownik",
-  // };
-
-  // const placeWord = () => {
-  //   fetch(
-  //     "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/activist.json",
-  //     {
-  //       method: "POST",
-  //       body: JSON.stringify(activist),
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   )
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       } else {
-  //         throw new Error("Wystąpił błąd przy wysyłaniu");
-  //       }
-  //     })
-  //     .then((res) => {
-  //       console.log("Nowa tablica słówek do losowania wysłana z powodzeniem");
-  //       console.log(res);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-
-  const translate = () => {
+  const onTranslate = () => {
     SetTranslated(true);
-    // console.log(endPointsFiltered);
-    // console.log(endPoints);
   };
 
-  // console.log(fetchedWord.length === 0);
+  const onClose = () => {
+    setFetchedWord([]);
+  };
+
+  const onReject = async () => {
+    try {
+      await sendNewEndpoints();
+      const value = await whichWord(
+        drawIndex(endpointsFiltered),
+        endpointsFiltered
+      );
+      await takeSpecificWord(value, endpointsFiltered);
+      await dispatch(drawWordsActions.saveFetched(endpointsFiltered));
+    } catch {
+      alert("Wystapił błąd");
+    }
+  };
 
   return (
     <div>
       <h1>Nowe słówka</h1>
-      <button onClick={onSend}>Wrzuć listę słów</button>
-      {/* <button onClick={placeWord}>wrzuć słowo</button> */}
-      <button onClick={onGenerate}>WYGENERUJ</button>
-      <WordPreview
-        polish={fetchedWord.pl}
-        type={fetchedWord.type}
-        translated={translated}
-        eng={fetchedWord.eng}
-        onTranslate={translate}
-      />
+      {fetchedWord.length !== 0 ? (
+        <WordPreview
+          polish={fetchedWord.pl}
+          type={fetchedWord.type}
+          translated={translated}
+          eng={fetchedWord.eng}
+          translate={onTranslate}
+          close={onClose}
+          reject={onReject}
+        />
+      ) : (
+        <button onClick={onGenerate}>WYGENERUJ</button>
+      )}
     </div>
   );
 };

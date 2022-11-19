@@ -1,19 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const words = {
-  endPoints: [],
-  endPointsFiltered: [],
+  endpoints: [],
+  endpointsFiltered: [],
 };
 
 const drawWords = createSlice({
   name: "draw",
   initialState: words,
   reducers: {
-    wordsForFetch(state, action) {
-      state.endPoints = action.payload;
+    saveFetched(state, action) {
+      state.endpoints = action.payload;
     },
     saveFiltered(state, action) {
-      state.endPointsFiltered = action.payload;
+      state.endpointsFiltered = action.payload;
     },
   },
 });

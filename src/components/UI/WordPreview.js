@@ -11,13 +11,17 @@ const WordPreview = (props) => {
       {props.translated ? (
         <h3>{props.eng}</h3>
       ) : (
-        <button className={classes.translation} onClick={props.onTranslate}>
+        <button className={classes.translation} onClick={props.translate}>
           przetłumacz
         </button>
       )}
       <button className={classes.add}>dodaj do powtórek</button>
-      <button className={classes.remove}>już to znam</button>
-      <button className={classes.end}>zakończ</button>
+      <button className={classes.remove} onClick={props.reject}>
+        już to znam
+      </button>
+      <button className={classes.end} onClick={props.close}>
+        zakończ
+      </button>
     </div>
   );
 };
