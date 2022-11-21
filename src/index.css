@@ -14,6 +14,6 @@ html {
   /* height of navbar in portrait, width in landscape and left value for positioning menu in landscape (all must be the same): */
   --bar-menu: 4rem;
 }
-body {
-  /* background-color: var(--primary-color); */
-}
+/* body {
+  background-color: rgba(168, 168, 168, 0.5);
+} */

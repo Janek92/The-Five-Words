@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
 import { useEffect, useState } from "react";
 import WordPreview from "../UI/WordPreview";
+import PagesTitle from "../UI/PagesTitle";
+import InitBtns from "../UI/InitBtns";
 
 const NewWords = () => {
   const dispatch = useDispatch();
@@ -92,6 +94,31 @@ const NewWords = () => {
       .catch((error) => alert(error.name));
   };
 
+  //Dodanie słówka
+  const addMyWord = () => {
+    SetTranslated(false);
+    fetch(
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/my-words.json`,
+      {
+        method: "POST",
+        body: JSON.stringify(fetchedWord),
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Wystąpił błąd przy wysyłaniu");
+        }
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   //Metody dla komponentu ze słówkiem
   const onGenerate = async () => {
     try {
@@ -124,9 +151,24 @@ const NewWords = () => {
     }
   };
 
+  const onAdd = async () => {
+    try {
+      await sendNewEndpoints();
+      const value = await whichWord(
+        drawIndex(endpointsFiltered),
+        endpointsFiltered
+      );
+      await takeSpecificWord(value, endpointsFiltered);
+      await dispatch(drawWordsActions.saveFetched(endpointsFiltered));
+      await addMyWord();
+    } catch {
+      alert("Wystapił błąd");
+    }
+  };
+
   return (
     <div>
-      <h1>Nowe słówka</h1>
+      <PagesTitle>Nowe słówka</PagesTitle>
       {fetchedWord.length !== 0 ? (
         <WordPreview
           polish={fetchedWord.pl}
@@ -136,9 +178,10 @@ const NewWords = () => {
           translate={onTranslate}
           close={onClose}
           reject={onReject}
+          add={onAdd}
         />
       ) : (
-        <button onClick={onGenerate}>WYGENERUJ</button>
+        <InitBtns onClick={onGenerate}>wygeneruj</InitBtns>
       )}
     </div>
   );
