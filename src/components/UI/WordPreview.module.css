@@ -94,9 +94,9 @@
     margin-left: 35%;
     margin-right: 35%;
   }
-  .translation,
-  .add,
-  .remove,
+  .translation:hover,
+  .add:hover,
+  .remove:hover,
   .end:hover {
     box-shadow: 2px 2px 10px 2px #000;
   }
