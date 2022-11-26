@@ -11,6 +11,7 @@ const NewWords = () => {
   const endpointsFiltered = useSelector(
     (state) => state.draw.endpointsFiltered
   );
+  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
   const [fetchedWord, setFetchedWord] = useState([]);
   const [translated, SetTranslated] = useState(false);
 
@@ -35,7 +36,25 @@ const NewWords = () => {
       });
   };
 
-  // Pobranie endpointów po wejsciu w komponent
+  // Pobranie endpointów dziennych
+  useEffect(() => {
+    fetch(
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Wystąpił błąd przy pobieraniu");
+        }
+      })
+      .then((res) => dispatch(drawWordsActions.saveDaily(res)))
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [dispatch]);
+
+  // Pobranie endpointów do losowania
   useEffect(() => {
     fetch(
       "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json"
@@ -95,13 +114,16 @@ const NewWords = () => {
   };
 
   //Dodanie słówka
-  const addMyWord = () => {
+  const addMyWord = async () => {
     SetTranslated(false);
+    const dailyWords = [...endpointsDaily];
+    dailyWords.push(fetchedWord.eng);
+    dispatch(drawWordsActions.saveDaily(dailyWords));
     fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/my-words.json`,
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`,
       {
-        method: "POST",
-        body: JSON.stringify(fetchedWord),
+        method: "PUT",
+        body: JSON.stringify(dailyWords),
       }
     )
       .then((res) => {
@@ -111,15 +133,12 @@ const NewWords = () => {
           throw new Error("Wystąpił błąd przy wysyłaniu");
         }
       })
-      .then((res) => {
-        console.log(res);
-      })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  //Metody dla komponentu ze słówkiem
+  //Pierwsze losowanie
   const onGenerate = async () => {
     try {
       const value = await whichWord(drawIndex(endpoints), endpoints);
@@ -153,6 +172,7 @@ const NewWords = () => {
 
   const onAdd = async () => {
     try {
+      await addMyWord();
       await sendNewEndpoints();
       const value = await whichWord(
         drawIndex(endpointsFiltered),
@@ -160,7 +180,7 @@ const NewWords = () => {
       );
       await takeSpecificWord(value, endpointsFiltered);
       await dispatch(drawWordsActions.saveFetched(endpointsFiltered));
-      await addMyWord();
+      // await addMyWord();
     } catch {
       alert("Wystapił błąd");
     }

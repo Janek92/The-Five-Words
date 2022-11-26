@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const words = {
   endpoints: [],
   endpointsFiltered: [],
+  endpointsDaily: [],
 };
 
 const drawWords = createSlice({
@@ -14,6 +15,9 @@ const drawWords = createSlice({
     },
     saveFiltered(state, action) {
       state.endpointsFiltered = action.payload;
+    },
+    saveDaily(state, action) {
+      state.endpointsDaily = action.payload;
     },
   },
 });
