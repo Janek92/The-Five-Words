@@ -1,6 +1,10 @@
-import { Routes, Route, NavLink, useLocation } from "react-router-dom";
-import useWindowDimensions from "./components/hooks/useWindowDimensions";
-import wordsData from "./components/data/words";
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  downloadEndpoints,
+  downloadEndpointsDaily,
+} from "./store/words-actions";
 //pages:
 import Navigation from "./components/pages/Navigation";
 import Main from "./components/pages/Main";
@@ -10,8 +14,14 @@ import History from "./components/pages/History";
 import HowToUse from "./components/pages/HowToUse";
 
 function App() {
-  const { height, width } = useWindowDimensions();
-  // console.log(wordsData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //Pobranie endpointów (do losowania):
+    dispatch(downloadEndpoints());
+    //Pobranie endpointówDaily (dodanych do nauki):
+    dispatch(downloadEndpointsDaily());
+  }, [dispatch]);
 
   return (
     <>

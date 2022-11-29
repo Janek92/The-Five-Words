@@ -1,8 +1,15 @@
 .daily {
+  border-bottom: 2px solid black;
+  margin: 0.2rem;
+  font-family: var(--basic-font-family);
+  text-align: center;
+  padding: 1rem 0;
 }
 .polish {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 .type {
-}
-.translate {
+  font-size: 1rem;
 }

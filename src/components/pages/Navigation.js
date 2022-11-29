@@ -26,14 +26,14 @@ const Navigation = () => {
     <>
       <header className={classNamesNavBar}>
         <Link to="/">
-          <img src={logo}></img>
+          <img className={classes.logo} src={logo}></img>
         </Link>
         <button className={classes.burger} onClick={onShowMenu}>
           {menuShow ? <GrClose /> : <GrMenu />}
         </button>
         <nav className={classNamesMenu}>
-          <ul>
-            <li>
+          <ul className={classes["nav__container"]}>
+            <li className={classes["nav__list-element"]}>
               <NavLink
                 onClick={onHideMenu}
                 to="/"
@@ -44,7 +44,7 @@ const Navigation = () => {
                 strona główna
               </NavLink>
             </li>
-            <li>
+            <li className={classes["nav__list-element"]}>
               <NavLink
                 onClick={onHideMenu}
                 to="/daily"
@@ -55,7 +55,7 @@ const Navigation = () => {
                 trening
               </NavLink>
             </li>
-            <li>
+            <li className={classes["nav__list-element"]}>
               <NavLink
                 onClick={onHideMenu}
                 to="/new"
@@ -66,7 +66,7 @@ const Navigation = () => {
                 nowe
               </NavLink>
             </li>
-            <li>
+            <li className={classes["nav__list-element"]}>
               <NavLink
                 onClick={onHideMenu}
                 to="/history"
@@ -77,7 +77,7 @@ const Navigation = () => {
                 historia
               </NavLink>
             </li>
-            <li>
+            <li className={classes["nav__list-element"]}>
               <NavLink
                 onClick={onHideMenu}
                 to="/how-to-use"
@@ -88,7 +88,7 @@ const Navigation = () => {
                 jak korzystać
               </NavLink>
             </li>
-            <li>
+            <li className={classes["nav__list-element"]}>
               <button className={classes["logout-btn"]}>wyloguj</button>
             </li>
           </ul>

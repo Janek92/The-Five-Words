@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
-import { useEffect, useState } from "react";
 import WordPreview from "../UI/WordPreview";
 import PagesTitle from "../UI/PagesTitle";
 import InitBtns from "../UI/InitBtns";
@@ -37,40 +37,46 @@ const NewWords = () => {
   };
 
   // Pobranie endpointów dziennych
-  useEffect(() => {
-    fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error("Wystąpił błąd przy pobieraniu");
-        }
-      })
-      .then((res) => dispatch(drawWordsActions.saveDaily(res)))
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   fetch(
+  //     `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`
+  //   )
+  //     .then((res) => {
+  //       if (res.ok) {
+  //         return res.json();
+  //       } else {
+  //         throw new Error("Wystąpił błąd przy pobieraniu");
+  //       }
+  //     })
+  //     .then((res) => {
+  //       if (res === null) {
+  //         dispatch(drawWordsActions.saveDaily([]));
+  //       } else {
+  //         dispatch(drawWordsActions.saveDaily(res));
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [dispatch]);
 
   // Pobranie endpointów do losowania
-  useEffect(() => {
-    fetch(
-      "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json"
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error("Wystąpił błąd przy pobieraniu");
-        }
-      })
-      .then((res) => {
-        dispatch(drawWordsActions.saveFetched(res));
-      })
-      .catch((error) => console.log(error));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   fetch(
+  //     "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json"
+  //   )
+  //     .then((res) => {
+  //       if (res.ok) {
+  //         return res.json();
+  //       } else {
+  //         throw new Error("Wystąpił błąd przy pobieraniu");
+  //       }
+  //     })
+  //     .then((res) => {
+  //       dispatch(drawWordsActions.saveFetched(res));
+  //     })
+  //     .catch((error) => console.log(error));
+  // }, [dispatch]);
 
   //Losowanie indeksu endpointa
   const drawIndex = (endpointsArray) => {
@@ -134,8 +140,9 @@ const NewWords = () => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.name);
       });
+    console.log("onAdd działa");
   };
 
   //Pierwsze losowanie
@@ -180,7 +187,6 @@ const NewWords = () => {
       );
       await takeSpecificWord(value, endpointsFiltered);
       await dispatch(drawWordsActions.saveFetched(endpointsFiltered));
-      // await addMyWord();
     } catch {
       alert("Wystapił błąd");
     }

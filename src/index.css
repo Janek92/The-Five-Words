@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Exo+2:wght@500&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
 /* font-family: 'Montserrat', sans-serif; */
+/* font-family: 'Exo 2', sans-serif; */
 * {
   margin: 0;
   padding: 0;
@@ -10,9 +11,11 @@ html {
   font-size: 20px;
 }
 :root {
+  --titles-font-family: "Exo 2", sans-serif;
   --basic-font-family: "Montserrat", sans-serif;
   /* height of navbar in portrait, width in landscape and left value for positioning menu in landscape (all must be the same): */
   --bar-menu: 4rem;
+  --focus-color: #eaac33;
 }
 /* body {
   background-color: rgba(168, 168, 168, 0.5);

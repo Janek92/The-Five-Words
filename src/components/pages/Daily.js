@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { drawWordsActions } from "../../store/words-slice";
 import PagesTitle from "../UI/PagesTitle";
 import InitBtns from "../UI/InitBtns";
 import DailyPreview from "../UI/DailyPreview";
 
 const Daily = () => {
+  const dispatch = useDispatch();
   let dailyLocalStorage = JSON.parse(localStorage.getItem("daily"));
   dailyLocalStorage === null
     ? (dailyLocalStorage = [])
@@ -11,34 +14,61 @@ const Daily = () => {
 
   const [dailyWords, setDailyWords] = useState([...dailyLocalStorage]);
 
-  const [endpoints, setEndpoints] = useState([]);
+  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
+  const [dailyToRender, setDailyToRender] = useState([]);
 
-  const downloadEndpoints = () => {
-    fetch(
-      "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json"
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error('Nie można pobrać "moich słówek"');
-        }
-      })
-      .then((res) => {
-        const myWordsTotal = [...res];
-        let myWordsCut = [];
-        if (myWordsTotal.length <= 5) {
-          setEndpoints([...myWordsTotal]);
-        } else {
-          myWordsCut = myWordsTotal.slice(0, 5);
-          setEndpoints([...myWordsCut]);
-        }
-      })
-      .catch((error) => alert(error));
-  };
+  const [dailyToSend, setDailyToSend] = useState([]);
+
+  const [historyEndpoints, setHistoryEndpoints] = useState([]);
+
+  const [historyToSend, setHistoryToSend] = useState([]);
+
+  // const downloadEndpoints = () => {
+  //   fetch(
+  //     "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json"
+  //   )
+  //     .then((res) => {
+  //       if (res.ok) {
+  //         return res.json();
+  //       } else {
+  //         throw new Error('Nie można pobrać "moich słówek"');
+  //       }
+  //     })
+  //     .then((res) => {
+  //       const myWordsTotal = [...res];
+  //       let myWordsCut = [];
+  //       if (myWordsTotal.length <= 5) {
+  //         setDailyToRender([...myWordsTotal]);
+  //         setDailyToSend([]);
+  //       } else {
+  //         myWordsCut = myWordsTotal.slice(0, 5);
+  //         setDailyToRender([...myWordsCut]);
+  //         const wordsCut = myWordsTotal.slice(
+  //           myWordsTotal.length - 1,
+  //           myWordsTotal.length
+  //         );
+  //         setDailyToSend(wordsCut);
+  //       }
+  //     })
+  //     .catch((error) => alert(error));
+  // };
 
   useEffect(() => {
-    downloadEndpoints();
+    // downloadEndpoints();endpointsDaily
+    const myWordsTotal = [...endpointsDaily];
+    let myWordsCut = [];
+    if (myWordsTotal.length <= 5) {
+      setDailyToRender([...myWordsTotal]);
+      setDailyToSend([]);
+    } else {
+      myWordsCut = myWordsTotal.slice(0, 5);
+      setDailyToRender([...myWordsCut]);
+      const wordsCut = myWordsTotal.slice(
+        myWordsTotal.length - 1,
+        myWordsTotal.length
+      );
+      setDailyToSend(wordsCut);
+    }
   }, []);
 
   useEffect(() => {
@@ -72,24 +102,27 @@ const Daily = () => {
   };
 
   const getWords = async () => {
-    endpoints.map((word) => downloadMyWord(word));
+    dailyToRender.map((word) => downloadMyWord(word));
+  };
+
+  const sendFilteredDaily = async () => {
+    console.log(dailyToSend);
+    //Tutaj dispatchować daily oraz wysłać do database do daily dailyToSend:
+    // dispatch(drawWordsActions.saveDaily(dailyToSend));
   };
 
   const onInit = async () => {
     try {
       await getWords();
+      await sendFilteredDaily();
     } catch {
       alert("Wystąpił błąd");
     }
   };
 
-  //Metody dla dodawania do historii:
-
   const delFromLs = () => {
     localStorage.removeItem("daily");
     setDailyWords([]);
-    //usunąć i wrzucic do daily
-    //usunięte wrzucic do historii
   };
 
   return (
@@ -108,7 +141,7 @@ const Daily = () => {
         ))
       )}
       {dailyWords.length !== 0 ? (
-        <button onClick={delFromLs}>dodaj do historii</button>
+        <InitBtns onClick={delFromLs}>dodaj do historii</InitBtns>
       ) : null}
     </div>
   );

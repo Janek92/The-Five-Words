@@ -15,7 +15,7 @@ const InitBtns = styled.button`
   padding: 0.5rem;
 
   &:focus {
-    box-shadow: 2px 2px 0.7rem 0 #eaac33;
+    box-shadow: 2px 2px 0.7rem 0 var(--focus-color);
   }
 
   @media (orientation: landscape) {

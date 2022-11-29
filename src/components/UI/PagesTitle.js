@@ -11,8 +11,8 @@ to {
 }`;
 
 const PagesTitle = styled.h2`
-  font-size: 2rem;
-  font-family: var(--basic-font-family);
+  font-size: 2.4rem;
+  font-family: var(--titles-font-family);
   font-weight: 700;
   padding: 0.5rem;
   width: 100%;
