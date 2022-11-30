@@ -15,7 +15,7 @@ const NewWords = () => {
   const [fetchedWord, setFetchedWord] = useState([]);
   const [translated, SetTranslated] = useState(false);
 
-  //wysyłanie nowej tablicy z linkami
+  //Function to send filtered endpoints
   const sendNewEndpoints = () => {
     fetch(
       "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json",
@@ -36,60 +36,18 @@ const NewWords = () => {
       });
   };
 
-  // Pobranie endpointów dziennych
-  // useEffect(() => {
-  //   fetch(
-  //     `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`
-  //   )
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       } else {
-  //         throw new Error("Wystąpił błąd przy pobieraniu");
-  //       }
-  //     })
-  //     .then((res) => {
-  //       if (res === null) {
-  //         dispatch(drawWordsActions.saveDaily([]));
-  //       } else {
-  //         dispatch(drawWordsActions.saveDaily(res));
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, [dispatch]);
-
-  // Pobranie endpointów do losowania
-  // useEffect(() => {
-  //   fetch(
-  //     "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json"
-  //   )
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       } else {
-  //         throw new Error("Wystąpił błąd przy pobieraniu");
-  //       }
-  //     })
-  //     .then((res) => {
-  //       dispatch(drawWordsActions.saveFetched(res));
-  //     })
-  //     .catch((error) => console.log(error));
-  // }, [dispatch]);
-
-  //Losowanie indeksu endpointa
+  //Drawing endpoint index
   const drawIndex = (endpointsArray) => {
     const nr = Math.floor(Math.random() * endpointsArray.length);
     return nr;
   };
 
-  //Zwrócenie konkretnego endpointa
+  //Return proper endpoint regarding on drawn index
   const whichWord = (value, endpointsArray) => {
     return endpointsArray[value];
   };
 
-  //Pobranie słówka
+  //Fetch specific word depending on drawn endpoint
   const takeSpecificWord = (value, endpointsArray) => {
     SetTranslated(false);
     const filtered = endpointsArray.filter((el) => el !== value);
@@ -119,7 +77,7 @@ const NewWords = () => {
       .catch((error) => alert(error.name));
   };
 
-  //Dodanie słówka
+  //Update daily endpoints in redux and send it to database
   const addMyWord = async () => {
     SetTranslated(false);
     const dailyWords = [...endpointsDaily];
@@ -142,10 +100,9 @@ const NewWords = () => {
       .catch((error) => {
         console.log(error.name);
       });
-    console.log("onAdd działa");
   };
 
-  //Pierwsze losowanie
+  //First drawing of word after component entering
   const onGenerate = async () => {
     try {
       const value = await whichWord(drawIndex(endpoints), endpoints);
@@ -163,6 +120,7 @@ const NewWords = () => {
     setFetchedWord([]);
   };
 
+  //This function handles events after rejection a word
   const onReject = async () => {
     try {
       await sendNewEndpoints();
@@ -177,6 +135,7 @@ const NewWords = () => {
     }
   };
 
+  //This function handles events after adding a word to daily repeats
   const onAdd = async () => {
     try {
       await addMyWord();

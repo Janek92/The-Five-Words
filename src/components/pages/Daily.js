@@ -23,38 +23,8 @@ const Daily = () => {
 
   const [historyToSend, setHistoryToSend] = useState([]);
 
-  // const downloadEndpoints = () => {
-  //   fetch(
-  //     "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json"
-  //   )
-  //     .then((res) => {
-  //       if (res.ok) {
-  //         return res.json();
-  //       } else {
-  //         throw new Error('Nie można pobrać "moich słówek"');
-  //       }
-  //     })
-  //     .then((res) => {
-  //       const myWordsTotal = [...res];
-  //       let myWordsCut = [];
-  //       if (myWordsTotal.length <= 5) {
-  //         setDailyToRender([...myWordsTotal]);
-  //         setDailyToSend([]);
-  //       } else {
-  //         myWordsCut = myWordsTotal.slice(0, 5);
-  //         setDailyToRender([...myWordsCut]);
-  //         const wordsCut = myWordsTotal.slice(
-  //           myWordsTotal.length - 1,
-  //           myWordsTotal.length
-  //         );
-  //         setDailyToSend(wordsCut);
-  //       }
-  //     })
-  //     .catch((error) => alert(error));
-  // };
-
+  //Manipulate the daily endpoints in order to prepare the earliest added of them to display
   useEffect(() => {
-    // downloadEndpoints();endpointsDaily
     const myWordsTotal = [...endpointsDaily];
     let myWordsCut = [];
     if (myWordsTotal.length <= 5) {
@@ -71,10 +41,12 @@ const Daily = () => {
     }
   }, []);
 
+  //Function for set words to display into localStorage
   useEffect(() => {
     localStorage.setItem("daily", JSON.stringify(dailyWords));
   }, [dailyWords]);
 
+  //Function for download single word
   const downloadMyWord = async (word) => {
     fetch(
       `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word}.json`
@@ -101,25 +73,40 @@ const Daily = () => {
       .catch((error) => alert(error.name));
   };
 
+  //Loop for download proper words
   const getWords = async () => {
     dailyToRender.map((word) => downloadMyWord(word));
   };
 
-  const sendFilteredDaily = async () => {
-    console.log(dailyToSend);
-    //Tutaj dispatchować daily oraz wysłać do database do daily dailyToSend:
-    // dispatch(drawWordsActions.saveDaily(dailyToSend));
+  //Update daily endpoints in redux and send it to database
+  const updateAndSendDaily = async () => {
+    dispatch(drawWordsActions.saveDaily(dailyToSend));
+    fetch(
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`,
+      { method: "PUT", body: JSON.stringify(dailyToSend) }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Wystąpił błąd przy wysyłaniu");
+        }
+      })
+      .catch((error) => {
+        console.log(error.name);
+      });
   };
 
+  //This function handles displaying words from init button
   const onInit = async () => {
     try {
       await getWords();
-      await sendFilteredDaily();
+      await updateAndSendDaily();
     } catch {
       alert("Wystąpił błąd");
     }
   };
-
+  //--Zająć się dodawaniem do historii
   const delFromLs = () => {
     localStorage.removeItem("daily");
     setDailyWords([]);
