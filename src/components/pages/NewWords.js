@@ -7,15 +7,18 @@ import InitBtns from "../UI/InitBtns";
 
 const NewWords = () => {
   const dispatch = useDispatch();
-  const endpoints = useSelector((state) => state.draw.endpoints);
-  const endpointsFiltered = useSelector(
-    (state) => state.draw.endpointsFiltered
-  );
-  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
-  const [fetchedWord, setFetchedWord] = useState([]);
-  const [translated, SetTranslated] = useState(false);
 
-  //Function to send filtered endpoints
+  const endpoints = useSelector((state) => state.draw.endpoints);
+
+  const [endpointsFiltered, setEndpointsFiltered] = useState([]);
+
+  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
+
+  const [fetchedWord, setFetchedWord] = useState([]);
+
+  const [translated, setTranslated] = useState(false);
+
+  //Function to send endpoints without added or rejected word
   const sendNewEndpoints = () => {
     fetch(
       "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json",
@@ -36,7 +39,7 @@ const NewWords = () => {
       });
   };
 
-  //Drawing endpoint index
+  //Drawing endpoint index. For use as argument in function "whichWord"
   const drawIndex = (endpointsArray) => {
     const nr = Math.floor(Math.random() * endpointsArray.length);
     return nr;
@@ -49,9 +52,9 @@ const NewWords = () => {
 
   //Fetch specific word depending on drawn endpoint
   const takeSpecificWord = (value, endpointsArray) => {
-    SetTranslated(false);
+    setTranslated(false);
     const filtered = endpointsArray.filter((el) => el !== value);
-    dispatch(drawWordsActions.saveFiltered(filtered));
+    setEndpointsFiltered(filtered);
     fetch(
       `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${value}.json`
     )
@@ -79,7 +82,7 @@ const NewWords = () => {
 
   //Update daily endpoints in redux and send it to database
   const addMyWord = async () => {
-    SetTranslated(false);
+    setTranslated(false);
     const dailyWords = [...endpointsDaily];
     dailyWords.push(fetchedWord.eng);
     dispatch(drawWordsActions.saveDaily(dailyWords));
@@ -113,23 +116,28 @@ const NewWords = () => {
   };
 
   const onTranslate = () => {
-    SetTranslated(true);
+    setTranslated(true);
   };
 
   const onClose = () => {
     setFetchedWord([]);
   };
 
+  const updateAndDrawNext = async () => {
+    try {
+      await sendNewEndpoints();
+      const value = whichWord(drawIndex(endpointsFiltered), endpointsFiltered);
+      takeSpecificWord(value, endpointsFiltered);
+      dispatch(drawWordsActions.saveFetched(endpointsFiltered));
+    } catch {
+      alert("Wystapił błąd");
+    }
+  };
+
   //This function handles events after rejection a word
   const onReject = async () => {
     try {
-      await sendNewEndpoints();
-      const value = await whichWord(
-        drawIndex(endpointsFiltered),
-        endpointsFiltered
-      );
-      await takeSpecificWord(value, endpointsFiltered);
-      await dispatch(drawWordsActions.saveFetched(endpointsFiltered));
+      await updateAndDrawNext();
     } catch {
       alert("Wystapił błąd");
     }
@@ -139,13 +147,7 @@ const NewWords = () => {
   const onAdd = async () => {
     try {
       await addMyWord();
-      await sendNewEndpoints();
-      const value = await whichWord(
-        drawIndex(endpointsFiltered),
-        endpointsFiltered
-      );
-      await takeSpecificWord(value, endpointsFiltered);
-      await dispatch(drawWordsActions.saveFetched(endpointsFiltered));
+      await updateAndDrawNext();
     } catch {
       alert("Wystapił błąd");
     }

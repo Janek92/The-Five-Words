@@ -1,0 +1,22 @@
+.history-preview {
+  text-align: center;
+  font-family: var(--basic-font-family);
+  justify-content: center;
+}
+.polish,
+.english {
+  width: 100%;
+  /* border: 2px solid black; */
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+.polish {
+  font-size: 1.7rem;
+}
+
+.type {
+  width: 100%;
+  /* border: 1px solid black; */
+  font-size: 1rem;
+}

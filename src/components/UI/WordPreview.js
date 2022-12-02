@@ -1,11 +1,11 @@
 import classes from "./WordPreview.module.css";
 
 const WordPreview = (props) => {
-  const classNames = `${classes["word-preview"]} ${
-    props.className ? props.className : ""
-  }`;
+  // const classNames = `${classes["word-preview"]} ${
+  //   props.className ? props.className : ""
+  // }`;
   return (
-    <div className={classNames}>
+    <div className={classes["word-preview"]}>
       <h3 className={classes.polish}>{props.polish}</h3>
       <p className={classes.type}>{props.type}</p>
       {props.translated ? (

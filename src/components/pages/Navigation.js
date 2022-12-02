@@ -12,7 +12,7 @@ const Navigation = () => {
     setMenuShow((prev) => !prev);
   };
   const onHideMenu = () => {
-    setMenuShow((prev) => false);
+    setMenuShow((prev) => (prev = false));
   };
 
   const classNamesNavBar = `${classes["nav-bar"]} ${

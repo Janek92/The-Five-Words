@@ -7,6 +7,7 @@ import DailyPreview from "../UI/DailyPreview";
 
 const Daily = () => {
   const dispatch = useDispatch();
+
   let dailyLocalStorage = JSON.parse(localStorage.getItem("daily"));
   dailyLocalStorage === null
     ? (dailyLocalStorage = [])
@@ -15,15 +16,17 @@ const Daily = () => {
   const [dailyWords, setDailyWords] = useState([...dailyLocalStorage]);
 
   const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
+
+  const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
+
+  //5 or less endpoints directly rendering
   const [dailyToRender, setDailyToRender] = useState([]);
 
   const [dailyToSend, setDailyToSend] = useState([]);
 
-  const [historyEndpoints, setHistoryEndpoints] = useState([]);
+  // const [historyToSend, setHistoryToSend] = useState([]);
 
-  const [historyToSend, setHistoryToSend] = useState([]);
-
-  //Manipulate the daily endpoints in order to prepare the earliest added of them to display
+  //Manipulate the daily endpoints in order to prepare the earliest 5 added amongst of them to display (or all if total is less or equal 5)
   useEffect(() => {
     const myWordsTotal = [...endpointsDaily];
     let myWordsCut = [];
@@ -41,12 +44,12 @@ const Daily = () => {
     }
   }, []);
 
-  //Function for set words to display into localStorage
+  //Function for put 'words to display' into localStorage
   useEffect(() => {
     localStorage.setItem("daily", JSON.stringify(dailyWords));
   }, [dailyWords]);
 
-  //Function for download single word
+  //Function for download single word. It will be used in loop
   const downloadMyWord = async (word) => {
     fetch(
       `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word}.json`
@@ -93,7 +96,7 @@ const Daily = () => {
         }
       })
       .catch((error) => {
-        console.log(error.name);
+        alert(error.name);
       });
   };
 
@@ -106,10 +109,29 @@ const Daily = () => {
       alert("Wystąpił błąd");
     }
   };
-  //--Zająć się dodawaniem do historii
-  const delFromLs = () => {
+
+  const finishRepeats = () => {
     localStorage.removeItem("daily");
     setDailyWords([]);
+    const newWordsToHistory = dailyWords.map((word) => word.eng);
+    const historyToSend = [...endpointsHistory, ...newWordsToHistory];
+    dispatch(drawWordsActions.saveHistory(historyToSend));
+    fetch(
+      "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/history.json",
+      {
+        method: "PUT",
+        body: JSON.stringify(historyToSend),
+      }
+    )
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error("Nie udało się wysłać");
+        }
+      })
+      .then((res) => console.log(res))
+      .catch((error) => alert(error.name));
   };
 
   return (
@@ -128,7 +150,7 @@ const Daily = () => {
         ))
       )}
       {dailyWords.length !== 0 ? (
-        <InitBtns onClick={delFromLs}>dodaj do historii</InitBtns>
+        <InitBtns onClick={finishRepeats}>dodaj do historii</InitBtns>
       ) : null}
     </div>
   );

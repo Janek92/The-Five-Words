@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import {
   downloadEndpoints,
   downloadEndpointsDaily,
+  downloadEndpointsHistory,
 } from "./store/words-actions";
 //pages:
 import Navigation from "./components/pages/Navigation";
@@ -17,10 +18,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //Pobranie endpointów (do losowania):
+    //Download endpoints (to draw):
     dispatch(downloadEndpoints());
-    //Pobranie endpointówDaily (dodanych do nauki):
+    //Download endpointsDaily (added to learn):
     dispatch(downloadEndpointsDaily());
+    //Download endpointsHistory
+    dispatch(downloadEndpointsHistory());
   }, [dispatch]);
 
   return (
