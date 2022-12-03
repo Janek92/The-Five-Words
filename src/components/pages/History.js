@@ -1,8 +1,10 @@
 import PagesTitle from "../UI/PagesTitle";
+import Alert from "../UI/Alert";
 import InitBtns from "../UI/InitBtns";
 import { useSelector } from "react-redux";
 import HistoryPreview from "../UI/HistoryPreview";
 import { useState } from "react";
+import { useRef } from "react";
 
 const History = () => {
   const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
@@ -13,10 +15,10 @@ const History = () => {
 
   const [translated, setTranslated] = useState(false);
 
-  const drawWordFromHistory = () => {
-    if (!viewing) {
-      setViewing(true);
-    }
+  const initBtnRef = useRef();
+
+  const downloadHistoryWord = () => {
+    initBtnRef.current.blur();
     setTranslated(false);
     const index = Math.floor(Math.random() * endpointsHistory.length);
     const word = endpointsHistory[index];
@@ -46,14 +48,28 @@ const History = () => {
       .catch((error) => alert(error.name));
   };
 
+  const letDisplayWord = () => {
+    if (!viewing) {
+      setViewing(true);
+    }
+  };
+
+  const drawWordFromHistory = async () => {
+    try {
+      await downloadHistoryWord();
+      await letDisplayWord();
+    } catch {
+      alert("Wystąpił problem");
+    }
+  };
+
   const onTranslate = () => {
     setTranslated(true);
   };
 
   return (
     <div>
-      <PagesTitle>Historia słówek</PagesTitle>
-      <InitBtns onClick={drawWordFromHistory}>wyświetl słowo</InitBtns>
+      <PagesTitle>Historia</PagesTitle>
       {viewing ? (
         <HistoryPreview
           polish={historyWord.pl}
@@ -63,6 +79,13 @@ const History = () => {
           translate={onTranslate}
         ></HistoryPreview>
       ) : null}
+      {endpointsHistory.length === 0 ? (
+        <Alert>brak słówek w historii</Alert>
+      ) : (
+        <InitBtns onClick={drawWordFromHistory} ref={initBtnRef}>
+          {viewing ? "wyświetl kolejne" : "wyświetl słowo"}
+        </InitBtns>
+      )}
     </div>
   );
 };

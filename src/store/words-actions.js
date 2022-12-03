@@ -7,7 +7,6 @@ export const downloadEndpoints = () => {
     )
       .then((res) => {
         if (res.ok) {
-          console.log(res.status);
           return res.json();
         } else {
           throw new Error("Wystąpił błąd przy pobieraniu");
@@ -31,7 +30,6 @@ export const downloadEndpointsDaily = () => {
     )
       .then((res) => {
         if (res.ok) {
-          console.log(res.status);
           return res.json();
         } else {
           throw new Error("Wystąpił błąd przy pobieraniu");
@@ -57,7 +55,6 @@ export const downloadEndpointsHistory = () => {
     )
       .then((res) => {
         if (res.ok) {
-          console.log(res.status);
           return res.json();
         } else {
           throw new Error("Wystąpił błąd przy pobieraniu");

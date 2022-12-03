@@ -1,9 +1,11 @@
 .word-preview,
 .history-preview {
   /* border: 1px solid black; */
+  color: #fff;
   text-align: center;
   font-family: var(--basic-font-family);
   justify-content: center;
+  text-transform: uppercase;
 }
 .polish,
 .english {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -17,6 +17,24 @@ import HowToUse from "./components/pages/HowToUse";
 function App() {
   const dispatch = useDispatch();
 
+  const [close, setClose] = useState(false);
+
+  const showingMenu = () => {
+    setClose(true);
+  };
+
+  const closeDefault = () => {
+    setClose(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", showingMenu);
+
+    return () => {
+      window.removeEventListener("scroll", showingMenu);
+    };
+  }, []);
+
   useEffect(() => {
     //Download endpoints (to draw):
     dispatch(downloadEndpoints());
@@ -28,7 +46,7 @@ function App() {
 
   return (
     <>
-      <Navigation />
+      <Navigation close={close} closeDefault={closeDefault} />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/new" element={<NewWords />} />

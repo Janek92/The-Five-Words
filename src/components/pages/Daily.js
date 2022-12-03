@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
 import PagesTitle from "../UI/PagesTitle";
+import Alert from "../UI/Alert";
 import InitBtns from "../UI/InitBtns";
 import DailyPreview from "../UI/DailyPreview";
 

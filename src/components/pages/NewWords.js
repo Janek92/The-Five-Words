@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
 import WordPreview from "../UI/WordPreview";
@@ -17,6 +17,10 @@ const NewWords = () => {
   const [fetchedWord, setFetchedWord] = useState([]);
 
   const [translated, setTranslated] = useState(false);
+
+  const btnAddRef = useRef();
+
+  const btnRejectRef = useRef();
 
   //Function to send endpoints without added or rejected word
   const sendNewEndpoints = () => {
@@ -136,6 +140,7 @@ const NewWords = () => {
 
   //This function handles events after rejection a word
   const onReject = async () => {
+    btnRejectRef.current.blur();
     try {
       await updateAndDrawNext();
     } catch {
@@ -145,6 +150,7 @@ const NewWords = () => {
 
   //This function handles events after adding a word to daily repeats
   const onAdd = async () => {
+    btnAddRef.current.blur();
     try {
       await addMyWord();
       await updateAndDrawNext();
@@ -166,6 +172,8 @@ const NewWords = () => {
           close={onClose}
           reject={onReject}
           add={onAdd}
+          btnAddRef={btnAddRef}
+          btnRejectRef={btnRejectRef}
         />
       ) : (
         <InitBtns onClick={onGenerate}>wygeneruj</InitBtns>

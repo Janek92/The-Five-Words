@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logo from "../../assets/5words.png";
 import { GrMenu } from "react-icons/gr";
 import { GrClose } from "react-icons/gr";
 import classes from "./Navigation.module.css";
 
-const Navigation = () => {
+const Navigation = (props) => {
   const [menuShow, setMenuShow] = useState(false);
 
   const onShowMenu = () => {
-    setMenuShow((prev) => !prev);
+    setMenuShow((prev) => (prev = true));
+    props.closeDefault();
   };
   const onHideMenu = () => {
     setMenuShow((prev) => (prev = false));
   };
+
+  useEffect(() => {
+    if (props.close) {
+      onHideMenu();
+    }
+    console.log(props.close);
+  }, [props.close]);
 
   const classNamesNavBar = `${classes["nav-bar"]} ${
     !menuShow ? "" : classes["--show-menu"]
@@ -28,9 +36,15 @@ const Navigation = () => {
         <Link to="/">
           <img className={classes.logo} src={logo}></img>
         </Link>
-        <button className={classes.burger} onClick={onShowMenu}>
-          {menuShow ? <GrClose /> : <GrMenu />}
-        </button>
+        {menuShow ? (
+          <button className={classes.burger} onClick={onHideMenu}>
+            <GrClose />
+          </button>
+        ) : (
+          <button className={classes.burger} onClick={onShowMenu}>
+            <GrMenu />
+          </button>
+        )}
         <nav className={classNamesMenu}>
           <ul className={classes["nav__container"]}>
             <li className={classes["nav__list-element"]}>
