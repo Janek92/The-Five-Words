@@ -28,3 +28,8 @@ body {
     background-size: 100vw auto;
   }
 }
+@media (orientation: landscape) and (min-width: 1200px) {
+  body {
+    background-image: url("./assets/background/background_1920_1280.jpg");
+  }
+}

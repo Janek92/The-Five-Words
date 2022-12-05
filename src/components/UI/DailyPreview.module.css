@@ -2,7 +2,7 @@
   border-bottom: 2px solid black;
   margin: 0.2rem;
   font-family: var(--basic-font-family);
-  text-align: center;
+  /* text-align: center; */
   padding: 1rem 0;
   text-transform: uppercase;
   color: #fff;
@@ -10,7 +10,23 @@
 .polish {
   font-size: 1.6rem;
   font-weight: 600;
+  text-align: center;
 }
 .type {
   font-size: 0.9rem;
+  text-align: center;
+}
+
+@media (orientation: landscape) {
+  .polish,
+  .type {
+    padding-left: var(--bar-menu);
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1200px) {
+  .polish,
+  .type {
+    padding: 0;
+  }
 }

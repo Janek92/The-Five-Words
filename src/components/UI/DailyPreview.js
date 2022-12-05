@@ -17,8 +17,9 @@ const DailyPreview = (props) => {
       <p className={classes.polish}>{props.polish}</p>
       <p className={classes.type}>{props.type}</p>
       <InitBtns
+        translate
         ref={btnRef}
-        className={classes.translate}
+        // className={classes.translate}
         onClick={onShowTranslate}
       >
         {showTranslation ? props.english : "przetłumacz"}

@@ -4,9 +4,12 @@ import { drawWordsActions } from "../../store/words-slice";
 import WordPreview from "../UI/WordPreview";
 import PagesTitle from "../UI/PagesTitle";
 import InitBtns from "../UI/InitBtns";
+import Alert from "../UI/Alert";
 
 const NewWords = () => {
   const dispatch = useDispatch();
+
+  const eventDelay = 200;
 
   const endpoints = useSelector((state) => state.draw.endpoints);
 
@@ -107,24 +110,33 @@ const NewWords = () => {
       .catch((error) => {
         console.log(error.name);
       });
+    btnAddRef.current.blur();
   };
 
   //First drawing of word after component entering
   const onGenerate = async () => {
     try {
-      const value = await whichWord(drawIndex(endpoints), endpoints);
-      await takeSpecificWord(value, endpoints);
+      setTimeout(async () => {
+        const value = await whichWord(drawIndex(endpoints), endpoints);
+        await takeSpecificWord(value, endpoints);
+      }, [eventDelay]);
+      // const value = await whichWord(drawIndex(endpoints), endpoints);
+      // await takeSpecificWord(value, endpoints);
     } catch {
       alert("Wystapił błąd");
     }
   };
 
   const onTranslate = () => {
-    setTranslated(true);
+    setTimeout(() => {
+      setTranslated(true);
+    }, [eventDelay]);
   };
 
   const onClose = () => {
-    setFetchedWord([]);
+    setTimeout(() => {
+      setFetchedWord([]);
+    }, [eventDelay]);
   };
 
   const updateAndDrawNext = async () => {
@@ -136,13 +148,15 @@ const NewWords = () => {
     } catch {
       alert("Wystapił błąd");
     }
+    btnRejectRef.current.blur();
   };
 
   //This function handles events after rejection a word
   const onReject = async () => {
-    btnRejectRef.current.blur();
     try {
-      await updateAndDrawNext();
+      setTimeout(async () => {
+        await updateAndDrawNext();
+      }, [eventDelay]);
     } catch {
       alert("Wystapił błąd");
     }
@@ -150,10 +164,11 @@ const NewWords = () => {
 
   //This function handles events after adding a word to daily repeats
   const onAdd = async () => {
-    btnAddRef.current.blur();
     try {
-      await addMyWord();
-      await updateAndDrawNext();
+      setTimeout(async () => {
+        await addMyWord();
+        await updateAndDrawNext();
+      }, [eventDelay]);
     } catch {
       alert("Wystapił błąd");
     }
@@ -162,7 +177,9 @@ const NewWords = () => {
   return (
     <div>
       <PagesTitle>Nowe słówka</PagesTitle>
-      {fetchedWord.length !== 0 ? (
+      {endpoints.length === 0 && !fetchedWord ? (
+        <Alert>Poznałeś już wszystkie słowa!</Alert>
+      ) : fetchedWord.length !== 0 ? (
         <WordPreview
           polish={fetchedWord.pl}
           type={fetchedWord.type}
@@ -175,6 +192,8 @@ const NewWords = () => {
           btnAddRef={btnAddRef}
           btnRejectRef={btnRejectRef}
         />
+      ) : endpoints.length === 0 && fetchedWord.length === 0 ? (
+        <Alert>Poznałeś już wszystkie słowa!</Alert>
       ) : (
         <InitBtns onClick={onGenerate}>wygeneruj</InitBtns>
       )}

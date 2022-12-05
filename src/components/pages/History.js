@@ -41,7 +41,6 @@ const History = () => {
             pl: res[key].pl,
             type: res[key].type,
           });
-          console.log(...loadedWord);
         }
         setHistoryWord(...loadedWord);
       })
@@ -69,7 +68,7 @@ const History = () => {
 
   return (
     <div>
-      <PagesTitle>Historia</PagesTitle>
+      <PagesTitle>Już znam</PagesTitle>
       {viewing ? (
         <HistoryPreview
           polish={historyWord.pl}

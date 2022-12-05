@@ -33,7 +33,6 @@ a:active {
 }
 .burger:active {
   transform: scale(0.98);
-  /* transform: scaleY(0); */
 }
 @media (orientation: landscape) {
   .nav-bar {
@@ -145,11 +144,11 @@ a {
     width: auto;
   }
   a {
-    color: rgb(0, 0, 0);
+    color: #fff;
   }
   .logout-btn {
     width: auto;
-    color: rgb(0, 0, 0);
+    color: #fff;
     cursor: pointer;
   }
   /* .menu ul:has(li:hover) > li:not(:hover) {

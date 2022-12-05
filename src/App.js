@@ -36,11 +36,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    //Download endpoints (to draw):
     dispatch(downloadEndpoints());
-    //Download endpointsDaily (added to learn):
     dispatch(downloadEndpointsDaily());
-    //Download endpointsHistory
     dispatch(downloadEndpointsHistory());
   }, [dispatch]);
 

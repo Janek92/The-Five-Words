@@ -138,7 +138,9 @@ const Daily = () => {
   return (
     <div>
       <PagesTitle>Dzisiejsze</PagesTitle>
-      {dailyWords.length === 0 ? (
+      {endpointsDaily.length === 0 && dailyWords.length === 0 ? (
+        <Alert>brak słów w powtórkach</Alert>
+      ) : dailyWords.length === 0 ? (
         <InitBtns onClick={onInit}>pobierz słowa</InitBtns>
       ) : (
         dailyWords.map((el) => (
@@ -157,3 +159,4 @@ const Daily = () => {
   );
 };
 export default Daily;
+//Zrobić opóźnienia aktywacji funkcji po wciśnięciu przycisków w tym komponencie

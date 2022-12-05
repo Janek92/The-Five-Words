@@ -5,6 +5,8 @@ const WordPreview = (props) => {
   //   props.className ? props.className : ""
   // }`;
 
+  //ref={props.btnAddRef}
+  // ref={props.btnRejectRef}
   return (
     <div className={classes["word-preview"]}>
       <h3 className={classes.polish}>{props.polish}</h3>
@@ -17,14 +19,14 @@ const WordPreview = (props) => {
         </button>
       )}
       <button className={classes.add} onClick={props.add} ref={props.btnAddRef}>
-        dodaj do powtórek
+        dodaj
       </button>
       <button
         className={classes.remove}
         onClick={props.reject}
         ref={props.btnRejectRef}
       >
-        już to znam
+        znam to
       </button>
       <button className={classes.end} onClick={props.close}>
         zakończ

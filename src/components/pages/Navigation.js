@@ -20,7 +20,6 @@ const Navigation = (props) => {
     if (props.close) {
       onHideMenu();
     }
-    console.log(props.close);
   }, [props.close]);
 
   const classNamesNavBar = `${classes["nav-bar"]} ${
@@ -88,7 +87,7 @@ const Navigation = (props) => {
                   isActive ? classes.active : undefined
                 }
               >
-                historia
+                już znam
               </NavLink>
             </li>
             <li className={classes["nav__list-element"]}>
