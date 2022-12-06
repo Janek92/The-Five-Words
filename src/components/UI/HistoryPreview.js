@@ -1,4 +1,4 @@
-import classes from "./WordPreview.module.css";
+import classes from "./HistoryPreview.module.css";
 
 const HistoryPreview = (props) => {
   return (

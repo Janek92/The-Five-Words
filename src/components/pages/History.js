@@ -1,10 +1,10 @@
-import PagesTitle from "../UI/PagesTitle";
-import Alert from "../UI/Alert";
-import InitBtns from "../UI/InitBtns";
 import { useSelector } from "react-redux";
+import { useState, useRef } from "react";
+import PageContent from "../UI/reusable/PageContent";
+import PagesTitle from "../UI/reusable/PagesTitle";
+import Alert from "../UI/reusable/Alert";
+import InitBtns from "../UI/reusable/InitBtns";
 import HistoryPreview from "../UI/HistoryPreview";
-import { useState } from "react";
-import { useRef } from "react";
 
 const History = () => {
   const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
@@ -67,7 +67,7 @@ const History = () => {
   };
 
   return (
-    <div>
+    <PageContent>
       <PagesTitle>Już znam</PagesTitle>
       {viewing ? (
         <HistoryPreview
@@ -85,7 +85,7 @@ const History = () => {
           {viewing ? "wyświetl kolejne" : "wyświetl słowo"}
         </InitBtns>
       )}
-    </div>
+    </PageContent>
   );
 };
 export default History;

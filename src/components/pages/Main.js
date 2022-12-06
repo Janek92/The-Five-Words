@@ -1,3 +1,6 @@
+import PageContent from "../UI/reusable/PageContent";
+import PagesTitle from "../UI/reusable/PagesTitle";
+
 const Main = () => {
   const allWords = [
     "abandon",
@@ -54,10 +57,10 @@ const Main = () => {
       });
   };
   return (
-    <main>
-      <h1>Strona główna</h1>
+    <PageContent>
+      <PagesTitle>Strona główna</PagesTitle>
       <button onClick={sendNewEndpoints}>DODAJ DO FOR-DRAW</button>
-    </main>
+    </PageContent>
   );
 };
 export default Main;

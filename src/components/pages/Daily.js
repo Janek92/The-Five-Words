@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
-import PagesTitle from "../UI/PagesTitle";
-import Alert from "../UI/Alert";
-import InitBtns from "../UI/InitBtns";
+import PageContent from "../UI/reusable/PageContent";
+import PagesTitle from "../UI/reusable/PagesTitle";
+import Alert from "../UI/reusable/Alert";
+import InitBtns from "../UI/reusable/InitBtns";
 import DailyPreview from "../UI/DailyPreview";
 
 const Daily = () => {
@@ -136,7 +137,7 @@ const Daily = () => {
   };
 
   return (
-    <div>
+    <PageContent>
       <PagesTitle>Dzisiejsze</PagesTitle>
       {endpointsDaily.length === 0 && dailyWords.length === 0 ? (
         <Alert>brak słów w powtórkach</Alert>
@@ -155,7 +156,7 @@ const Daily = () => {
       {dailyWords.length !== 0 ? (
         <InitBtns onClick={finishRepeats}>dodaj do historii</InitBtns>
       ) : null}
-    </div>
+    </PageContent>
   );
 };
 export default Daily;

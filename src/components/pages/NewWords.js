@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
+import PageContent from "../UI/reusable/PageContent";
 import WordPreview from "../UI/WordPreview";
-import PagesTitle from "../UI/PagesTitle";
-import InitBtns from "../UI/InitBtns";
-import Alert from "../UI/Alert";
+import PagesTitle from "../UI/reusable/PagesTitle";
+import InitBtns from "../UI/reusable/InitBtns";
+import Alert from "../UI/reusable/Alert";
 
 const NewWords = () => {
   const dispatch = useDispatch();
@@ -175,7 +176,7 @@ const NewWords = () => {
   };
 
   return (
-    <div>
+    <PageContent>
       <PagesTitle>Nowe słówka</PagesTitle>
       {endpoints.length === 0 && !fetchedWord ? (
         <Alert>Poznałeś już wszystkie słowa!</Alert>
@@ -197,7 +198,7 @@ const NewWords = () => {
       ) : (
         <InitBtns onClick={onGenerate}>wygeneruj</InitBtns>
       )}
-    </div>
+    </PageContent>
   );
 };
 export default NewWords;

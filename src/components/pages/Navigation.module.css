@@ -6,7 +6,7 @@
   border-bottom-right-radius: 0.5rem;
   display: flex;
   justify-content: space-between;
-  background-color: #333;
+  background-color: #fff;
   align-items: center;
   position: fixed;
 }
@@ -34,37 +34,7 @@ a:active {
 .burger:active {
   transform: scale(0.98);
 }
-@media (orientation: landscape) {
-  .nav-bar {
-    flex-direction: column;
-    height: 100vh;
-    width: var(--bar-menu);
-    position: fixed;
-    border-bottom-left-radius: 0;
-    border-top-right-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
-  }
-  .--show-menu {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0.5rem;
-  }
-}
-@media (orientation: landscape) and (min-width: 1200px) {
-  .nav-bar {
-    flex-direction: row;
-    height: var(--bar-menu);
-    width: 100%;
-    border-bottom-left-radius: 0.5rem;
-    border-top-right-radius: 0;
-    position: relative;
-  }
-  .burger {
-    display: none;
-  }
-  .logo {
-    margin-left: 1rem;
-  }
-}
+
 .menu {
   width: 70%;
   position: fixed;
@@ -108,9 +78,22 @@ a {
 }
 .active {
   color: rgb(110, 117, 255);
-  font-weight: 700;
 }
+
 @media (orientation: landscape) {
+  .nav-bar {
+    flex-direction: column;
+    height: 100vh;
+    width: var(--bar-menu);
+    position: fixed;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+  .--show-menu {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0.5rem;
+  }
   .menu {
     top: 0;
     left: var(--bar-menu);
@@ -123,7 +106,23 @@ a {
     transform: translateY(-100%);
   }
 }
+
 @media (orientation: landscape) and (min-width: 1200px) {
+  .nav-bar {
+    flex-direction: row;
+    height: var(--bar-menu);
+    width: 100%;
+    border-bottom-left-radius: 0.5rem;
+    border-top-right-radius: 0;
+    position: fixed;
+  }
+  .burger {
+    display: none;
+  }
+  .logo {
+    margin-left: 1rem;
+  }
+
   .menu {
     width: 80%;
     height: 100%;
@@ -144,11 +143,11 @@ a {
     width: auto;
   }
   a {
-    color: #fff;
+    color: #000;
   }
   .logout-btn {
     width: auto;
-    color: #fff;
+    color: #000;
     cursor: pointer;
   }
   /* .menu ul:has(li:hover) > li:not(:hover) {

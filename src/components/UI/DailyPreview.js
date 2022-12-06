@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import classes from "./DailyPreview.module.css";
-import InitBtns from "./InitBtns";
+import InitBtns from "./reusable/InitBtns";
 
 const DailyPreview = (props) => {
   const [showTranslation, setShowTranslation] = useState(false);
@@ -16,12 +16,7 @@ const DailyPreview = (props) => {
     <div className={classes.daily}>
       <p className={classes.polish}>{props.polish}</p>
       <p className={classes.type}>{props.type}</p>
-      <InitBtns
-        translate
-        ref={btnRef}
-        // className={classes.translate}
-        onClick={onShowTranslate}
-      >
+      <InitBtns translate ref={btnRef} onClick={onShowTranslate}>
         {showTranslation ? props.english : "przetłumacz"}
       </InitBtns>
     </div>
