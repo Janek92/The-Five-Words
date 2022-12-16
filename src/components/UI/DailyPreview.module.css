@@ -5,7 +5,7 @@
   text-align: center;
   padding: 1rem 0;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--basic-color);
 }
 .daily > * {
   margin-bottom: 0.4rem;

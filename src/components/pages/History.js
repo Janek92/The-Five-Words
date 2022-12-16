@@ -7,7 +7,11 @@ import InitBtns from "../UI/reusable/InitBtns";
 import HistoryPreview from "../UI/HistoryPreview";
 
 const History = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
+
+  const eventDelay = useSelector((state) => state.draw.eventDelay);
 
   const [viewing, setViewing] = useState(false);
 
@@ -18,6 +22,7 @@ const History = () => {
   const initBtnRef = useRef();
 
   const downloadHistoryWord = () => {
+    setIsLoading(true);
     initBtnRef.current.blur();
     setTranslated(false);
     const index = Math.floor(Math.random() * endpointsHistory.length);
@@ -29,7 +34,7 @@ const History = () => {
         if (res.ok) {
           return res.json();
         } else {
-          throw new Error("Nie można pobrać słówka");
+          throw new Error(res.status);
         }
       })
       .then((res) => {
@@ -43,8 +48,12 @@ const History = () => {
           });
         }
         setHistoryWord(...loadedWord);
+        setIsLoading(false);
       })
-      .catch((error) => alert(error.name));
+      .catch((error) => {
+        alert(error.name);
+        setIsLoading(false);
+      });
   };
 
   const letDisplayWord = () => {
@@ -54,16 +63,20 @@ const History = () => {
   };
 
   const drawWordFromHistory = async () => {
-    try {
-      await downloadHistoryWord();
-      await letDisplayWord();
-    } catch {
-      alert("Wystąpił problem");
-    }
+    setTimeout(async () => {
+      try {
+        await downloadHistoryWord();
+        await letDisplayWord();
+      } catch {
+        alert("Wystąpił problem");
+      }
+    }, [eventDelay]);
   };
 
   const onTranslate = () => {
-    setTranslated(true);
+    setTimeout(() => {
+      setTranslated(true);
+    }, [eventDelay]);
   };
 
   return (
@@ -81,7 +94,11 @@ const History = () => {
       {endpointsHistory.length === 0 ? (
         <Alert>brak słówek w historii</Alert>
       ) : (
-        <InitBtns onClick={drawWordFromHistory} ref={initBtnRef}>
+        <InitBtns
+          onClick={drawWordFromHistory}
+          ref={initBtnRef}
+          disabled={isLoading}
+        >
           {viewing ? "wyświetl kolejne" : "wyświetl słowo"}
         </InitBtns>
       )}

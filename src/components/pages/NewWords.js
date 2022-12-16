@@ -2,15 +2,17 @@ import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
 import PageContent from "../UI/reusable/PageContent";
-import WordPreview from "../UI/WordPreview";
+import NewWordsPreview from "../UI/NewWordsPreview";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import InitBtns from "../UI/reusable/InitBtns";
 import Alert from "../UI/reusable/Alert";
 
 const NewWords = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useDispatch();
 
-  const eventDelay = 200;
+  const eventDelay = useSelector((state) => state.draw.eventDelay);
 
   const endpoints = useSelector((state) => state.draw.endpoints);
 
@@ -22,9 +24,13 @@ const NewWords = () => {
 
   const [translated, setTranslated] = useState(false);
 
+  // let loading = false;
+
   const btnAddRef = useRef();
 
   const btnRejectRef = useRef();
+
+  // const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
 
   //Function to send endpoints without added or rejected word
   const sendNewEndpoints = () => {
@@ -39,7 +45,7 @@ const NewWords = () => {
         if (res.ok) {
           return res.json();
         } else {
-          throw new Error("Wystąpił błąd przy wysyłaniu");
+          throw new Error(res.status);
         }
       })
       .catch((error) => {
@@ -55,11 +61,13 @@ const NewWords = () => {
 
   //Return proper endpoint regarding on drawn index
   const whichWord = (value, endpointsArray) => {
+    setIsLoading(true);
     return endpointsArray[value];
   };
 
   //Fetch specific word depending on drawn endpoint
   const takeSpecificWord = (value, endpointsArray) => {
+    // loading=true;
     setTranslated(false);
     const filtered = endpointsArray.filter((el) => el !== value);
     setEndpointsFiltered(filtered);
@@ -68,10 +76,13 @@ const NewWords = () => {
     )
       .then((res) => {
         if (res.ok) {
-          return res.json();
+          return res;
         } else {
-          throw new Error("Problem z pobraniem słowa");
+          throw new Error(res.status);
         }
+      })
+      .then((res) => {
+        return res.json();
       })
       .then((res) => {
         const loadedWord = [];
@@ -84,8 +95,12 @@ const NewWords = () => {
           });
         }
         setFetchedWord(...loadedWord);
+        setIsLoading(false);
       })
-      .catch((error) => alert(error.name));
+      .catch((error) => {
+        alert(error);
+        setIsLoading(false);
+      });
   };
 
   //Update daily endpoints in redux and send it to database
@@ -93,7 +108,7 @@ const NewWords = () => {
     setTranslated(false);
     const dailyWords = [...endpointsDaily];
     dailyWords.push(fetchedWord.eng);
-    dispatch(drawWordsActions.saveDaily(dailyWords));
+    // dispatch(drawWordsActions.saveDaily(dailyWords));
     fetch(
       `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`,
       {
@@ -103,29 +118,25 @@ const NewWords = () => {
     )
       .then((res) => {
         if (res.ok) {
-          return res.json();
+          //In case of failed send, endpoints in application memory stays as before drawing
+          dispatch(drawWordsActions.saveDaily(dailyWords));
+          // return res.json();
         } else {
-          throw new Error("Wystąpił błąd przy wysyłaniu");
+          throw new Error(res.status);
         }
       })
       .catch((error) => {
-        console.log(error.name);
+        console.error(error.name);
       });
     btnAddRef.current.blur();
   };
 
   //First drawing of word after component entering
-  const onGenerate = async () => {
-    try {
-      setTimeout(async () => {
-        const value = await whichWord(drawIndex(endpoints), endpoints);
-        await takeSpecificWord(value, endpoints);
-      }, [eventDelay]);
-      // const value = await whichWord(drawIndex(endpoints), endpoints);
-      // await takeSpecificWord(value, endpoints);
-    } catch {
-      alert("Wystapił błąd");
-    }
+  const onGenerate = () => {
+    setTimeout(async () => {
+      const value = await whichWord(drawIndex(endpoints), endpoints);
+      await takeSpecificWord(value, endpoints);
+    }, [eventDelay]);
   };
 
   const onTranslate = () => {
@@ -153,26 +164,18 @@ const NewWords = () => {
   };
 
   //This function handles events after rejection a word
-  const onReject = async () => {
-    try {
-      setTimeout(async () => {
-        await updateAndDrawNext();
-      }, [eventDelay]);
-    } catch {
-      alert("Wystapił błąd");
-    }
+  const onReject = () => {
+    setTimeout(async () => {
+      await updateAndDrawNext();
+    }, [eventDelay]);
   };
 
   //This function handles events after adding a word to daily repeats
-  const onAdd = async () => {
-    try {
-      setTimeout(async () => {
-        await addMyWord();
-        await updateAndDrawNext();
-      }, [eventDelay]);
-    } catch {
-      alert("Wystapił błąd");
-    }
+  const onAdd = () => {
+    setTimeout(async () => {
+      await addMyWord();
+      await updateAndDrawNext();
+    }, [eventDelay]);
   };
 
   return (
@@ -181,7 +184,7 @@ const NewWords = () => {
       {endpoints.length === 0 && !fetchedWord ? (
         <Alert>Poznałeś już wszystkie słowa!</Alert>
       ) : fetchedWord.length !== 0 ? (
-        <WordPreview
+        <NewWordsPreview
           polish={fetchedWord.pl}
           type={fetchedWord.type}
           translated={translated}
@@ -192,11 +195,14 @@ const NewWords = () => {
           add={onAdd}
           btnAddRef={btnAddRef}
           btnRejectRef={btnRejectRef}
+          isLoading={isLoading}
         />
       ) : endpoints.length === 0 && fetchedWord.length === 0 ? (
         <Alert>Poznałeś już wszystkie słowa!</Alert>
       ) : (
-        <InitBtns onClick={onGenerate}>wygeneruj</InitBtns>
+        <InitBtns onClick={onGenerate} disabled={isLoading}>
+          wygeneruj
+        </InitBtns>
       )}
     </PageContent>
   );

@@ -40,7 +40,7 @@ a:active {
   position: fixed;
   top: 4rem;
   right: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
   border-bottom-left-radius: 0.5rem;
   transition: all 0.2s;
 }
@@ -139,8 +139,13 @@ a {
     width: 100%;
     justify-content: space-around;
   }
-  .nav__list-element {
-    width: auto;
+
+  .line {
+    width: 100%;
+    height: 2px;
+    background-color: #000;
+    position: absolute;
+    bottom: 0;
   }
   a {
     color: #000;
@@ -149,8 +154,28 @@ a {
     width: auto;
     color: #000;
     cursor: pointer;
+    overflow-x: hidden;
   }
-  /* .menu ul:has(li:hover) > li:not(:hover) {
-    opacity: 0.7;
-  } */
+  .nav__list-element {
+    display: flex;
+    width: auto;
+  }
+  .nav__list-element a {
+    display: inline-block;
+    text-align: center;
+    overflow-x: hidden;
+  }
+  .nav__list-element a:after,
+  .logout-btn:after {
+    content: "";
+    background: #000;
+    display: block;
+    width: 100%;
+    height: 2px;
+    transform: translateX(calc(-100% - 1px));
+    transition: all 0.2s;
+  }
+  .nav__list-element:hover > :after {
+    transform: translateX(0);
+  }
 }

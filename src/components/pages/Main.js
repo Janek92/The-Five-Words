@@ -1,5 +1,6 @@
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
+import Spinner from "../UI/reusable/Spinner";
 
 const Main = () => {
   const allWords = [

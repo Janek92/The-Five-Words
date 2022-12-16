@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Alert = styled.h2`
-  color: #fff;
+  color: #000;
   text-transform: uppercase;
   font-size: 1.4rem;
   font-family: var(--basic-font-family);

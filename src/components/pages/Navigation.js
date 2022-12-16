@@ -65,7 +65,7 @@ const Navigation = (props) => {
                   isActive ? classes.active : undefined
                 }
               >
-                trening
+                Dzisiejsze
               </NavLink>
             </li>
             <li className={classes["nav__list-element"]}>

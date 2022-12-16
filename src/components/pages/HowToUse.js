@@ -1,8 +1,11 @@
+import PageContent from "../UI/reusable/PageContent";
+import PagesTitle from "../UI/reusable/PagesTitle";
+
 const HowToUse = () => {
   return (
-    <div>
-      <h1>Jak używać aplikacji</h1>
-    </div>
+    <PageContent>
+      <PagesTitle>Jak używać aplikacji</PagesTitle>
+    </PageContent>
   );
 };
 export default HowToUse;

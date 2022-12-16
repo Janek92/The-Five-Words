@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const words = {
+  eventDelay: 150,
   endpoints: [],
   endpointsDaily: [],
   endpointsHistory: [],

@@ -1,11 +1,11 @@
 .history-preview {
-  border: 2px solid red;
   width: 100%;
   padding: 0.2rem;
   font-family: var(--basic-font-family);
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  color: #fff;
+  color: var(--basic-color);
 }
 .history-preview > * {
   margin-bottom: 0.4rem;
@@ -26,7 +26,7 @@
 .english {
   font-size: 1.6rem;
 }
-.translation {
+/* .translation {
   font-family: var(--basic-font-family);
   margin: 0 auto;
   text-transform: uppercase;
@@ -34,4 +34,20 @@
   padding: 0.3rem 0.6rem;
   border-radius: 2rem;
   margin-bottom: 0.4rem;
+  border: none;
+  outline: none;
+  transition: all 0.1s;
+} */
+/* .translation:focus {
+  box-shadow: 2px 2px 0.7rem 0 #eaac33;
+}
+.translation:active {
+  transform: scale(0.98);
+  box-shadow: 2px 2px 1.2rem 0 #eaac33;
+} */
+@media (orientation: landscape) and (min-width: 1200px) {
+  /* .translation:hover {
+    cursor: pointer;
+    box-shadow: 2px 2px 1rem 2px #000;
+  } */
 }

@@ -2,15 +2,14 @@ import styled, { css } from "styled-components";
 
 const InitBtns = styled.button`
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-family: var(--basic-font-family);
-  padding: 0.2rem;
+  padding: 1.2rem;
   outline: none;
   border: none;
   background-color: #fff;
   box-shadow: 2px 2px 0.5rem 0 #000000;
   border-radius: 2rem;
-  padding: 0.5rem;
   transition: all 0.1s;
 
   &:focus {
@@ -31,7 +30,8 @@ const InitBtns = styled.button`
   ${(props) =>
     props.translate &&
     css`
-      font-size: 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 700;
     `};
 `;
 
