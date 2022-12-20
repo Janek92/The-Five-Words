@@ -13,7 +13,6 @@
   text-align: center;
   font-family: var(--basic-font-family);
   text-transform: uppercase;
-  /* animation: entering 0.4s linear; */
 }
 .polish,
 .english {
@@ -23,8 +22,6 @@
 
 .polish {
   font-size: 1.7rem;
-  /* animation: entering 0.4s linear; */
-  /* opacity: 0.9; */
 }
 .english {
   font-size: 1.4rem;
@@ -33,7 +30,6 @@
 .type {
   width: 100%;
   font-size: 1rem;
-  /* animation: entering 0.4s linear; */
 }
 .--animating {
   animation: entering 0.4s linear;

@@ -1,0 +1,64 @@
+.login {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-family: var(--basic-font-family);
+}
+.login__email,
+.login__password,
+.login__password-confirm,
+.login__button {
+  margin-bottom: 1rem;
+  height: 1.7rem;
+  font-size: 1rem;
+}
+.login__email,
+.login__password,
+.login__password-confirm {
+  width: 90%;
+  margin-bottom: 0.4rem;
+}
+.login__button {
+  width: 35%;
+  margin: 0.4rem;
+  font-family: var(--basic-font-family);
+}
+.login__info {
+  font-size: 0.8rem;
+  color: red;
+  margin-top: 0.4rem;
+  text-align: center;
+  width: 100%;
+}
+.login__change,
+.login__forgot-password {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+}
+.login__change {
+  margin-top: 0.4rem;
+}
+.login__forgot-password {
+  margin-top: 0.6rem;
+}
+@media (orientation: landscape) {
+  .login {
+    width: 50%;
+    margin: auto;
+  }
+}
+@media (orientation: landscape) and (min-width: 1200px) {
+  .login {
+    padding: 1rem;
+    width: 40%;
+    box-shadow: 0.2rem 0.2rem 0.5rem 0.1rem #000;
+  }
+  .login__change:hover {
+    cursor: pointer;
+    color: red;
+    text-decoration: underline;
+  }
+}

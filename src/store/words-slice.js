@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const words = {
+  currentUser: JSON.parse(localStorage.getItem("user")) || null,
   eventDelay: 150,
   endpoints: [],
   endpointsDaily: [],
@@ -19,6 +20,9 @@ const drawWords = createSlice({
     },
     saveHistory(state, action) {
       state.endpointsHistory = action.payload;
+    },
+    saveUser(state, action) {
+      state.currentUser = action.payload;
     },
   },
 });

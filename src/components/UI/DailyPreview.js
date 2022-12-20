@@ -15,8 +15,6 @@ const DailyPreview = (props) => {
       setShowTranslation((prev) => !prev);
       btnRef.current.blur();
     }, [eventDelay]);
-    // setShowTranslation((prev) => !prev);
-    // btnRef.current.blur();
   };
 
   return (

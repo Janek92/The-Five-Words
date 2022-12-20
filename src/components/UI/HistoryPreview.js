@@ -12,9 +12,6 @@ const HistoryPreview = (props) => {
         <InitBtns translate="true" onClick={props.translate}>
           przetłumacz
         </InitBtns>
-        // <button className={classes.translation} onClick={props.translate}>
-        //   przetłumacz
-        // </button>
       )}
     </div>
   );

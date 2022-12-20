@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Routes, Route, Navigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   downloadEndpoints,
   downloadEndpointsDaily,
@@ -13,43 +14,90 @@ import NewWords from "./components/pages/NewWords";
 import Daily from "./components/pages/Daily";
 import History from "./components/pages/History";
 import HowToUse from "./components/pages/HowToUse";
+import Login from "./components/pages/Login";
+
+// React Firebase Tutorial | AUTH - CRUD - Image Upload --- 30:16
 
 function App() {
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.draw.currentUser);
 
+  const RequireAuth = ({ children }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
+
+  //Chowanie menu na scroll --->
   const [close, setClose] = useState(false);
-
   const showingMenu = () => {
     setClose(true);
   };
-
   const closeDefault = () => {
     setClose(false);
   };
-
   useEffect(() => {
     window.addEventListener("scroll", showingMenu);
-
     return () => {
       window.removeEventListener("scroll", showingMenu);
     };
   }, []);
 
   useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
+  //<---
+  useEffect(() => {
     dispatch(downloadEndpoints());
     dispatch(downloadEndpointsDaily());
     dispatch(downloadEndpointsHistory());
   }, [dispatch]);
-
+  console.log(currentUser);
   return (
     <>
-      <Navigation close={close} closeDefault={closeDefault} />
+      {currentUser ? (
+        <Navigation close={close} closeDefault={closeDefault} />
+      ) : null}
       <Routes>
-        <Route path="/" element={<Main />} />
-        <Route path="/new" element={<NewWords />} />
-        <Route path="/daily" element={<Daily />} />
-        <Route path="/history" element={<History />} />
-        <Route path="/how-to-use" element={<HowToUse />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Main />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/new"
+          element={
+            <RequireAuth>
+              <NewWords />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/daily"
+          element={
+            <RequireAuth>
+              <Daily />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <RequireAuth>
+              <History />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/how-to-use"
+          element={
+            <RequireAuth>
+              <HowToUse />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </>
   );

@@ -24,13 +24,9 @@ const NewWords = () => {
 
   const [translated, setTranslated] = useState(false);
 
-  // let loading = false;
-
   const btnAddRef = useRef();
 
   const btnRejectRef = useRef();
-
-  // const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
 
   //Function to send endpoints without added or rejected word
   const sendNewEndpoints = () => {
@@ -108,7 +104,6 @@ const NewWords = () => {
     setTranslated(false);
     const dailyWords = [...endpointsDaily];
     dailyWords.push(fetchedWord.eng);
-    // dispatch(drawWordsActions.saveDaily(dailyWords));
     fetch(
       `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`,
       {

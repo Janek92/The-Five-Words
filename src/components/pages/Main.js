@@ -1,8 +1,10 @@
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import Spinner from "../UI/reusable/Spinner";
+import { useSelector } from "react-redux";
 
 const Main = () => {
+  const currentUser = useSelector((state) => state.draw.currentUser);
   const allWords = [
     "abandon",
     "ability",
@@ -40,7 +42,7 @@ const Main = () => {
 
   const sendNewEndpoints = () => {
     fetch(
-      "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json",
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/for-draw.json`,
       {
         method: "PUT",
         body: JSON.stringify(allWords),

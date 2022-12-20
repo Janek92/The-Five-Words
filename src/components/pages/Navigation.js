@@ -4,8 +4,12 @@ import logo from "../../assets/5words.png";
 import { GrMenu } from "react-icons/gr";
 import { GrClose } from "react-icons/gr";
 import classes from "./Navigation.module.css";
+import { useDispatch } from "react-redux";
+import { drawWordsActions } from "../../store/words-slice";
 
 const Navigation = (props) => {
+  const dispatch = useDispatch();
+
   const [menuShow, setMenuShow] = useState(false);
 
   const onShowMenu = () => {
@@ -28,6 +32,10 @@ const Navigation = (props) => {
   const classNamesMenu = `${classes.menu} ${
     menuShow ? "" : classes["--invisible"]
   }`;
+
+  const onLogout = () => {
+    dispatch(drawWordsActions.saveUser(null));
+  };
 
   return (
     <>
@@ -102,7 +110,9 @@ const Navigation = (props) => {
               </NavLink>
             </li>
             <li className={classes["nav__list-element"]}>
-              <button className={classes["logout-btn"]}>wyloguj</button>
+              <button onClick={onLogout} className={classes["logout-btn"]}>
+                wyloguj
+              </button>
             </li>
           </ul>
         </nav>
