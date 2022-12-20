@@ -12,6 +12,8 @@ const NewWords = () => {
 
   const dispatch = useDispatch();
 
+  const currentUser = useSelector((state) => state.draw.currentUser);
+
   const eventDelay = useSelector((state) => state.draw.eventDelay);
 
   const endpoints = useSelector((state) => state.draw.endpoints);
@@ -31,7 +33,7 @@ const NewWords = () => {
   //Function to send endpoints without added or rejected word
   const sendNewEndpoints = () => {
     fetch(
-      "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json",
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/for-draw.json`,
       {
         method: "PUT",
         body: JSON.stringify(endpointsFiltered),
@@ -105,7 +107,7 @@ const NewWords = () => {
     const dailyWords = [...endpointsDaily];
     dailyWords.push(fetchedWord.eng);
     fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`,
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/daily.json`,
       {
         method: "PUT",
         body: JSON.stringify(dailyWords),

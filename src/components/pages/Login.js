@@ -1,4 +1,3 @@
-// import PageContent from "../UI/reusable/PageContent";
 import { useState, useRef } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -7,12 +6,14 @@ import {
 import PagesTitle from "../UI/reusable/PagesTitle";
 import classes from "./Login.module.css";
 import { auth } from "../../firebase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
+import { sendNewEndpoints } from "../data/words";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
@@ -68,7 +69,7 @@ const Login = () => {
         setError(true);
       });
   };
-  // React Authentication Crash Course With Firebase And Routing --- 19:00 (rejestracja działa, teraz przekierowanie)
+
   const onSignUp = (e) => {
     e.preventDefault();
     if (passwordConfirm !== password) {
@@ -77,10 +78,13 @@ const Login = () => {
     }
     createUserWithEmailAndPassword(auth, email, passwordConfirm)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
         console.log(user);
-        // ...
+        sendNewEndpoints(user.uid);
+        setSignUpForm(false);
+        navigate("/login", {
+          state: `Gratulacje ${emailRef.current.value}! Możesz się zalogować!`,
+        });
       })
       .catch((error) => {
         setError(true);
@@ -98,6 +102,7 @@ const Login = () => {
         onSubmit={signUpForm ? onSignUp : onLogin}
         className={classes.login}
       >
+        <p className={classes["login__location"]}>{location.state}</p>
         <input
           ref={emailRef}
           onChange={onEmail}
@@ -131,11 +136,13 @@ const Login = () => {
               : "zły email lub hasło"}
           </span>
         ) : null}
-        <span onClick={onSignVersion} className={classes["login__change"]}>
-          {signUpForm
-            ? "zaloguj się tutaj - kliknij"
-            : "nie masz konta? zarejestruj się tutaj - kliknij"}
-        </span>
+        {location.state ? null : (
+          <span onClick={onSignVersion} className={classes["login__change"]}>
+            {signUpForm
+              ? "zaloguj się tutaj - kliknij"
+              : "nie masz konta? zarejestruj się tutaj - kliknij"}
+          </span>
+        )}
       </form>
     </>
   );

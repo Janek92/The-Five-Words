@@ -12,8 +12,11 @@ const Daily = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.draw.currentUser);
 
-  let dailyLocalStorage = JSON.parse(localStorage.getItem("daily"));
+  let dailyLocalStorage = JSON.parse(
+    localStorage.getItem(`daily-${currentUser.uid}`)
+  );
   dailyLocalStorage === null
     ? (dailyLocalStorage = [])
     : (dailyLocalStorage = dailyLocalStorage);
@@ -49,7 +52,10 @@ const Daily = () => {
 
   //Function for put 'words to display' into localStorage
   useEffect(() => {
-    localStorage.setItem("daily", JSON.stringify(dailyWords));
+    localStorage.setItem(
+      `daily-${currentUser.uid}`,
+      JSON.stringify(dailyWords)
+    );
   }, [dailyWords]);
 
   //Function for download single word. It will be used in loop
@@ -91,7 +97,7 @@ const Daily = () => {
   //Update daily endpoints in redux and send it to database
   const updateAndSendDaily = async () => {
     fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`,
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/daily.json`,
       { method: "PUT", body: JSON.stringify(dailyToSend) }
     )
       .then((res) => {
@@ -122,7 +128,7 @@ const Daily = () => {
       const newWordsToHistory = dailyWords.map((word) => word.eng);
       const historyToSend = [...endpointsHistory, ...newWordsToHistory];
       await fetch(
-        "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/history.json",
+        `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/history.json`,
         {
           method: "PUT",
           body: JSON.stringify(historyToSend),
@@ -130,7 +136,7 @@ const Daily = () => {
       )
         .then((res) => {
           if (res.ok) {
-            localStorage.removeItem("daily");
+            localStorage.removeItem(`daily-${currentUser.uid}`);
             setDailyWords([]);
             dispatch(drawWordsActions.saveHistory(historyToSend));
             return res.json();

@@ -23,6 +23,7 @@
   width: 35%;
   margin: 0.4rem;
   font-family: var(--basic-font-family);
+  text-transform: uppercase;
 }
 .login__info {
   font-size: 0.8rem;
@@ -43,6 +44,14 @@
 }
 .login__forgot-password {
   margin-top: 0.6rem;
+}
+.login__location {
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0.4rem 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgb(20, 157, 75);
 }
 @media (orientation: landscape) {
   .login {

@@ -3003,39 +3003,56 @@ const wordsData = words.split("\n");
 
 export default wordsData;
 
-const words2 = {
-  allWords: [
-    "abandon",
-    "ability",
-    "able",
-    "abortion",
-    "about",
-    "above",
-    "abroad",
-    "absence",
-    "absolute",
-    "absolutely",
-    "absorb",
-    "abuse",
-    "academic",
-    "accept",
-    "access",
-    "accident",
-    "accompany",
-    "accomplish",
-    "according",
-    "account",
-    "accurate",
-    "accuse",
-    "achieve",
-    "achievement",
-    "acid",
-    "acknowledge",
-    "acquire",
-    "across",
-    "act",
-    "action",
-    "active",
-    "activist",
-  ],
+export const wordsForDraw = [
+  "abandon",
+  "ability",
+  "able",
+  "abortion",
+  "about",
+  "above",
+  "abroad",
+  "absence",
+  "absolute",
+  "absolutely",
+  "absorb",
+  "abuse",
+  "academic",
+  "accept",
+  "access",
+  "accident",
+  "accompany",
+  "accomplish",
+  "according",
+  "account",
+  "accurate",
+  "accuse",
+  "achieve",
+  "achievement",
+  "acid",
+  "acknowledge",
+  "acquire",
+  "across",
+  "act",
+  "action",
+  "active",
+  "activist",
+];
+export const sendNewEndpoints = (userId) => {
+  fetch(
+    `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}/for-draw.json`,
+    {
+      method: "PUT",
+      body: JSON.stringify(wordsForDraw),
+    }
+  )
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error("Wystąpił błąd przy wysyłaniu");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };

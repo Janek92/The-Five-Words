@@ -1,9 +1,9 @@
 import { drawWordsActions } from "./words-slice";
 
-export const downloadEndpoints = () => {
+export const downloadEndpoints = (userId) => {
   return async (dispatch) => {
     fetch(
-      "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/for-draw.json"
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}/for-draw.json`
     )
       .then((res) => {
         if (res.ok) {
@@ -23,10 +23,10 @@ export const downloadEndpoints = () => {
   };
 };
 
-export const downloadEndpointsDaily = () => {
+export const downloadEndpointsDaily = (userId) => {
   return async (dispatch) => {
     fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/daily.json`
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}/daily.json`
     )
       .then((res) => {
         if (res.ok) {
@@ -48,10 +48,10 @@ export const downloadEndpointsDaily = () => {
   };
 };
 
-export const downloadEndpointsHistory = () => {
+export const downloadEndpointsHistory = (userId) => {
   return async (dispatch) => {
     fetch(
-      "https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/history.json"
+      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}/history.json`
     )
       .then((res) => {
         if (res.ok) {
@@ -67,6 +67,6 @@ export const downloadEndpointsHistory = () => {
           dispatch(drawWordsActions.saveHistory(res));
         }
       })
-      .catch((error) => console.log("error"));
+      .catch((error) => console.log(error));
   };
 };

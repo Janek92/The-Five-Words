@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   downloadEndpoints,
@@ -15,8 +14,6 @@ import Daily from "./components/pages/Daily";
 import History from "./components/pages/History";
 import HowToUse from "./components/pages/HowToUse";
 import Login from "./components/pages/Login";
-
-// React Firebase Tutorial | AUTH - CRUD - Image Upload --- 30:16
 
 function App() {
   const dispatch = useDispatch();
@@ -46,10 +43,13 @@ function App() {
   }, [currentUser]);
   //<---
   useEffect(() => {
-    dispatch(downloadEndpoints());
-    dispatch(downloadEndpointsDaily());
-    dispatch(downloadEndpointsHistory());
-  }, [dispatch]);
+    if (!currentUser) {
+      return;
+    }
+    dispatch(downloadEndpoints(currentUser.uid));
+    dispatch(downloadEndpointsDaily(currentUser.uid));
+    dispatch(downloadEndpointsHistory(currentUser.uid));
+  }, [currentUser]);
   console.log(currentUser);
   return (
     <>
