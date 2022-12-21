@@ -4,15 +4,33 @@
   flex-wrap: wrap;
   justify-content: center;
   font-family: var(--basic-font-family);
+  position: relative;
+  border-radius: 0.7rem;
 }
 .login__email,
 .login__password,
 .login__password-confirm,
 .login__button {
+  border-radius: 0.3rem;
   margin-bottom: 1rem;
   height: 1.7rem;
   font-size: 1rem;
+  border: none;
+  outline: none;
 }
+.login__email:focus,
+.login__password:focus,
+.login__password-confirm:focus,
+.login__button:focus {
+  box-shadow: 0 0 0.8rem 0 var(--focus-color);
+}
+.login__email:focus::placeholder,
+.login__password:focus::placeholder,
+.login__password-confirm:focus::placeholder {
+  transition: 0.7s;
+  transform: translateX(-100%);
+}
+
 .login__email,
 .login__password,
 .login__password-confirm {
@@ -20,10 +38,12 @@
   margin-bottom: 0.4rem;
 }
 .login__button {
-  width: 35%;
+  min-width: 35%;
   margin: 0.4rem;
   font-family: var(--basic-font-family);
   text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 0 0.5rem;
 }
 .login__info {
   font-size: 0.8rem;
@@ -53,6 +73,20 @@
   font-weight: 600;
   color: rgb(20, 157, 75);
 }
+.login__spinner-area {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.login__spinner-area ~ * {
+  filter: blur(2px);
+}
 @media (orientation: landscape) {
   .login {
     width: 50%;
@@ -64,6 +98,10 @@
     padding: 1rem;
     width: 40%;
     box-shadow: 0.2rem 0.2rem 0.5rem 0.1rem #000;
+  }
+  .login__button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 0.8rem 0 var(--focus-color);
   }
   .login__change:hover {
     cursor: pointer;

@@ -29,7 +29,7 @@ const NewWords = () => {
   const btnAddRef = useRef();
 
   const btnRejectRef = useRef();
-
+  // console.log(endpoints);
   //Function to send endpoints without added or rejected word
   const sendNewEndpoints = () => {
     fetch(

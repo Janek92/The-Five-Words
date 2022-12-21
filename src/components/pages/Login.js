@@ -4,16 +4,19 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import PagesTitle from "../UI/reusable/PagesTitle";
+import { useDispatch } from "react-redux";
 import classes from "./Login.module.css";
 import { auth } from "../../firebase";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
 import { sendNewEndpoints } from "../data/words";
+import Spinner from "../UI/reusable/Spinner";
+// import jsonStableStringify from 'json-stable-stringify';
 
 const Login = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
@@ -56,6 +59,7 @@ const Login = () => {
   };
 
   const onLogin = (e) => {
+    setIsLoading(true);
     e.preventDefault();
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -64,13 +68,16 @@ const Login = () => {
         console.log(user);
         dispatch(drawWordsActions.saveUser(user));
         navigate("/");
+        setIsLoading(false);
       })
       .catch((error) => {
         setError(true);
+        setIsLoading(false);
       });
   };
 
   const onSignUp = (e) => {
+    setIsLoading(true);
     e.preventDefault();
     if (passwordConfirm !== password) {
       setError(true);
@@ -82,12 +89,14 @@ const Login = () => {
         console.log(user);
         sendNewEndpoints(user.uid);
         setSignUpForm(false);
+        setIsLoading(false);
         navigate("/login", {
           state: `Gratulacje ${emailRef.current.value}! Możesz się zalogować!`,
         });
       })
       .catch((error) => {
         setError(true);
+        setIsLoading(false);
       });
   };
 
@@ -98,10 +107,16 @@ const Login = () => {
       ) : (
         <PagesTitle>logowanie</PagesTitle>
       )}
+
       <form
         onSubmit={signUpForm ? onSignUp : onLogin}
         className={classes.login}
       >
+        {isLoading ? (
+          <div className={classes["login__spinner-area"]}>
+            <Spinner />
+          </div>
+        ) : null}
         <p className={classes["login__location"]}>{location.state}</p>
         <input
           ref={emailRef}
