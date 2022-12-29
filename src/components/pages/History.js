@@ -5,6 +5,8 @@ import PagesTitle from "../UI/reusable/PagesTitle";
 import Alert from "../UI/reusable/Alert";
 import InitBtns from "../UI/reusable/InitBtns";
 import HistoryPreview from "../UI/HistoryPreview";
+import { set, ref, get, child } from "firebase/database";
+import { db } from "../../firebase";
 
 const History = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,33 +29,55 @@ const History = () => {
     setTranslated(false);
     const index = Math.floor(Math.random() * endpointsHistory.length);
     const word = endpointsHistory[index];
-    fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word}.json`
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error(res.status);
-        }
-      })
-      .then((res) => {
-        const loadedWord = [];
-        for (const key in res) {
+
+    const dbRef = ref(db);
+    get(child(dbRef, `initial/${word}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const res = snapshot.val();
+          const loadedWord = [];
           loadedWord.push({
-            id: res[key].id,
-            eng: res[key].eng,
-            pl: res[key].pl,
-            type: res[key].type,
+            id: res.id,
+            eng: res.eng,
+            pl: res.pl,
+            type: res.type,
           });
+          setHistoryWord(...loadedWord);
+          setIsLoading(false);
+        } else {
+          console.log("No data available");
         }
-        setHistoryWord(...loadedWord);
-        setIsLoading(false);
       })
       .catch((error) => {
         alert(error.name);
         setIsLoading(false);
       });
+
+    // fetch(
+    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word}.json`
+    // )
+    //   .then((res) => {
+    //     if (res.ok) {
+    //       return res.json();
+    //     } else {
+    //       throw new Error(res.status);
+    //     }
+    //   })
+    //   .then((res) => {
+    //     const loadedWord = [];
+    //     loadedWord.push({
+    //       id: res.id,
+    //       eng: res.eng,
+    //       pl: res.pl,
+    //       type: res.type,
+    //     });
+    //     setHistoryWord(...loadedWord);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     alert(error.name);
+    //     setIsLoading(false);
+    //   });
   };
 
   const letDisplayWord = () => {

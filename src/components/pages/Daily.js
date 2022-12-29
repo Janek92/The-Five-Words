@@ -7,6 +7,8 @@ import Alert from "../UI/reusable/Alert";
 import InitBtns from "../UI/reusable/InitBtns";
 import DailyPreview from "../UI/DailyPreview";
 import Spinner from "../UI/reusable/Spinner";
+import { set, ref, get, child } from "firebase/database";
+import { db } from "../../firebase";
 
 const Daily = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,32 +63,52 @@ const Daily = () => {
   //Function for download single word. It will be used in loop
   const downloadMyWord = async (word) => {
     setIsLoading(true);
-    fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word}.json`
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error(res.status);
-        }
-      })
-      .then((res) => {
-        const word = [];
-        for (const key in res) {
+    const dbRef = ref(db);
+    get(child(dbRef, `initial/${word}`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const res = snapshot.val();
+          const word = [];
           word.push({
-            eng: res[key].eng,
-            pl: res[key].pl,
-            id: res[key].id,
-            type: res[key].type,
+            eng: res.eng,
+            pl: res.pl,
+            id: res.id,
+            type: res.type,
           });
+          setDailyWords((prev) => [...prev, ...word]);
+        } else {
+          console.log("No data available");
         }
-        setDailyWords((prev) => [...prev, ...word]);
       })
       .catch((error) => {
         alert(error.name);
         setIsLoading(false);
       });
+
+    // fetch(
+    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word}.json`
+    // )
+    //   .then((res) => {
+    //     if (res.ok) {
+    //       return res.json();
+    //     } else {
+    //       throw new Error(res.status);
+    //     }
+    //   })
+    //   .then((res) => {
+    //     const word = [];
+    //     word.push({
+    //       eng: res.eng,
+    //       pl: res.pl,
+    //       id: res.id,
+    //       type: res.type,
+    //     });
+    //     setDailyWords((prev) => [...prev, ...word]);
+    //   })
+    //   .catch((error) => {
+    //     alert(error.name);
+    //     setIsLoading(false);
+    //   });
   };
 
   //Loop for download proper words
@@ -96,23 +118,35 @@ const Daily = () => {
 
   //Update daily endpoints in redux and send it to database
   const updateAndSendDaily = async () => {
-    fetch(
-      `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/daily.json`,
-      { method: "PUT", body: JSON.stringify(dailyToSend) }
-    )
-      .then((res) => {
+    set(ref(db, `users/${currentUser.uid}/daily`), {
+      ...dailyToSend,
+    })
+      .then(() => {
         setIsLoading(false);
-        if (res.ok) {
-          dispatch(drawWordsActions.saveDaily(dailyToSend));
-          return res.json();
-        } else {
-          throw new Error(res.status);
-        }
+        dispatch(drawWordsActions.saveDaily(dailyToSend));
       })
       .catch((error) => {
         alert(error.name);
         setIsLoading(false);
       });
+
+    // fetch(
+    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/daily.json`,
+    //   { method: "PUT", body: JSON.stringify(dailyToSend) }
+    // )
+    //   .then((res) => {
+    //     setIsLoading(false);
+    //     if (res.ok) {
+    //       dispatch(drawWordsActions.saveDaily(dailyToSend));
+    //       return res.json();
+    //     } else {
+    //       throw new Error(res.status);
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     alert(error.name);
+    //     setIsLoading(false);
+    //   });
   };
 
   //This function handles displaying words from init button
@@ -127,24 +161,35 @@ const Daily = () => {
     setTimeout(async () => {
       const newWordsToHistory = dailyWords.map((word) => word.eng);
       const historyToSend = [...endpointsHistory, ...newWordsToHistory];
-      await fetch(
-        `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/history.json`,
-        {
-          method: "PUT",
-          body: JSON.stringify(historyToSend),
-        }
-      )
-        .then((res) => {
-          if (res.ok) {
-            localStorage.removeItem(`daily-${currentUser.uid}`);
-            setDailyWords([]);
-            dispatch(drawWordsActions.saveHistory(historyToSend));
-            return res.json();
-          } else {
-            throw new Error(res.status);
-          }
+
+      await set(ref(db, `users/${currentUser.uid}/history`), {
+        ...historyToSend,
+      })
+        .then(() => {
+          localStorage.removeItem(`daily-${currentUser.uid}`);
+          setDailyWords([]);
+          dispatch(drawWordsActions.saveHistory(historyToSend));
         })
         .catch((error) => alert(error.name));
+
+      // await fetch(
+      //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/history.json`,
+      //   {
+      //     method: "PUT",
+      //     body: JSON.stringify(historyToSend),
+      //   }
+      // )
+      //   .then((res) => {
+      //     if (res.ok) {
+      //       localStorage.removeItem(`daily-${currentUser.uid}`);
+      //       setDailyWords([]);
+      //       dispatch(drawWordsActions.saveHistory(historyToSend));
+      //       return res.json();
+      //     } else {
+      //       throw new Error(res.status);
+      //     }
+      //   })
+      //   .catch((error) => alert(error.name));
       await prepareToSendAndRender();
     }, [eventDelay]);
   };

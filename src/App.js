@@ -7,13 +7,13 @@ import {
   downloadEndpointsHistory,
 } from "./store/words-actions";
 //pages:
+import Login from "./components/pages/Login";
 import Navigation from "./components/pages/Navigation";
 import Main from "./components/pages/Main";
 import NewWords from "./components/pages/NewWords";
 import Daily from "./components/pages/Daily";
 import History from "./components/pages/History";
 import HowToUse from "./components/pages/HowToUse";
-import Login from "./components/pages/Login";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ function App() {
     dispatch(downloadEndpointsDaily(currentUser.uid));
     dispatch(downloadEndpointsHistory(currentUser.uid));
   }, [currentUser]);
-  console.log(currentUser);
+
   return (
     <>
       {currentUser ? (

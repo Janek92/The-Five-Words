@@ -7,7 +7,7 @@ const PageContent = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   @media (orientation: landscape) {
-    padding: 0.5rem 0 0.5rem calc(0.5rem + var(--bar-menu));
+    padding: 0.5rem 0 0.5rem var(--bar-menu);
   }
   @media (orientation: landscape) and (min-width: 1200px) {
     padding: calc(0.5rem + var(--bar-menu)) 0 0.5rem 0;

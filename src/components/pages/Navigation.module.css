@@ -90,6 +90,9 @@ a {
     border-top-right-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
+  .logo {
+    width: 3.8rem;
+  }
   .--show-menu {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0.5rem;
@@ -121,6 +124,7 @@ a {
   }
   .logo {
     margin-left: 1rem;
+    width: 6rem;
   }
 
   .menu {

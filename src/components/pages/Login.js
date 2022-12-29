@@ -3,15 +3,15 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import PagesTitle from "../UI/reusable/PagesTitle";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import classes from "./Login.module.css";
 import { auth } from "../../firebase";
-import { useNavigate, useLocation } from "react-router-dom";
 import { drawWordsActions } from "../../store/words-slice";
 import { sendNewEndpoints } from "../data/words";
+import classes from "./Login.module.css";
+import PagesTitle from "../UI/reusable/PagesTitle";
 import Spinner from "../UI/reusable/Spinner";
-// import jsonStableStringify from 'json-stable-stringify';
+import logo from "../../assets/5fivewords.png";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -81,12 +81,12 @@ const Login = () => {
     e.preventDefault();
     if (passwordConfirm !== password) {
       setError(true);
+      setIsLoading(false);
       return;
     }
     createUserWithEmailAndPassword(auth, email, passwordConfirm)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         sendNewEndpoints(user.uid);
         setSignUpForm(false);
         setIsLoading(false);
@@ -95,13 +95,16 @@ const Login = () => {
         });
       })
       .catch((error) => {
-        setError(true);
         setIsLoading(false);
+        setError(true);
       });
   };
 
   return (
     <>
+      <Link className={classes.link} to="/login">
+        <img className={classes.logo} src={logo}></img>
+      </Link>
       {signUpForm ? (
         <PagesTitle>rejestracja</PagesTitle>
       ) : (

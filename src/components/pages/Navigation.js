@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import logo from "../../assets/5words.png";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import logo from "../../assets/5fivewords.png";
 import { GrMenu } from "react-icons/gr";
 import { GrClose } from "react-icons/gr";
 import classes from "./Navigation.module.css";
 import { useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
+import { logOut } from "../../firebase";
 
 const Navigation = (props) => {
   const dispatch = useDispatch();
+
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [menuShow, setMenuShow] = useState(false);
 
@@ -34,7 +38,16 @@ const Navigation = (props) => {
   }`;
 
   const onLogout = () => {
-    dispatch(drawWordsActions.saveUser(null));
+    logOut
+      .then(() => {
+        dispatch(drawWordsActions.saveUser(null));
+        navigate("/login", {
+          state: `Wylogowano`,
+        });
+      })
+      .catch(() => {
+        alert("Nie udało się wylogować");
+      });
   };
 
   return (
