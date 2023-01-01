@@ -1021,22 +1021,4 @@ export const sendNewEndpoints = (userId) => {
   set(ref(db, `users/${userId}/for-draw`), {
     ...wordsForDraw,
   });
-
-  // fetch(
-  //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${userId}/for-draw.json`,
-  //   {
-  //     method: "PUT",
-  //     body: JSON.stringify(wordsForDraw),
-  //   }
-  // )
-  //   .then((res) => {
-  //     if (res.ok) {
-  //       return res.json();
-  //     } else {
-  //       throw new Error("Wystąpił błąd przy wysyłaniu");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
 };

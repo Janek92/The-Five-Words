@@ -5,6 +5,7 @@ import {
   downloadEndpoints,
   downloadEndpointsDaily,
   downloadEndpointsHistory,
+  downloadPractice,
 } from "./store/words-actions";
 //pages:
 import Login from "./components/pages/Login";
@@ -18,6 +19,8 @@ import HowToUse from "./components/pages/HowToUse";
 function App() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.draw.currentUser);
+  const words = useSelector((state) => state.draw.endpoints);
+  console.log(words);
 
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/login" />;
@@ -49,6 +52,7 @@ function App() {
     dispatch(downloadEndpoints(currentUser.uid));
     dispatch(downloadEndpointsDaily(currentUser.uid));
     dispatch(downloadEndpointsHistory(currentUser.uid));
+    dispatch(downloadPractice(currentUser.uid));
   }, [currentUser]);
 
   return (

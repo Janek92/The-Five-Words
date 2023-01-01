@@ -6,6 +6,7 @@ const words = {
   endpoints: [],
   endpointsDaily: [],
   endpointsHistory: [],
+  wordsToPractice: [],
 };
 
 const drawWords = createSlice({
@@ -23,6 +24,9 @@ const drawWords = createSlice({
     },
     saveUser(state, action) {
       state.currentUser = action.payload;
+    },
+    savePractice(state, action) {
+      state.wordsToPractice = action.payload;
     },
   },
 });

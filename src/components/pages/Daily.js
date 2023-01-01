@@ -14,16 +14,12 @@ const Daily = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useDispatch();
+
   const currentUser = useSelector((state) => state.draw.currentUser);
 
-  let dailyLocalStorage = JSON.parse(
-    localStorage.getItem(`daily-${currentUser.uid}`)
-  );
-  dailyLocalStorage === null
-    ? (dailyLocalStorage = [])
-    : (dailyLocalStorage = dailyLocalStorage);
-  //5 or less words directly rendering
-  const [dailyWords, setDailyWords] = useState([...dailyLocalStorage]);
+  const wordsToPractice = useSelector((state) => state.draw.wordsToPractice);
+
+  const [dailyWords, setDailyWords] = useState([]);
 
   const eventDelay = useSelector((state) => state.draw.eventDelay);
 
@@ -48,21 +44,9 @@ const Daily = () => {
       setDailyToSend(wordsToSendBack);
     }
   };
-  useEffect(() => {
-    prepareToSendAndRender();
-  }, []);
-
-  //Function for put 'words to display' into localStorage
-  useEffect(() => {
-    localStorage.setItem(
-      `daily-${currentUser.uid}`,
-      JSON.stringify(dailyWords)
-    );
-  }, [dailyWords]);
 
   //Function for download single word. It will be used in loop
   const downloadMyWord = async (word) => {
-    setIsLoading(true);
     const dbRef = ref(db);
     get(child(dbRef, `initial/${word}`))
       .then((snapshot) => {
@@ -84,36 +68,30 @@ const Daily = () => {
         alert(error.name);
         setIsLoading(false);
       });
-
-    // fetch(
-    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word}.json`
-    // )
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       return res.json();
-    //     } else {
-    //       throw new Error(res.status);
-    //     }
-    //   })
-    //   .then((res) => {
-    //     const word = [];
-    //     word.push({
-    //       eng: res.eng,
-    //       pl: res.pl,
-    //       id: res.id,
-    //       type: res.type,
-    //     });
-    //     setDailyWords((prev) => [...prev, ...word]);
-    //   })
-    //   .catch((error) => {
-    //     alert(error.name);
-    //     setIsLoading(false);
-    //   });
   };
+
+  useEffect(() => {
+    prepareToSendAndRender();
+    wordsToPractice.map((word) => downloadMyWord(word));
+  }, []);
 
   //Loop for download proper words
   const getWords = async () => {
+    setIsLoading(true);
     dailyToRender.map((word) => downloadMyWord(word));
+  };
+
+  const sendToPractice = async (object) => {
+    set(ref(db, `users/${currentUser.uid}/practice`), {
+      ...object,
+    })
+      .then(() => {
+        dispatch(drawWordsActions.savePractice(object));
+      })
+      .catch((error) => {
+        alert(error.name);
+        setIsLoading(false);
+      });
   };
 
   //Update daily endpoints in redux and send it to database
@@ -129,30 +107,13 @@ const Daily = () => {
         alert(error.name);
         setIsLoading(false);
       });
-
-    // fetch(
-    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/daily.json`,
-    //   { method: "PUT", body: JSON.stringify(dailyToSend) }
-    // )
-    //   .then((res) => {
-    //     setIsLoading(false);
-    //     if (res.ok) {
-    //       dispatch(drawWordsActions.saveDaily(dailyToSend));
-    //       return res.json();
-    //     } else {
-    //       throw new Error(res.status);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     alert(error.name);
-    //     setIsLoading(false);
-    //   });
   };
 
   //This function handles displaying words from init button
   const onInit = () => {
     setTimeout(async () => {
       await getWords();
+      await sendToPractice(dailyToRender);
       await updateAndSendDaily();
     }, [eventDelay]);
   };
@@ -172,24 +133,7 @@ const Daily = () => {
         })
         .catch((error) => alert(error.name));
 
-      // await fetch(
-      //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/history.json`,
-      //   {
-      //     method: "PUT",
-      //     body: JSON.stringify(historyToSend),
-      //   }
-      // )
-      //   .then((res) => {
-      //     if (res.ok) {
-      //       localStorage.removeItem(`daily-${currentUser.uid}`);
-      //       setDailyWords([]);
-      //       dispatch(drawWordsActions.saveHistory(historyToSend));
-      //       return res.json();
-      //     } else {
-      //       throw new Error(res.status);
-      //     }
-      //   })
-      //   .catch((error) => alert(error.name));
+      await sendToPractice([]);
       await prepareToSendAndRender();
     }, [eventDelay]);
   };
