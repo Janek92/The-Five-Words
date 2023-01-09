@@ -34,7 +34,6 @@ a:active {
 .burger:active {
   transform: scale(0.98);
 }
-
 .menu {
   width: 70%;
   position: fixed;
@@ -126,7 +125,6 @@ a {
     margin-left: 1rem;
     width: 6rem;
   }
-
   .menu {
     width: 80%;
     height: 100%;
@@ -143,7 +141,6 @@ a {
     width: 100%;
     justify-content: space-around;
   }
-
   .line {
     width: 100%;
     height: 2px;
@@ -154,20 +151,19 @@ a {
   a {
     color: #000;
   }
+  .logout-btn,
+  .nav__list-element a {
+    overflow-x: hidden;
+    padding-top: 10px;
+  }
   .logout-btn {
     width: auto;
     color: #000;
     cursor: pointer;
-    overflow-x: hidden;
   }
   .nav__list-element {
     display: flex;
     width: auto;
-  }
-  .nav__list-element a {
-    display: inline-block;
-    text-align: center;
-    overflow-x: hidden;
   }
   .nav__list-element a:after,
   .logout-btn:after {

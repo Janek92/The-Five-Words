@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
+import basicWordsList from "../data/words";
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import Alert from "../UI/reusable/Alert";
@@ -8,28 +9,20 @@ import InitBtns from "../UI/reusable/InitBtns";
 import DailyPreview from "../UI/DailyPreview";
 import Spinner from "../UI/reusable/Spinner";
 import { set, ref, get, child } from "firebase/database";
-import { db } from "../../firebase";
+import { db, dbRef } from "../../firebase";
 
 const Daily = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const dispatch = useDispatch();
-
-  const currentUser = useSelector((state) => state.draw.currentUser);
-
-  const wordsToPractice = useSelector((state) => state.draw.wordsToPractice);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [dailyToRender, setDailyToRender] = useState([]);
+  const [dailyToSend, setDailyToSend] = useState([]);
   const [dailyWords, setDailyWords] = useState([]);
 
+  const currentUser = useSelector((state) => state.draw.currentUser);
+  const wordsToPractice = useSelector((state) => state.draw.wordsToPractice);
   const eventDelay = useSelector((state) => state.draw.eventDelay);
-
   const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
-
   const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
-
-  const [dailyToRender, setDailyToRender] = useState([]);
-
-  const [dailyToSend, setDailyToSend] = useState([]);
 
   //Manipulate the daily endpoints in order to prepare the earliest 5 added amongst of them to display (or all if total is less or equal 5)
   const prepareToSendAndRender = () => {
@@ -46,9 +39,10 @@ const Daily = () => {
   };
 
   //Function for download single word. It will be used in loop
-  const downloadMyWord = async (word) => {
-    const dbRef = ref(db);
-    get(child(dbRef, `initial/${word}`))
+  const downloadMyWord = async (nr) => {
+    const specifiedWord = basicWordsList[nr];
+    // const dbRef = ref(db);
+    get(child(dbRef, `initial/${specifiedWord}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           const res = snapshot.val();
@@ -72,13 +66,14 @@ const Daily = () => {
 
   useEffect(() => {
     prepareToSendAndRender();
-    wordsToPractice.map((word) => downloadMyWord(word));
+    if (dailyWords.length !== 0) return;
+    wordsToPractice.map((nr) => downloadMyWord(nr));
   }, []);
 
   //Loop for download proper words
   const getWords = async () => {
     setIsLoading(true);
-    dailyToRender.map((word) => downloadMyWord(word));
+    dailyToRender.map((nr) => downloadMyWord(nr));
   };
 
   const sendToPractice = async (object) => {
@@ -87,6 +82,7 @@ const Daily = () => {
     })
       .then(() => {
         dispatch(drawWordsActions.savePractice(object));
+        localStorage.setItem(`practice`, JSON.stringify(object));
       })
       .catch((error) => {
         alert(error.name);
@@ -102,6 +98,7 @@ const Daily = () => {
       .then(() => {
         setIsLoading(false);
         dispatch(drawWordsActions.saveDaily(dailyToSend));
+        localStorage.setItem(`daily`, JSON.stringify(dailyToSend));
       })
       .catch((error) => {
         alert(error.name);
@@ -120,16 +117,18 @@ const Daily = () => {
 
   const finishRepeats = () => {
     setTimeout(async () => {
-      const newWordsToHistory = dailyWords.map((word) => word.eng);
+      // const newWordsToHistory = dailyWords.map((word) => word.eng);
+      const newWordsToHistory = dailyWords.map((word) => word.id);
       const historyToSend = [...endpointsHistory, ...newWordsToHistory];
 
       await set(ref(db, `users/${currentUser.uid}/history`), {
         ...historyToSend,
       })
         .then(() => {
-          localStorage.removeItem(`daily-${currentUser.uid}`);
+          // localStorage.removeItem(`daily-${currentUser.uid}`);
           setDailyWords([]);
           dispatch(drawWordsActions.saveHistory(historyToSend));
+          localStorage.setItem(`history`, JSON.stringify(historyToSend));
         })
         .catch((error) => alert(error.name));
 
@@ -160,7 +159,7 @@ const Daily = () => {
         ))
       )}
       {dailyWords.length !== 0 ? (
-        <InitBtns onClick={finishRepeats} disabled={isLoading}>
+        <InitBtns moreColumns onClick={finishRepeats} disabled={isLoading}>
           dodaj do historii
         </InitBtns>
       ) : null}

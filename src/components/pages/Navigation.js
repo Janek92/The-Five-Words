@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/5fivewords.png";
 import { GrMenu } from "react-icons/gr";
 import { GrClose } from "react-icons/gr";
@@ -8,27 +8,18 @@ import { useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
 import { logOut } from "../../firebase";
 
-const Navigation = (props) => {
+const Navigation = () => {
   const dispatch = useDispatch();
-
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [menuShow, setMenuShow] = useState(false);
 
   const onShowMenu = () => {
     setMenuShow((prev) => (prev = true));
-    props.closeDefault();
   };
   const onHideMenu = () => {
     setMenuShow((prev) => (prev = false));
   };
-
-  useEffect(() => {
-    if (props.close) {
-      onHideMenu();
-    }
-  }, [props.close]);
 
   const classNamesNavBar = `${classes["nav-bar"]} ${
     !menuShow ? "" : classes["--show-menu"]
@@ -41,6 +32,7 @@ const Navigation = (props) => {
     logOut
       .then(() => {
         dispatch(drawWordsActions.saveUser(null));
+        localStorage.removeItem("user");
         navigate("/login", {
           state: `Wylogowano`,
         });

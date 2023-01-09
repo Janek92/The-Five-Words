@@ -33,6 +33,18 @@ const InitBtns = styled.button`
       font-size: 0.9rem;
       font-weight: 700;
     `};
+  ${(props) =>
+    props.moreColumns &&
+    css`
+      @media (min-width: 1200px) {
+        width: 30%;
+        margin: 0 35%;
+      }
+      @media (min-width: 1600px) {
+        width: 20%;
+        margin: 0 40%;
+      }
+    `};
 `;
 
 export default InitBtns;

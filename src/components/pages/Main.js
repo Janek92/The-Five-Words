@@ -20,24 +20,6 @@ const Main = () => {
       ...word,
     });
 
-  // fetch(
-  //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${word.eng}.json`,
-  //   {
-  //     method: "PUT",
-  //     body: JSON.stringify(word),
-  //   }
-  // )
-  //   .then((res) => {
-  //     if (res.ok) {
-  //       return res.json();
-  //     } else {
-  //       throw new Error("Wystąpił błąd przy wysyłaniu");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-
   return (
     <PageContent>
       <PagesTitle>Strona główna</PagesTitle>

@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const words = {
   currentUser: JSON.parse(localStorage.getItem("user")) || null,
   eventDelay: 150,
-  endpoints: [],
-  endpointsDaily: [],
-  endpointsHistory: [],
-  wordsToPractice: [],
+  endpoints: JSON.parse(localStorage.getItem(`for-draw`)) || 0,
+  endpointsDaily: JSON.parse(localStorage.getItem(`daily`)) || [],
+  endpointsHistory: JSON.parse(localStorage.getItem(`history`)) || [],
+  wordsToPractice: JSON.parse(localStorage.getItem(`practice`)) || [],
 };
 
 const drawWords = createSlice({

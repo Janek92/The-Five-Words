@@ -19,14 +19,12 @@
   width: 100%;
   margin: 1rem 0;
 }
-
 .polish {
   font-size: 1.7rem;
 }
 .english {
   font-size: 1.4rem;
 }
-
 .type {
   width: 100%;
   font-size: 1rem;
@@ -34,7 +32,6 @@
 .--animating {
   animation: entering 0.4s linear;
 }
-
 .translation,
 .add,
 .remove,
@@ -56,11 +53,9 @@
   width: 50%;
   font-size: 0.9rem;
 }
-
 .word-preview > button:focus {
   box-shadow: 2px 2px 0.7rem 0 #eaac33;
 }
-
 .translation {
   margin-top: 0.5rem;
 }
@@ -76,7 +71,6 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
-
 .add:active,
 .remove:active,
 .translation:active,
@@ -117,6 +111,7 @@
     margin-right: 4%;
   }
 }
+
 @media (orientation: landscape) and (min-width: 1000px) {
   .word-preview {
     width: 60%;

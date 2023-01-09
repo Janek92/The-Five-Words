@@ -15,21 +15,19 @@ import logo from "../../assets/5fivewords.png";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
-  const [isLoading, setIsLoading] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [signUpForm, setSignUpForm] = useState(false);
   const [error, setError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  const [signUpForm, setSignUpForm] = useState(false);
-
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
-
-  const navigate = useNavigate();
 
   const onSignVersion = () => {
     setSignUpForm((prev) => !prev);

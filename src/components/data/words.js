@@ -1004,7 +1004,7 @@ const thousandWords = `a
 
 const wordsData = thousandWords.split("\n");
 
-const wordsForDraw = [
+const basicWordsList = [
   "a",
   "ability",
   "able",
@@ -1017,8 +1017,13 @@ const wordsForDraw = [
   "act",
   "action",
 ];
+
+const basicListLength = { number: basicWordsList.length };
+
 export const sendNewEndpoints = (userId) => {
   set(ref(db, `users/${userId}/for-draw`), {
-    ...wordsForDraw,
+    ...basicListLength,
   });
 };
+
+export default basicWordsList;

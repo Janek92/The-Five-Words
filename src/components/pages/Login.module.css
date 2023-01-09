@@ -93,6 +93,7 @@
 .login__spinner-area ~ * {
   filter: blur(2px);
 }
+
 @media (orientation: landscape) {
   .logo {
     width: 20%;
@@ -102,6 +103,7 @@
     margin: auto;
   }
 }
+
 @media (orientation: landscape) and (min-width: 1200px) {
   .logo {
     position: absolute;

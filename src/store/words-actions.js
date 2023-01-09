@@ -8,14 +8,10 @@ const fetchHandler = (endpoints, dispatch, actionName, userId) => {
       if (snapshot.exists()) {
         const res = snapshot.val();
         dispatch(actionName(res));
-        // if (res === null) {
-        //   dispatch(actionName([]));
-        // } else {
-        //   dispatch(actionName(res));
-        // }
+        localStorage.setItem(`${endpoints}`, JSON.stringify(res));
       } else {
         dispatch(actionName([]));
-        // console.log("No data available");
+        localStorage.setItem(`${endpoints}`, []);
       }
     })
     .catch((error) => console.log(error));
@@ -23,7 +19,19 @@ const fetchHandler = (endpoints, dispatch, actionName, userId) => {
 
 export const downloadEndpoints = (userId) => {
   return async (dispatch) => {
-    fetchHandler("for-draw", dispatch, drawWordsActions.saveFetched, userId);
+    const dbRef = ref(getDatabase());
+    get(child(dbRef, `users/${userId}/for-draw`))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const res = snapshot.val();
+          dispatch(drawWordsActions.saveFetched(res.number));
+          localStorage.setItem(`for-draw`, res.number);
+        } else {
+          dispatch(drawWordsActions.saveFetched(0));
+          localStorage.setItem(`for-draw`, 0);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 };
 

@@ -4,11 +4,11 @@ import InitBtns from "./reusable/InitBtns";
 import { useSelector } from "react-redux";
 
 const DailyPreview = (props) => {
+  const btnRef = useRef();
+
   const [showTranslation, setShowTranslation] = useState(false);
 
   const eventDelay = useSelector((state) => state.draw.eventDelay);
-
-  const btnRef = useRef();
 
   const onShowTranslate = () => {
     setTimeout(async () => {

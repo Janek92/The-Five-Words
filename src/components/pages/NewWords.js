@@ -1,80 +1,43 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
+import { downloadEndpoints } from "../../store/words-actions";
+import basicWordsList from "../data/words";
 import PageContent from "../UI/reusable/PageContent";
 import NewWordsPreview from "../UI/NewWordsPreview";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import InitBtns from "../UI/reusable/InitBtns";
 import Alert from "../UI/reusable/Alert";
 import { set, ref, get, child } from "firebase/database";
-import { db } from "../../firebase";
+import { db, dbRef } from "../../firebase";
 
 const NewWords = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const dispatch = useDispatch();
 
-  const currentUser = useSelector((state) => state.draw.currentUser);
-
-  const eventDelay = useSelector((state) => state.draw.eventDelay);
-
-  const endpoints = useSelector((state) => state.draw.endpoints);
-
-  const [endpointsFiltered, setEndpointsFiltered] = useState([]);
-
-  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
-
-  const [fetchedWord, setFetchedWord] = useState([]);
-
-  const [translated, setTranslated] = useState(false);
-
   const btnAddRef = useRef();
-
   const btnRejectRef = useRef();
 
-  //Function to send endpoints without added or rejected word
-  const sendNewEndpoints = () => {
-    set(ref(db, `users/${currentUser.uid}/for-draw`), {
-      ...endpointsFiltered,
-    });
-    // fetch(
-    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/for-draw.json`,
-    //   {
-    //     method: "PUT",
-    //     body: JSON.stringify(endpointsFiltered),
-    //   }
-    // )
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       return res.json();
-    //     } else {
-    //       throw new Error(res.status);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  };
+  const [fetchedWord, setFetchedWord] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [translated, setTranslated] = useState(false);
+  const [reducedEndpoints, setReducedEndpoints] = useState(0);
+  const [endOfWords, setEndOfWords] = useState(false);
 
-  //Drawing endpoint index. For use as argument in function "whichWord"
-  const drawIndex = (endpointsArray) => {
-    const nr = Math.floor(Math.random() * endpointsArray.length);
-    return nr;
-  };
+  const currentUser = useSelector((state) => state.draw.currentUser);
+  const eventDelay = useSelector((state) => state.draw.eventDelay);
+  const endpoints = useSelector((state) => state.draw.endpoints);
+  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
 
-  //Return proper endpoint regarding on drawn index
-  const whichWord = (value, endpointsArray) => {
+  useEffect(() => {
+    dispatch(downloadEndpoints(currentUser.uid));
+  }, []);
+
+  //Fetch specific word
+  const takeSpecificWord = (number) => {
     setIsLoading(true);
-    return endpointsArray[value];
-  };
-
-  //Fetch specific word depending on drawn endpoint
-  const takeSpecificWord = (value, endpointsArray) => {
     setTranslated(false);
-    const filtered = endpointsArray.filter((el) => el !== value);
-    setEndpointsFiltered(filtered);
+    const value = basicWordsList[number - 1];
 
-    const dbRef = ref(db);
     get(child(dbRef, `initial/${value}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -89,89 +52,42 @@ const NewWords = () => {
           setFetchedWord(...loadedWord);
           setIsLoading(false);
         } else {
-          console.log("No data available");
           setFetchedWord([]);
+          setEndOfWords(true);
         }
+        setReducedEndpoints((prev) => prev - 1);
       })
       .catch((error) => {
         alert(error);
         setIsLoading(false);
       });
-
-    // fetch(
-    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/initial/${value}.json`
-    // )
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       return res;
-    //     } else {
-    //       throw new Error(res.status);
-    //     }
-    //   })
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((res) => {
-    //     const loadedWord = [];
-    //     loadedWord.push({
-    //       id: res.id,
-    //       eng: res.eng,
-    //       pl: res.pl,
-    //       type: res.type,
-    //     });
-    //     setFetchedWord(...loadedWord);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     alert(error);
-    //     setIsLoading(false);
-    //   });
   };
 
   //Update daily endpoints in redux and send it to database
   const addMyWord = async () => {
+    btnAddRef.current.blur();
+    setIsLoading(true);
     setTranslated(false);
     const dailyWords = [...endpointsDaily];
-    dailyWords.push(fetchedWord.eng);
+    dailyWords.push(fetchedWord.id);
     set(ref(db, `users/${currentUser.uid}/daily`), {
       ...dailyWords,
     })
       .then(() => {
         //In case of failed send, endpoints in application memory stays as before drawing
         dispatch(drawWordsActions.saveDaily(dailyWords));
-        // return res.json();
+        localStorage.setItem(`daily`, JSON.stringify(dailyWords));
       })
       .catch((error) => {
         console.error(error.name);
       });
-
-    // fetch(
-    //   `https://five-words-production-default-rtdb.europe-west1.firebasedatabase.app/users/${currentUser.uid}/daily.json`,
-    //   {
-    //     method: "PUT",
-    //     body: JSON.stringify(dailyWords),
-    //   }
-    // )
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       //In case of failed send, endpoints in application memory stays as before drawing
-    //       dispatch(drawWordsActions.saveDaily(dailyWords));
-    //       // return res.json();
-    //     } else {
-    //       throw new Error(res.status);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error(error.name);
-    //   });
-    btnAddRef.current.blur();
   };
 
-  //First drawing of word after component entering
+  //First drawing of word after enter to component
   const onGenerate = () => {
     setTimeout(async () => {
-      const value = await whichWord(drawIndex(endpoints), endpoints);
-      await takeSpecificWord(value, endpoints);
+      setReducedEndpoints(endpoints);
+      await takeSpecificWord(endpoints);
     }, [eventDelay]);
   };
 
@@ -184,25 +100,30 @@ const NewWords = () => {
   const onClose = () => {
     setTimeout(() => {
       setFetchedWord([]);
+      dispatch(drawWordsActions.saveFetched(reducedEndpoints + 1));
+      localStorage.setItem(`for-draw`, reducedEndpoints + 1);
     }, [eventDelay]);
   };
 
-  const updateAndDrawNext = async () => {
-    try {
-      await sendNewEndpoints();
-      const value = whichWord(drawIndex(endpointsFiltered), endpointsFiltered);
-      takeSpecificWord(value, endpointsFiltered);
-      dispatch(drawWordsActions.saveFetched(endpointsFiltered));
-    } catch {
-      alert("Wystapił błąd");
-    }
-    btnRejectRef.current.blur();
+  const updateBackend = async () => {
+    const basicListLength = { number: reducedEndpoints };
+    set(ref(db, `users/${currentUser.uid}/for-draw`), {
+      ...basicListLength,
+    })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        alert(error.name);
+        setIsLoading(false);
+      });
   };
 
   //This function handles events after rejection a word
   const onReject = () => {
     setTimeout(async () => {
-      await updateAndDrawNext();
+      await updateBackend();
+      await takeSpecificWord(reducedEndpoints);
     }, [eventDelay]);
   };
 
@@ -210,14 +131,15 @@ const NewWords = () => {
   const onAdd = () => {
     setTimeout(async () => {
       await addMyWord();
-      await updateAndDrawNext();
+      await updateBackend();
+      await takeSpecificWord(reducedEndpoints);
     }, [eventDelay]);
   };
 
   return (
     <PageContent>
       <PagesTitle>Nowe słówka</PagesTitle>
-      {endpoints.length === 0 && !fetchedWord ? (
+      {endpoints === 0 || endOfWords ? (
         <Alert>Poznałeś już wszystkie słowa!</Alert>
       ) : fetchedWord.length !== 0 ? (
         <NewWordsPreview
@@ -232,9 +154,7 @@ const NewWords = () => {
           btnAddRef={btnAddRef}
           btnRejectRef={btnRejectRef}
           isLoading={isLoading}
-        />
-      ) : endpoints.length === 0 && fetchedWord.length === 0 ? (
-        <Alert>Poznałeś już wszystkie słowa!</Alert>
+        ></NewWordsPreview>
       ) : (
         <InitBtns onClick={onGenerate} disabled={isLoading}>
           wygeneruj
