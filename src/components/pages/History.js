@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { useState, useRef } from "react";
+import useError from "../hooks/useError";
 import basicWordsList from "../data/words";
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
@@ -7,10 +8,12 @@ import Alert from "../UI/reusable/Alert";
 import InitBtns from "../UI/reusable/InitBtns";
 import HistoryPreview from "../UI/HistoryPreview";
 import { get, child } from "firebase/database";
-import { db, dbRef } from "../../firebase";
+import { dbRef } from "../../firebase";
 
 const History = () => {
   const initBtnRef = useRef();
+  const { retriveError, turnOnMalfunction } = useError();
+
   const [isLoading, setIsLoading] = useState(false);
   const [translated, setTranslated] = useState(false);
   const [viewing, setViewing] = useState(false);
@@ -27,7 +30,6 @@ const History = () => {
     const nr = endpointsHistory[index];
     const word = basicWordsList[nr];
 
-    // const dbRef = ref(db);
     get(child(dbRef, `initial/${word}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -40,14 +42,15 @@ const History = () => {
             type: res.type,
           });
           setHistoryWord(...loadedWord);
-          setIsLoading(false);
         } else {
           console.log("No data available");
         }
+        setIsLoading(false);
       })
       .catch((error) => {
-        alert(error.name);
         setIsLoading(false);
+        retriveError(error);
+        turnOnMalfunction();
       });
   };
 
@@ -59,12 +62,8 @@ const History = () => {
 
   const drawWordFromHistory = async () => {
     setTimeout(async () => {
-      try {
-        await downloadHistoryWord();
-        await letDisplayWord();
-      } catch {
-        alert("Wystąpił problem");
-      }
+      await downloadHistoryWord();
+      await letDisplayWord();
     }, [eventDelay]);
   };
 

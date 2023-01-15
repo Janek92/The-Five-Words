@@ -11,7 +11,7 @@ const fetchHandler = (endpoints, dispatch, actionName, userId) => {
         localStorage.setItem(`${endpoints}`, JSON.stringify(res));
       } else {
         dispatch(actionName([]));
-        localStorage.setItem(`${endpoints}`, []);
+        localStorage.setItem(`${endpoints}`, JSON.stringify([]));
       }
     })
     .catch((error) => console.log(error));

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
+import useError from "../hooks/useError";
 import basicWordsList from "../data/words";
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
@@ -13,6 +14,8 @@ import { db, dbRef } from "../../firebase";
 
 const Daily = () => {
   const dispatch = useDispatch();
+  const { retriveError, turnOnMalfunction } = useError();
+
   const [isLoading, setIsLoading] = useState(false);
   const [dailyToRender, setDailyToRender] = useState([]);
   const [dailyToSend, setDailyToSend] = useState([]);
@@ -41,7 +44,6 @@ const Daily = () => {
   //Function for download single word. It will be used in loop
   const downloadMyWord = async (nr) => {
     const specifiedWord = basicWordsList[nr];
-    // const dbRef = ref(db);
     get(child(dbRef, `initial/${specifiedWord}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
@@ -59,8 +61,9 @@ const Daily = () => {
         }
       })
       .catch((error) => {
-        alert(error.name);
         setIsLoading(false);
+        retriveError(error);
+        turnOnMalfunction();
       });
   };
 
@@ -85,8 +88,9 @@ const Daily = () => {
         localStorage.setItem(`practice`, JSON.stringify(object));
       })
       .catch((error) => {
-        alert(error.name);
         setIsLoading(false);
+        retriveError(error);
+        turnOnMalfunction();
       });
   };
 
@@ -101,8 +105,9 @@ const Daily = () => {
         localStorage.setItem(`daily`, JSON.stringify(dailyToSend));
       })
       .catch((error) => {
-        alert(error.name);
         setIsLoading(false);
+        retriveError(error);
+        turnOnMalfunction();
       });
   };
 
@@ -130,7 +135,10 @@ const Daily = () => {
           dispatch(drawWordsActions.saveHistory(historyToSend));
           localStorage.setItem(`history`, JSON.stringify(historyToSend));
         })
-        .catch((error) => alert(error.name));
+        .catch((error) => {
+          retriveError(error);
+          turnOnMalfunction();
+        });
 
       await sendToPractice([]);
       await prepareToSendAndRender();

@@ -33,6 +33,10 @@ const Navigation = () => {
       .then(() => {
         dispatch(drawWordsActions.saveUser(null));
         localStorage.removeItem("user");
+        localStorage.removeItem("daily");
+        localStorage.removeItem("for-draw");
+        localStorage.removeItem("practice");
+        localStorage.removeItem("history");
         navigate("/login", {
           state: `Wylogowano`,
         });

@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { drawWordsActions } from "../../store/words-slice";
 import { downloadEndpoints } from "../../store/words-actions";
+import useError from "../hooks/useError";
 import basicWordsList from "../data/words";
 import PageContent from "../UI/reusable/PageContent";
 import NewWordsPreview from "../UI/NewWordsPreview";
@@ -13,6 +14,7 @@ import { db, dbRef } from "../../firebase";
 
 const NewWords = () => {
   const dispatch = useDispatch();
+  const { retriveError, turnOnMalfunction } = useError();
 
   const btnAddRef = useRef();
   const btnRejectRef = useRef();
@@ -50,16 +52,17 @@ const NewWords = () => {
             type: res.type,
           });
           setFetchedWord(...loadedWord);
-          setIsLoading(false);
         } else {
           setFetchedWord([]);
           setEndOfWords(true);
         }
         setReducedEndpoints((prev) => prev - 1);
+        setIsLoading(false);
       })
       .catch((error) => {
-        alert(error);
         setIsLoading(false);
+        retriveError(error);
+        turnOnMalfunction();
       });
   };
 
@@ -79,7 +82,8 @@ const NewWords = () => {
         localStorage.setItem(`daily`, JSON.stringify(dailyWords));
       })
       .catch((error) => {
-        console.error(error.name);
+        retriveError(error);
+        turnOnMalfunction();
       });
   };
 
@@ -114,8 +118,9 @@ const NewWords = () => {
         setIsLoading(false);
       })
       .catch((error) => {
-        alert(error.name);
         setIsLoading(false);
+        retriveError(error);
+        turnOnMalfunction();
       });
   };
 
