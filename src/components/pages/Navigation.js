@@ -5,7 +5,7 @@ import { GrMenu } from "react-icons/gr";
 import { GrClose } from "react-icons/gr";
 import classes from "./Navigation.module.css";
 import { useDispatch } from "react-redux";
-import { drawWordsActions } from "../../store/words-slice";
+import { wordsActions } from "../../store/words-slice";
 import { logOut } from "../../firebase";
 
 const Navigation = () => {
@@ -31,7 +31,7 @@ const Navigation = () => {
   const onLogout = () => {
     logOut
       .then(() => {
-        dispatch(drawWordsActions.saveUser(null));
+        dispatch(wordsActions.saveUser(null));
         localStorage.removeItem("user");
         localStorage.removeItem("daily");
         localStorage.removeItem("for-draw");

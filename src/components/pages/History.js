@@ -19,8 +19,8 @@ const History = () => {
   const [viewing, setViewing] = useState(false);
   const [historyWord, setHistoryWord] = useState([]);
 
-  const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
-  const eventDelay = useSelector((state) => state.draw.eventDelay);
+  const endpointsHistory = useSelector((state) => state.words.endpointsHistory);
+  const eventDelay = useSelector((state) => state.words.eventDelay);
 
   const downloadHistoryWord = () => {
     setIsLoading(true);

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { drawWordsActions } from "../../store/words-slice";
+import { wordsActions } from "../../store/words-slice";
 import { downloadEndpoints } from "../../store/words-actions";
 import useError from "../hooks/useError";
 import basicWordsList from "../data/words";
@@ -25,10 +25,10 @@ const NewWords = () => {
   const [reducedEndpoints, setReducedEndpoints] = useState(0);
   const [endOfWords, setEndOfWords] = useState(false);
 
-  const currentUser = useSelector((state) => state.draw.currentUser);
-  const eventDelay = useSelector((state) => state.draw.eventDelay);
-  const endpoints = useSelector((state) => state.draw.endpoints);
-  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
+  const currentUser = useSelector((state) => state.words.currentUser);
+  const eventDelay = useSelector((state) => state.words.eventDelay);
+  const endpoints = useSelector((state) => state.words.endpoints);
+  const endpointsDaily = useSelector((state) => state.words.endpointsDaily);
 
   useEffect(() => {
     dispatch(downloadEndpoints(currentUser.uid));
@@ -78,7 +78,7 @@ const NewWords = () => {
     })
       .then(() => {
         //In case of failed send, endpoints in application memory stays as before drawing
-        dispatch(drawWordsActions.saveDaily(dailyWords));
+        dispatch(wordsActions.saveDaily(dailyWords));
         localStorage.setItem(`daily`, JSON.stringify(dailyWords));
       })
       .catch((error) => {
@@ -104,7 +104,7 @@ const NewWords = () => {
   const onClose = () => {
     setTimeout(() => {
       setFetchedWord([]);
-      dispatch(drawWordsActions.saveFetched(reducedEndpoints + 1));
+      dispatch(wordsActions.saveFetched(reducedEndpoints + 1));
       localStorage.setItem(`for-draw`, reducedEndpoints + 1);
     }, [eventDelay]);
   };

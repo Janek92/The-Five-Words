@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const words = {
+const wordsState = {
   currentUser: JSON.parse(localStorage.getItem("user")) || null,
   eventDelay: 150,
   endpoints: JSON.parse(localStorage.getItem(`for-draw`)) || 0,
@@ -9,9 +9,9 @@ const words = {
   wordsToPractice: JSON.parse(localStorage.getItem(`practice`)) || [],
 };
 
-const drawWords = createSlice({
-  name: "draw",
-  initialState: words,
+const wordsSlice = createSlice({
+  name: "words",
+  initialState: wordsState,
   reducers: {
     saveFetched(state, action) {
       state.endpoints = action.payload;
@@ -31,5 +31,5 @@ const drawWords = createSlice({
   },
 });
 
-export const drawWordsActions = drawWords.actions;
-export default drawWords;
+export const wordsActions = wordsSlice.actions;
+export default wordsSlice;

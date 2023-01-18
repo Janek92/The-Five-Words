@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState, Suspense } from "react";
+import { lazy, useEffect, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,18 +7,9 @@ import {
   downloadEndpointsHistory,
   downloadPractice,
 } from "./store/words-actions";
-import Spinner from "./components/UI/reusable/Spinner";
-//pages:
-// import Login from "./components/pages/Login";
-// import Navigation from "./components/pages/Navigation";
-// import Main from "./components/pages/Main";
-// import NewWords from "./components/pages/NewWords";
-// import Daily from "./components/pages/Daily";
-// import History from "./components/pages/History";
-// import HowToUse from "./components/pages/HowToUse";
+import PageLoading from "./components/UI/reusable/PageLoading";
 
 function App() {
-  //pages:
   const Login = lazy(() => import("./components/pages/Login"));
   const Navigation = lazy(() => import("./components/pages/Navigation"));
   const Main = lazy(() => import("./components/pages/Main"));
@@ -28,9 +19,8 @@ function App() {
   const HowToUse = lazy(() => import("./components/pages/HowToUse"));
 
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.draw.currentUser);
-  const words = useSelector((state) => state.draw.endpoints);
-  // console.log(words);
+  const currentUser = useSelector((state) => state.words.currentUser);
+  const words = useSelector((state) => state.words.endpoints);
 
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/login" />;
@@ -50,7 +40,7 @@ function App() {
 
   return (
     <>
-      <Suspense fallback={<Spinner pageLoading />}>
+      <Suspense fallback={<PageLoading />}>
         {currentUser ? <Navigation /> : null}
         <Routes>
           <Route path="/login" element={<Login />} />

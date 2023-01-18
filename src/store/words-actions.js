@@ -1,4 +1,4 @@
-import { drawWordsActions } from "./words-slice";
+import { wordsActions } from "./words-slice";
 import { getDatabase, ref, get, child } from "firebase/database";
 
 const fetchHandler = (endpoints, dispatch, actionName, userId) => {
@@ -24,10 +24,10 @@ export const downloadEndpoints = (userId) => {
       .then((snapshot) => {
         if (snapshot.exists()) {
           const res = snapshot.val();
-          dispatch(drawWordsActions.saveFetched(res.number));
+          dispatch(wordsActions.saveFetched(res.number));
           localStorage.setItem(`for-draw`, res.number);
         } else {
-          dispatch(drawWordsActions.saveFetched(0));
+          dispatch(wordsActions.saveFetched(0));
           localStorage.setItem(`for-draw`, 0);
         }
       })
@@ -37,18 +37,18 @@ export const downloadEndpoints = (userId) => {
 
 export const downloadEndpointsDaily = (userId) => {
   return async (dispatch) => {
-    fetchHandler("daily", dispatch, drawWordsActions.saveDaily, userId);
+    fetchHandler("daily", dispatch, wordsActions.saveDaily, userId);
   };
 };
 
 export const downloadEndpointsHistory = (userId) => {
   return async (dispatch) => {
-    fetchHandler("history", dispatch, drawWordsActions.saveHistory, userId);
+    fetchHandler("history", dispatch, wordsActions.saveHistory, userId);
   };
 };
 
 export const downloadPractice = (userId) => {
   return async (dispatch) => {
-    fetchHandler("practice", dispatch, drawWordsActions.savePractice, userId);
+    fetchHandler("practice", dispatch, wordsActions.savePractice, userId);
   };
 };

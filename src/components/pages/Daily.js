@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { drawWordsActions } from "../../store/words-slice";
+import { wordsActions } from "../../store/words-slice";
 import useError from "../hooks/useError";
 import basicWordsList from "../data/words";
 import PageContent from "../UI/reusable/PageContent";
@@ -21,11 +21,11 @@ const Daily = () => {
   const [dailyToSend, setDailyToSend] = useState([]);
   const [dailyWords, setDailyWords] = useState([]);
 
-  const currentUser = useSelector((state) => state.draw.currentUser);
-  const wordsToPractice = useSelector((state) => state.draw.wordsToPractice);
-  const eventDelay = useSelector((state) => state.draw.eventDelay);
-  const endpointsDaily = useSelector((state) => state.draw.endpointsDaily);
-  const endpointsHistory = useSelector((state) => state.draw.endpointsHistory);
+  const currentUser = useSelector((state) => state.words.currentUser);
+  const wordsToPractice = useSelector((state) => state.words.wordsToPractice);
+  const eventDelay = useSelector((state) => state.words.eventDelay);
+  const endpointsDaily = useSelector((state) => state.words.endpointsDaily);
+  const endpointsHistory = useSelector((state) => state.words.endpointsHistory);
 
   //Manipulate the daily endpoints in order to prepare the earliest 5 added amongst of them to display (or all if total is less or equal 5)
   const prepareToSendAndRender = () => {
@@ -84,7 +84,7 @@ const Daily = () => {
       ...object,
     })
       .then(() => {
-        dispatch(drawWordsActions.savePractice(object));
+        dispatch(wordsActions.savePractice(object));
         localStorage.setItem(`practice`, JSON.stringify(object));
       })
       .catch((error) => {
@@ -101,7 +101,7 @@ const Daily = () => {
     })
       .then(() => {
         setIsLoading(false);
-        dispatch(drawWordsActions.saveDaily(dailyToSend));
+        dispatch(wordsActions.saveDaily(dailyToSend));
         localStorage.setItem(`daily`, JSON.stringify(dailyToSend));
       })
       .catch((error) => {
@@ -132,7 +132,7 @@ const Daily = () => {
         .then(() => {
           // localStorage.removeItem(`daily-${currentUser.uid}`);
           setDailyWords([]);
-          dispatch(drawWordsActions.saveHistory(historyToSend));
+          dispatch(wordsActions.saveHistory(historyToSend));
           localStorage.setItem(`history`, JSON.stringify(historyToSend));
         })
         .catch((error) => {

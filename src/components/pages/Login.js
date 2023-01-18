@@ -6,7 +6,7 @@ import {
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { auth } from "../../firebase";
-import { drawWordsActions } from "../../store/words-slice";
+import { wordsActions } from "../../store/words-slice";
 import { sendNewEndpoints } from "../data/words";
 import classes from "./Login.module.css";
 import PagesTitle from "../UI/reusable/PagesTitle";
@@ -63,7 +63,7 @@ const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        dispatch(drawWordsActions.saveUser(user));
+        dispatch(wordsActions.saveUser(user));
         navigate("/");
         setIsLoading(false);
       })

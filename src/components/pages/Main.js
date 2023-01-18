@@ -9,12 +9,12 @@ import { db } from "../../firebase";
 const Main = () => {
   const location = useLocation();
 
-  const currentUser = useSelector((state) => state.draw.currentUser);
+  const currentUser = useSelector((state) => state.words.currentUser);
 
   const word = {
-    eng: "action",
-    id: 10,
-    pl: "działanie",
+    eng: "man",
+    id: 242,
+    pl: "człowiek",
     type: "rzeczownik",
   };
 
@@ -28,7 +28,9 @@ const Main = () => {
       <PagesTitle>Strona główna</PagesTitle>
       <h2>{location.state}</h2>
       {/* <button onClick={sendNewEndpoints}>DODAJ DO FOR-DRAW</button> */}
-      <button onClick={addToInit}>DODAJ DO INITIAL</button>
+      <button style={{ height: "100px" }} onClick={addToInit}>
+        DODAJ DO INITIAL
+      </button>
     </PageContent>
   );
 };

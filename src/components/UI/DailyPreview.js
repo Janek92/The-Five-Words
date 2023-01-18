@@ -8,7 +8,7 @@ const DailyPreview = (props) => {
 
   const [showTranslation, setShowTranslation] = useState(false);
 
-  const eventDelay = useSelector((state) => state.draw.eventDelay);
+  const eventDelay = useSelector((state) => state.words.eventDelay);
 
   const onShowTranslate = () => {
     setTimeout(async () => {
