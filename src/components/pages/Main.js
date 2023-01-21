@@ -1,36 +1,61 @@
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
-// import Spinner from "../UI/reusable/Spinner";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { set, ref } from "firebase/database";
-import { db } from "../../firebase";
+import classes from "./Main.module.css";
 
 const Main = () => {
   const location = useLocation();
 
   const currentUser = useSelector((state) => state.words.currentUser);
 
-  const word = {
-    eng: "man",
-    id: 242,
-    pl: "człowiek",
-    type: "rzeczownik",
+  const endpoints = useSelector((state) => state.words.endpoints);
+  const endpointsDaily = useSelector((state) => state.words.endpointsDaily);
+  const endpointsHistory = useSelector((state) => state.words.endpointsHistory);
+
+  const amountOfNew =
+    endpoints === 0 ? "sprawdziłaś/łeś już wszystkie" : endpoints;
+
+  const amountOfDaily = () => {
+    if (endpoints === 0 && endpointsDaily.length === 0) {
+      return "tutaj jest już pusto";
+    } else if (endpointsDaily.length === 0) {
+      return "nie dodałaś/eś żadnych";
+    } else {
+      return endpointsDaily.length;
+    }
   };
 
-  const addToInit = () =>
-    set(ref(db, `initial/${word.eng}`), {
-      ...word,
-    });
+  const amountOfHistory =
+    endpointsHistory.length === 0
+      ? "nie dodałeś żadnych"
+      : endpointsHistory.length;
 
   return (
     <PageContent>
       <PagesTitle>Strona główna</PagesTitle>
-      <h2>{location.state}</h2>
-      {/* <button onClick={sendNewEndpoints}>DODAJ DO FOR-DRAW</button> */}
-      <button style={{ height: "100px" }} onClick={addToInit}>
-        DODAJ DO INITIAL
-      </button>
+      <h2 className={classes.malfunction}>{location.state}</h2>
+      <div className={classes.statistics}>
+        <p className={classes.email}>
+          twój email:{" "}
+          <span className={classes[("original-letters", "bold-letters")]}>
+            {currentUser.email}
+          </span>
+        </p>
+        <p>Liczba słówek w poszczególnych sekcjach :</p>
+        <p>
+          "Nowe" :{" "}
+          <span className={classes["bold-letters"]}>{amountOfNew}</span>
+        </p>
+        <p>
+          kolejka do dziennych :{" "}
+          <span className={classes["bold-letters"]}>{amountOfDaily()}</span>
+        </p>
+        <p>
+          w historii :{" "}
+          <span className={classes["bold-letters"]}>{amountOfHistory}</span>
+        </p>
+      </div>
     </PageContent>
   );
 };

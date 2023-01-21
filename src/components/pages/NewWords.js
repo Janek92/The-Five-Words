@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
 import { downloadEndpoints } from "../../store/words-actions";
 import useError from "../hooks/useError";
-import basicWordsList from "../data/words";
+import basicWordsList from "../../data/words";
 import PageContent from "../UI/reusable/PageContent";
 import NewWordsPreview from "../UI/NewWordsPreview";
 import PagesTitle from "../UI/reusable/PagesTitle";
@@ -32,6 +32,9 @@ const NewWords = () => {
 
   useEffect(() => {
     dispatch(downloadEndpoints(currentUser.uid));
+    return () => {
+      dispatch(downloadEndpoints(currentUser.uid));
+    };
   }, []);
 
   //Fetch specific word
@@ -145,7 +148,7 @@ const NewWords = () => {
     <PageContent>
       <PagesTitle>Nowe słówka</PagesTitle>
       {endpoints === 0 || endOfWords ? (
-        <Alert>Poznałeś już wszystkie słowa!</Alert>
+        <Alert>Poznałaś/eś już wszystkie słowa!</Alert>
       ) : fetchedWord.length !== 0 ? (
         <NewWordsPreview
           polish={fetchedWord.pl}

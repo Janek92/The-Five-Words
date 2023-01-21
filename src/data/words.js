@@ -1,5 +1,5 @@
 import { set, ref } from "firebase/database";
-import { db } from "../../firebase";
+import { db } from "../firebase";
 
 const basicWordsList = [
   "play",
@@ -248,7 +248,6 @@ const basicWordsList = [
 ];
 
 const basicListLength = { number: basicWordsList.length };
-// console.log(basicListLength);
 
 export const sendNewEndpoints = (userId) => {
   set(ref(db, `users/${userId}/for-draw`), {

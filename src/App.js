@@ -20,7 +20,6 @@ function App() {
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.words.currentUser);
-  const words = useSelector((state) => state.words.endpoints);
 
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/login" />;
@@ -35,7 +34,6 @@ function App() {
     dispatch(downloadEndpointsDaily(currentUser.uid));
     dispatch(downloadEndpointsHistory(currentUser.uid));
     dispatch(downloadPractice(currentUser.uid));
-    console.log("dispatche w App.js");
   }, [currentUser]);
 
   return (

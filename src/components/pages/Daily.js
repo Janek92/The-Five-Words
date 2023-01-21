@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
 import useError from "../hooks/useError";
-import basicWordsList from "../data/words";
+import basicWordsList from "../../data/words";
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import Alert from "../UI/reusable/Alert";

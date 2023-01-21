@@ -7,7 +7,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { auth } from "../../firebase";
 import { wordsActions } from "../../store/words-slice";
-import { sendNewEndpoints } from "../data/words";
+import { sendNewEndpoints } from "../../data/words";
 import classes from "./Login.module.css";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import Spinner from "../UI/reusable/Spinner";
@@ -62,7 +62,6 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
         dispatch(wordsActions.saveUser(user));
         navigate("/");
         setIsLoading(false);

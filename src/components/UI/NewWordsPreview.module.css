@@ -20,14 +20,14 @@
   margin: 1rem 0;
 }
 .polish {
-  font-size: 1.7rem;
+  font-size: 1.5rem;
 }
 .english {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 .type {
   width: 100%;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 .--animating {
   animation: entering 0.4s linear;
@@ -51,7 +51,7 @@
 .translation,
 .end {
   width: 50%;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 .word-preview > button:focus {
   box-shadow: 2px 2px 0.7rem 0 #eaac33;
@@ -90,37 +90,33 @@
   }
   .translation,
   .end {
-    width: auto;
-  }
-  .translation,
-  .end {
-    width: 40%;
-    margin-left: 30%;
-    margin-right: 30%;
+    width: 46%;
+    margin-left: 27%;
+    margin-right: 27%;
   }
   .add,
   .remove {
-    width: 45%;
+    width: 40%;
   }
   .add {
-    margin-left: 4%;
-    margin-right: 1%;
+    margin-left: 7%;
+    margin-right: 3%;
   }
   .remove {
-    margin-left: 1%;
-    margin-right: 4%;
+    margin-left: 3%;
+    margin-right: 7%;
   }
 }
 
-@media (orientation: landscape) and (min-width: 1000px) {
+@media (orientation: landscape) and (min-width: 800px) {
   .word-preview {
-    width: 60%;
+    width: 65%;
   }
 }
 
 @media (orientation: landscape) and (min-width: 1200px) {
   .word-preview {
-    width: 50%;
+    width: 60%;
   }
   .translation,
   .end {
@@ -132,15 +128,15 @@
   .add,
   .remove {
     cursor: pointer;
-    width: 25%;
+    width: 30%;
   }
   .add {
-    margin-left: 20%;
+    margin-left: 15%;
     margin-right: 5%;
   }
   .remove {
     margin-left: 5%;
-    margin-right: 20%;
+    margin-right: 15%;
   }
   .translation:hover,
   .add:hover,
@@ -150,8 +146,8 @@
   }
 }
 
-@media (orientation: landscape) and (min-width: 1600px) {
+@media (orientation: landscape) and (min-width: 1400px) {
   .word-preview {
-    width: 40%;
+    width: 50%;
   }
 }

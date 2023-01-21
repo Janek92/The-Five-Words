@@ -1,0 +1,49 @@
+.malfunction {
+  font-family: var(--basic-font-family);
+  font-size: 0.9rem;
+  color: #f00;
+  text-align: center;
+}
+
+.statistics {
+  font-family: var(--basic-font-family);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 0 0.2rem;
+}
+
+.statistics * {
+  margin: 0.4rem 0;
+}
+
+.email {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid black;
+}
+
+.original-letters {
+  text-transform: none;
+}
+
+.bold-letters {
+  font-weight: 700;
+}
+
+@media (orientation: landscape) and (min-width: 1000px) {
+  .statistics {
+    margin-top: 1.5rem;
+  }
+  .statistics * {
+    margin: 0.6rem 0;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1200px) {
+  .statistics {
+    margin-top: 2rem;
+  }
+  .statistics * {
+    margin: 0.8rem 0;
+  }
+}
