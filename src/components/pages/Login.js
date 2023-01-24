@@ -101,6 +101,9 @@ const Login = () => {
       <Link className={classes.link} to="/login">
         <img className={classes.logo} src={logo}></img>
       </Link>
+      <h2 className={classes["app-description"]}>
+        Aplikacja do nauki podstawowych, angielskich słów
+      </h2>
       {signUpForm ? (
         <PagesTitle>rejestracja</PagesTitle>
       ) : (

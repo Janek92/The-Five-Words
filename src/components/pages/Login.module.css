@@ -1,6 +1,13 @@
 .link {
   margin-left: 0;
 }
+.app-description {
+  font-family: var(--basic-font-family);
+  text-transform: uppercase;
+  font-size: 0.5rem;
+  padding: 0 0.2rem 0.2rem 0.2rem;
+  width: 100%;
+}
 .logo {
   width: 30%;
 }
@@ -95,7 +102,15 @@
 
 @media (orientation: landscape) {
   .logo {
-    width: 20%;
+    width: 6rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .app-description {
+    width: 6rem;
+    position: absolute;
+    top: 3rem;
   }
   .login {
     width: 50%;
@@ -105,9 +120,15 @@
 
 @media (orientation: landscape) and (min-width: 1200px) {
   .logo {
-    position: absolute;
+    /* position: absolute;
     top: 0;
-    left: 0;
+    left: 0; */
+    width: 8rem;
+  }
+  .app-description {
+    width: 20%;
+    /* position: absolute; */
+    top: 4rem;
   }
   .login {
     padding: 1rem;

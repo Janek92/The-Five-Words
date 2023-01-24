@@ -13,6 +13,7 @@
   text-align: center;
   font-family: var(--basic-font-family);
   text-transform: uppercase;
+  width: 100%;
 }
 .polish,
 .english {
@@ -77,6 +78,12 @@
 .end:active {
   transform: scale(0.98);
   box-shadow: 2px 2px 1.2rem 0 #eaac33;
+}
+
+@media (orientation: portrait) and (min-width: 500px) {
+  .word-preview {
+    width: 70%;
+  }
 }
 
 @media (orientation: landscape) {

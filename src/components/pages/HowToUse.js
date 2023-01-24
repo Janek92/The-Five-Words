@@ -1,10 +1,10 @@
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import classes from "./HowToUse.module.css";
-import generateBtn from "../../assets/UI-elements/new-words/generate-btn.jpg";
-import addBtn from "../../assets/UI-elements/new-words/add-btn.jpg";
-import omitBtn from "../../assets/UI-elements/new-words/omit-btn.jpg";
-import endBtn from "../../assets/UI-elements/new-words/end-btn.jpg";
+import generateBtn from "../../assets/UI-elements/new-words/generate-btn-removebg.png";
+import addBtn from "../../assets/UI-elements/new-words/add-btn-removebg.png";
+import omitBtn from "../../assets/UI-elements/new-words/omit-btn-removebg.png";
+import endBtn from "../../assets/UI-elements/new-words/end-btn-removebg.png";
 
 const HowToUse = () => {
   return (
