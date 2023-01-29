@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
 import { downloadEndpoints } from "../../store/words-actions";
 import useError from "../hooks/useError";
-import basicWordsList from "../../data/words";
+import wordsList from "../../data/wordsList";
 import PageContent from "../UI/reusable/PageContent";
 import NewWordsPreview from "../UI/NewWordsPreview";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import InitBtns from "../UI/reusable/InitBtns";
 import Alert from "../UI/reusable/Alert";
-import { set, ref, get, child } from "firebase/database";
-import { db, dbRef } from "../../firebase";
+import { set, ref } from "firebase/database";
+import { db } from "../../firebase";
 
 const NewWords = () => {
   const dispatch = useDispatch();
@@ -37,36 +37,26 @@ const NewWords = () => {
     };
   }, []);
 
-  //Fetch specific word
   const takeSpecificWord = (number) => {
     setIsLoading(true);
     setTranslated(false);
-    const value = basicWordsList[number - 1];
+    const value = wordsList[number - 1];
 
-    get(child(dbRef, `initial/${value}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const res = snapshot.val();
-          const loadedWord = [];
-          loadedWord.push({
-            id: res.id,
-            eng: res.eng,
-            pl: res.pl,
-            type: res.type,
-          });
-          setFetchedWord(...loadedWord);
-        } else {
-          setFetchedWord([]);
-          setEndOfWords(true);
-        }
-        setReducedEndpoints((prev) => prev - 1);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        retriveError(error);
-        turnOnMalfunction();
+    if (value) {
+      const loadedWord = [];
+      loadedWord.push({
+        id: value.id,
+        eng: value.eng,
+        pl: value.pl,
+        type: value.type,
       });
+      setFetchedWord(...loadedWord);
+    } else {
+      setFetchedWord([]);
+      setEndOfWords(true);
+    }
+    setReducedEndpoints((prev) => prev - 1);
+    setIsLoading(false);
   };
 
   //Update daily endpoints in redux and send it to database

@@ -1,14 +1,12 @@
 import { useSelector } from "react-redux";
 import { useState, useRef } from "react";
 import useError from "../hooks/useError";
-import basicWordsList from "../../data/words";
+import wordsList from "../../data/wordsList";
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import Alert from "../UI/reusable/Alert";
 import InitBtns from "../UI/reusable/InitBtns";
 import HistoryPreview from "../UI/HistoryPreview";
-import { get, child } from "firebase/database";
-import { dbRef } from "../../firebase";
 
 const History = () => {
   const initBtnRef = useRef();
@@ -23,35 +21,25 @@ const History = () => {
   const eventDelay = useSelector((state) => state.words.eventDelay);
 
   const downloadHistoryWord = () => {
-    setIsLoading(true);
     initBtnRef.current.blur();
     setTranslated(false);
     const index = Math.floor(Math.random() * endpointsHistory.length);
     const nr = endpointsHistory[index];
-    const word = basicWordsList[nr];
+    const value = wordsList[nr];
 
-    get(child(dbRef, `initial/${word}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const res = snapshot.val();
-          const loadedWord = [];
-          loadedWord.push({
-            id: res.id,
-            eng: res.eng,
-            pl: res.pl,
-            type: res.type,
-          });
-          setHistoryWord(...loadedWord);
-        } else {
-          console.log("No data available");
-        }
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        retriveError(error);
-        turnOnMalfunction();
+    if (value) {
+      const loadedWord = [];
+      loadedWord.push({
+        id: value.id,
+        eng: value.eng,
+        pl: value.pl,
+        type: value.type,
       });
+      setHistoryWord(...loadedWord);
+    } else {
+      console.log("No data available");
+    }
+    setIsLoading(false);
   };
 
   const letDisplayWord = () => {

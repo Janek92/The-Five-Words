@@ -19,7 +19,7 @@ html {
   --bar-menu: 80px;
 }
 body {
-  background-image: url("./assets/background/background_1280_853.jpg");
+  background-image: url("./assets/background/background_1280.png");
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: auto 100vh;
@@ -54,7 +54,7 @@ body {
     font-size: 26px;
   }
   body {
-    background-image: url("./assets/background/background_1920_1280.jpg");
+    background-image: url("./assets/background/background_1920.png");
     background-size: 100vw;
   }
 }

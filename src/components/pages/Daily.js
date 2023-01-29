@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
 import useError from "../hooks/useError";
-import basicWordsList from "../../data/words";
+import wordsList from "../../data/wordsList";
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
 import Alert from "../UI/reusable/Alert";
@@ -41,30 +41,21 @@ const Daily = () => {
     }
   };
 
-  //Function for download single word. It will be used in loop
-  const downloadMyWord = async (nr) => {
-    const specifiedWord = basicWordsList[nr];
-    get(child(dbRef, `initial/${specifiedWord}`))
-      .then((snapshot) => {
-        if (snapshot.exists()) {
-          const res = snapshot.val();
-          const word = [];
-          word.push({
-            eng: res.eng,
-            pl: res.pl,
-            id: res.id,
-            type: res.type,
-          });
-          setDailyWords((prev) => [...prev, ...word]);
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        retriveError(error);
-        turnOnMalfunction();
+  //Function for retrive single word. It will be used in loop
+  const downloadMyWord = (nr) => {
+    const value = wordsList[nr];
+    if (value) {
+      const word = [];
+      word.push({
+        eng: value.eng,
+        pl: value.pl,
+        id: value.id,
+        type: value.type,
       });
+      setDailyWords((prev) => [...prev, ...word]);
+    } else {
+      console.log("No data available");
+    }
   };
 
   useEffect(() => {
