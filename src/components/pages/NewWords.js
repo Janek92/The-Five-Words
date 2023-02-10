@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
 import { downloadEndpoints } from "../../store/words-actions";
-import useError from "../hooks/useError";
+import useError from "../../hooks/useError";
 import wordsList from "../../data/wordsList";
 import PageContent from "../UI/reusable/PageContent";
 import NewWordsPreview from "../UI/NewWordsPreview";
@@ -10,7 +10,7 @@ import PagesTitle from "../UI/reusable/PagesTitle";
 import InitBtns from "../UI/reusable/InitBtns";
 import Alert from "../UI/reusable/Alert";
 import { set, ref } from "firebase/database";
-import { db } from "../../firebase";
+import { firebase } from "../../firebase";
 
 const NewWords = () => {
   const dispatch = useDispatch();
@@ -21,14 +21,14 @@ const NewWords = () => {
 
   const [fetchedWord, setFetchedWord] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [translated, setTranslated] = useState(false);
+  const [isPolish, setIsPolish] = useState(false);
   const [reducedEndpoints, setReducedEndpoints] = useState(0);
   const [endOfWords, setEndOfWords] = useState(false);
 
-  const currentUser = useSelector((state) => state.words.currentUser);
-  const eventDelay = useSelector((state) => state.words.eventDelay);
-  const endpoints = useSelector((state) => state.words.endpoints);
-  const endpointsDaily = useSelector((state) => state.words.endpointsDaily);
+  const currentUser = useSelector((state) => state.currentUser);
+  const eventDelay = useSelector((state) => state.eventDelay);
+  const endpoints = useSelector((state) => state.endpoints);
+  const endpointsDaily = useSelector((state) => state.endpointsDaily);
 
   useEffect(() => {
     dispatch(downloadEndpoints(currentUser.uid));
@@ -39,7 +39,7 @@ const NewWords = () => {
 
   const takeSpecificWord = (number) => {
     setIsLoading(true);
-    setTranslated(false);
+    setIsPolish(false);
     const value = wordsList[number - 1];
 
     if (value) {
@@ -63,10 +63,10 @@ const NewWords = () => {
   const addMyWord = async () => {
     btnAddRef.current.blur();
     setIsLoading(true);
-    setTranslated(false);
+    setIsPolish(false);
     const dailyWords = [...endpointsDaily];
     dailyWords.push(fetchedWord.id);
-    set(ref(db, `users/${currentUser.uid}/daily`), {
+    set(ref(firebase.db, `users/${currentUser.uid}/daily`), {
       ...dailyWords,
     })
       .then(() => {
@@ -90,7 +90,7 @@ const NewWords = () => {
 
   const onTranslate = () => {
     setTimeout(() => {
-      setTranslated(true);
+      setIsPolish(true);
     }, [eventDelay]);
   };
 
@@ -104,7 +104,7 @@ const NewWords = () => {
 
   const updateBackend = async () => {
     const basicListLength = { number: reducedEndpoints };
-    set(ref(db, `users/${currentUser.uid}/for-draw`), {
+    set(ref(firebase.db, `users/${currentUser.uid}/for-draw`), {
       ...basicListLength,
     })
       .then(() => {
@@ -141,10 +141,8 @@ const NewWords = () => {
         <Alert>Poznałaś/eś już wszystkie słowa!</Alert>
       ) : fetchedWord.length !== 0 ? (
         <NewWordsPreview
-          polish={fetchedWord.pl}
-          type={fetchedWord.type}
-          translated={translated}
-          eng={fetchedWord.eng}
+          isPolish={isPolish}
+          fetchedWord={fetchedWord}
           translate={onTranslate}
           close={onClose}
           reject={onReject}

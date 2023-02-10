@@ -12,8 +12,16 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const logOut = signOut(auth);
-export const db = getDatabase();
-export const dbRef = ref(db);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase();
+const logOut = signOut(auth);
+const dbRef = ref(db);
+
+export const firebase = {
+  app,
+  auth,
+  logOut,
+  db,
+  dbRef,
+};

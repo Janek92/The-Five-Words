@@ -5,7 +5,7 @@ import {
 } from "firebase/auth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { auth } from "../../firebase";
+import { firebase } from "../../firebase";
 import { wordsActions } from "../../store/words-slice";
 import { sendNewEndpoints } from "../../data/wordsList";
 import classes from "./Login.module.css";
@@ -59,7 +59,7 @@ const Login = () => {
   const onLogin = (e) => {
     setIsLoading(true);
     e.preventDefault();
-    signInWithEmailAndPassword(auth, email, password)
+    signInWithEmailAndPassword(firebase.auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         dispatch(wordsActions.saveUser(user));
@@ -80,7 +80,7 @@ const Login = () => {
       setIsLoading(false);
       return;
     }
-    createUserWithEmailAndPassword(auth, email, passwordConfirm)
+    createUserWithEmailAndPassword(firebase.auth, email, passwordConfirm)
       .then((userCredential) => {
         const user = userCredential.user;
         sendNewEndpoints(user.uid);

@@ -6,7 +6,7 @@ import { GrClose } from "react-icons/gr";
 import classes from "./Navigation.module.css";
 import { useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
-import { logOut } from "../../firebase";
+import { firebase } from "../../firebase";
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const Navigation = () => {
   }`;
 
   const onLogout = () => {
-    logOut
+    firebase.logOut
       .then(() => {
         dispatch(wordsActions.saveUser(null));
         localStorage.removeItem("user");

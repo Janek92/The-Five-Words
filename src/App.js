@@ -19,7 +19,7 @@ function App() {
   const HowToUse = lazy(() => import("./components/pages/HowToUse"));
 
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.words.currentUser);
+  const currentUser = useSelector((state) => state.currentUser);
 
   const RequireAuth = ({ children }) => {
     return currentUser ? children : <Navigate to="/login" />;
