@@ -17,8 +17,8 @@ const History = () => {
   const [viewing, setViewing] = useState(false);
   const [historyWord, setHistoryWord] = useState([]);
 
-  const endpointsHistory = useSelector((state) => state.words.endpointsHistory);
-  const eventDelay = useSelector((state) => state.words.eventDelay);
+  const endpointsHistory = useSelector((state) => state.endpointsHistory);
+  const eventDelay = useSelector((state) => state.eventDelay);
 
   const downloadHistoryWord = () => {
     initBtnRef.current.blur();

@@ -1,7 +1,17 @@
 import { useEffect, useRef } from "react";
 import classes from "./NewWordsPreview.module.css";
 
-const NewWordsPreview = (props) => {
+const NewWordsPreview = ({
+  isPolish,
+  fetchedWord,
+  translate,
+  close,
+  reject,
+  add,
+  btnAddRef,
+  btnRejectRef,
+  isLoading,
+}) => {
   const wordInPolish = useRef();
   const wordType = useRef();
 
@@ -12,40 +22,40 @@ const NewWordsPreview = (props) => {
       wordInPolish.current.classList.remove(classes["--animating"]);
       wordType.current.classList.remove(classes["--animating"]);
     }, 400);
-  }, [props.polish]);
+  }, [fetchedWord.pl]);
 
   return (
     <div className={classes["word-preview"]}>
       <h3 className={classes.polish} ref={wordInPolish}>
-        {props.polish}
+        {fetchedWord.pl}
       </h3>
       <p className={classes.type} ref={wordType}>
-        {props.type}
+        {fetchedWord.type}
       </p>
-      {props.translated ? (
-        <h3 className={classes.english}>{props.eng}</h3>
+      {isPolish ? (
+        <h3 className={classes.english}>{fetchedWord.eng}</h3>
       ) : (
-        <button className={classes.translation} onClick={props.translate}>
+        <button className={classes.translation} onClick={translate}>
           przetłumacz
         </button>
       )}
       <button
         className={classes.add}
-        onClick={props.add}
-        ref={props.btnAddRef}
-        disabled={props.isLoading}
+        onClick={add}
+        ref={btnAddRef}
+        disabled={isLoading}
       >
         dodaj
       </button>
       <button
         className={classes.remove}
-        onClick={props.reject}
-        ref={props.btnRejectRef}
-        disabled={props.isLoading}
+        onClick={reject}
+        ref={btnRejectRef}
+        disabled={isLoading}
       >
         pomiń
       </button>
-      <button className={classes.end} onClick={props.close}>
+      <button className={classes.end} onClick={close}>
         zakończ
       </button>
     </div>

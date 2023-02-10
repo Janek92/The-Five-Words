@@ -7,11 +7,11 @@ import classes from "./Main.module.css";
 const Main = () => {
   const location = useLocation();
 
-  const currentUser = useSelector((state) => state.words.currentUser);
+  const currentUser = useSelector((state) => state.currentUser);
 
-  const endpoints = useSelector((state) => state.words.endpoints);
-  const endpointsDaily = useSelector((state) => state.words.endpointsDaily);
-  const endpointsHistory = useSelector((state) => state.words.endpointsHistory);
+  const endpoints = useSelector((state) => state.endpoints);
+  const endpointsDaily = useSelector((state) => state.endpointsDaily);
+  const endpointsHistory = useSelector((state) => state.endpointsHistory);
 
   const amountOfNew =
     endpoints === 0 ? "sprawdziłaś/łeś już wszystkie" : endpoints;

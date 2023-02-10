@@ -9,8 +9,8 @@ import Alert from "../UI/reusable/Alert";
 import InitBtns from "../UI/reusable/InitBtns";
 import DailyPreview from "../UI/DailyPreview";
 import Spinner from "../UI/reusable/Spinner";
-import { set, ref, get, child } from "firebase/database";
-import { db, dbRef } from "../../firebase";
+import { set, ref } from "firebase/database";
+import { firebase } from "../../firebase";
 
 const Daily = () => {
   const dispatch = useDispatch();
@@ -21,11 +21,11 @@ const Daily = () => {
   const [dailyToSend, setDailyToSend] = useState([]);
   const [dailyWords, setDailyWords] = useState([]);
 
-  const currentUser = useSelector((state) => state.words.currentUser);
-  const wordsToPractice = useSelector((state) => state.words.wordsToPractice);
-  const eventDelay = useSelector((state) => state.words.eventDelay);
-  const endpointsDaily = useSelector((state) => state.words.endpointsDaily);
-  const endpointsHistory = useSelector((state) => state.words.endpointsHistory);
+  const currentUser = useSelector((state) => state.currentUser);
+  const wordsToPractice = useSelector((state) => state.wordsToPractice);
+  const eventDelay = useSelector((state) => state.eventDelay);
+  const endpointsDaily = useSelector((state) => state.endpointsDaily);
+  const endpointsHistory = useSelector((state) => state.endpointsHistory);
 
   //Manipulate the daily endpoints in order to prepare the earliest 5 added amongst of them to display (or all if total is less or equal 5)
   const prepareToSendAndRender = () => {
@@ -71,7 +71,7 @@ const Daily = () => {
   };
 
   const sendToPractice = async (object) => {
-    set(ref(db, `users/${currentUser.uid}/practice`), {
+    set(ref(firebase.db, `users/${currentUser.uid}/practice`), {
       ...object,
     })
       .then(() => {
@@ -87,7 +87,7 @@ const Daily = () => {
 
   //Update daily endpoints in redux and send it to database
   const updateAndSendDaily = async () => {
-    set(ref(db, `users/${currentUser.uid}/daily`), {
+    set(ref(firebase.db, `users/${currentUser.uid}/daily`), {
       ...dailyToSend,
     })
       .then(() => {
@@ -117,7 +117,7 @@ const Daily = () => {
       const newWordsToHistory = dailyWords.map((word) => word.id);
       const historyToSend = [...endpointsHistory, ...newWordsToHistory];
 
-      await set(ref(db, `users/${currentUser.uid}/history`), {
+      await set(ref(firebase.db, `users/${currentUser.uid}/history`), {
         ...historyToSend,
       })
         .then(() => {
