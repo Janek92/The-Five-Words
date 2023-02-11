@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const useError = () => {
+const useErrorr = () => {
   const [malfunction, setMalfunction] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -10,14 +10,11 @@ const useError = () => {
     setError(problem);
   };
 
-  const turnOnMalfunction = () => {
-    setMalfunction(true);
-  };
-  const turnOffMalfunction = () => {
-    setMalfunction(false);
+  const toggleMalfunction = () => {
+    setMalfunction((prev) => (prev = !prev));
   };
 
-  const alarm = (object) => {
+  const displayAlarm = (errorMessage) => {
     return alert(`Mamy mały problem. Wrócisz na stronę główną. (${object})`);
   };
   const navigation = () => {
@@ -29,12 +26,12 @@ const useError = () => {
 
   useEffect(() => {
     if (malfunction) {
-      alarm(error);
+      displayAlarm(error);
       navigation();
     }
   }, [malfunction]);
 
-  return { retriveError, turnOnMalfunction };
+  return { setError, turnOnMalfunction };
 };
 
-export default useError;
+export default useErrorr;
