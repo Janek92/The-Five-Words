@@ -41,9 +41,9 @@ PROJECT_ROOT
 └── src
     ├── assets          # images
     ├── components
-    │   ├── hooks       # custom hooks
     │   ├── pages       # page files
     │   ├── UI          # reusable components
+    ├── hooks           # custom hooks
     ├── data            # files
     ├── store           # Redux context
 ```

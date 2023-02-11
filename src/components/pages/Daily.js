@@ -14,7 +14,7 @@ import { firebase } from "../../firebase";
 
 const Daily = () => {
   const dispatch = useDispatch();
-  const { retriveError, turnOnMalfunction } = useError();
+  const { setError, setMalfunction } = useError();
 
   const [isLoading, setIsLoading] = useState(false);
   const [dailyToRender, setDailyToRender] = useState([]);
@@ -80,8 +80,8 @@ const Daily = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        retriveError(error);
-        turnOnMalfunction();
+        setError(error);
+        setMalfunction();
       });
   };
 
@@ -97,8 +97,8 @@ const Daily = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        retriveError(error);
-        turnOnMalfunction();
+        setError(error);
+        setMalfunction();
       });
   };
 
@@ -127,8 +127,8 @@ const Daily = () => {
           localStorage.setItem(`history`, JSON.stringify(historyToSend));
         })
         .catch((error) => {
-          retriveError(error);
-          turnOnMalfunction();
+          setError(error);
+          setMalfunction();
         });
 
       await sendToPractice([]);

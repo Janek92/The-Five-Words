@@ -14,7 +14,7 @@ import { firebase } from "../../firebase";
 
 const NewWords = () => {
   const dispatch = useDispatch();
-  const { retriveError, turnOnMalfunction } = useError();
+  const { setError, setMalfunction } = useError();
 
   const btnAddRef = useRef();
   const btnRejectRef = useRef();
@@ -75,8 +75,8 @@ const NewWords = () => {
         localStorage.setItem(`daily`, JSON.stringify(dailyWords));
       })
       .catch((error) => {
-        retriveError(error);
-        turnOnMalfunction();
+        setError(error);
+        setMalfunction(true);
       });
   };
 
@@ -112,8 +112,8 @@ const NewWords = () => {
       })
       .catch((error) => {
         setIsLoading(false);
-        retriveError(error);
-        turnOnMalfunction();
+        setError(error);
+        setMalfunction(true);
       });
   };
 

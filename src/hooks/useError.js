@@ -6,35 +6,27 @@ const useError = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  const retriveError = (problem) => {
-    setError(problem);
+  const displayAlarm = (errorMessage) => {
+    return alert(
+      `Mamy mały problem. Wrócisz na stronę główną. (${errorMessage})`
+    );
   };
 
-  const turnOnMalfunction = () => {
-    setMalfunction(true);
-  };
-  const turnOffMalfunction = () => {
-    setMalfunction(false);
-  };
-
-  const alarm = (object) => {
-    return alert(`Mamy mały problem. Wrócisz na stronę główną. (${object})`);
-  };
   const navigation = () => {
     navigate("/", {
       state: `Wystąpił problem, zostałeś przeniesiony na stronę główną`,
     });
-    turnOffMalfunction();
+    setMalfunction(false);
   };
 
   useEffect(() => {
     if (malfunction) {
-      alarm(error);
+      displayAlarm(error);
       navigation();
     }
   }, [malfunction]);
 
-  return { retriveError, turnOnMalfunction };
+  return { setError, setMalfunction };
 };
 
 export default useError;

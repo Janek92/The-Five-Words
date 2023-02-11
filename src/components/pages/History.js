@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { useState, useRef } from "react";
-import useError from "../../hooks/useError";
 import wordsList from "../../data/wordsList";
 import PageContent from "../UI/reusable/PageContent";
 import PagesTitle from "../UI/reusable/PagesTitle";
@@ -10,7 +9,6 @@ import HistoryPreview from "../UI/HistoryPreview";
 
 const History = () => {
   const initBtnRef = useRef();
-  const { retriveError, turnOnMalfunction } = useError();
 
   const [isLoading, setIsLoading] = useState(false);
   const [translated, setTranslated] = useState(false);
@@ -20,7 +18,7 @@ const History = () => {
   const endpointsHistory = useSelector((state) => state.endpointsHistory);
   const eventDelay = useSelector((state) => state.eventDelay);
 
-  const downloadHistoryWord = () => {
+  const viewHistoryWord = () => {
     initBtnRef.current.blur();
     setTranslated(false);
     const index = Math.floor(Math.random() * endpointsHistory.length);
@@ -48,10 +46,10 @@ const History = () => {
     }
   };
 
-  const drawWordFromHistory = async () => {
-    setTimeout(async () => {
-      await downloadHistoryWord();
-      await letDisplayWord();
+  const drawWordFromHistory = () => {
+    setTimeout(() => {
+      viewHistoryWord();
+      letDisplayWord();
     }, [eventDelay]);
   };
 
