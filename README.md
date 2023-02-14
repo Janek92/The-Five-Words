@@ -44,6 +44,7 @@ PROJECT_ROOT
     │   ├── pages       # page files
     │   ├── UI          # reusable components
     ├── hooks           # custom hooks
+    ├── config          # routing configuration
     ├── data            # files
     ├── store           # Redux context
 ```
