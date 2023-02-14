@@ -52,3 +52,5 @@ export const downloadPractice = (userId) => {
     fetchHandler("practice", dispatch, wordsActions.savePractice, userId);
   };
 };
+
+export const getCurrentUser = (state) => state.currentUser;

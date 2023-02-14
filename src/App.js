@@ -6,13 +6,14 @@ import {
   downloadEndpointsDaily,
   downloadEndpointsHistory,
   downloadPractice,
+  getCurrentUser,
 } from "./store/words-actions";
 import { renderRoutes, Navigation } from "./config/routing";
 import PageLoading from "./components/UI/reusable/PageLoading";
 
 function App() {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.currentUser);
+  const currentUser = useSelector(getCurrentUser);
 
   useEffect(() => {
     if (!currentUser) {
