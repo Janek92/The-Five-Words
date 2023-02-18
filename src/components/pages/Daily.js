@@ -3,12 +3,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
 import useError from "../../hooks/useError";
 import wordsList from "../../data/wordsList";
-import PageContent from "../UI/reusable/PageContent";
-import PagesTitle from "../UI/reusable/PagesTitle";
-import Alert from "../UI/reusable/Alert";
-import InitBtns from "../UI/reusable/InitBtns";
+import {
+  PagesTitle,
+  Spinner,
+  PagesContent,
+  TestInitBtns,
+  Alert,
+} from "../UI/reusable/reusable";
 import DailyPreview from "../UI/DailyPreview";
-import Spinner from "../UI/reusable/Spinner";
 import { set, ref } from "firebase/database";
 import { firebase } from "../../firebase";
 
@@ -137,16 +139,16 @@ const Daily = () => {
   };
 
   return (
-    <PageContent>
+    <PagesContent>
       <PagesTitle>Dzisiejsze</PagesTitle>
       {isLoading ? (
         <Spinner />
       ) : endpointsDaily.length === 0 && dailyWords.length === 0 ? (
         <Alert>brak słów w powtórkach</Alert>
       ) : dailyWords.length === 0 ? (
-        <InitBtns onClick={onInit} disabled={isLoading}>
+        <TestInitBtns onClick={onInit} disabled={isLoading}>
           pobierz słowa
-        </InitBtns>
+        </TestInitBtns>
       ) : (
         dailyWords.map((el) => (
           <DailyPreview
@@ -158,11 +160,17 @@ const Daily = () => {
         ))
       )}
       {dailyWords.length !== 0 ? (
-        <InitBtns moreColumns onClick={finishRepeats} disabled={isLoading}>
+        <TestInitBtns
+          version="more columns"
+          onClick={finishRepeats}
+          disabled={isLoading}
+        >
           dodaj do historii
-        </InitBtns>
+        </TestInitBtns>
       ) : null}
-    </PageContent>
+    </PagesContent>
   );
 };
 export default Daily;
+
+// version="more columns"

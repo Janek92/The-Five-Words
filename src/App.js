@@ -9,7 +9,7 @@ import {
   getCurrentUser,
 } from "./store/words-actions";
 import { renderRoutes, Navigation } from "./config/routing";
-import PageLoading from "./components/UI/reusable/PageLoading";
+import { PageLoading } from "./components/UI/reusable/reusable";
 
 function App() {
   const dispatch = useDispatch();

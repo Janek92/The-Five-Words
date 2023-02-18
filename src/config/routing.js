@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import { Route, Navigate } from "react-router-dom";
 
-export const ProtectedRoute = ({ user, redirectPath = "/login", children }) => {
+const ProtectedRoute = ({ user, redirectPath = "/login", children }) => {
   if (!user) {
     return <Navigate to={redirectPath} />;
   }
@@ -16,7 +16,7 @@ const Daily = lazy(() => import("../components/pages/Daily"));
 const History = lazy(() => import("../components/pages/History"));
 const HowToUse = lazy(() => import("../components/pages/HowToUse"));
 
-export const routes = [
+const routes = [
   {
     path: "/login",
     component: Login,

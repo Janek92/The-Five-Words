@@ -8,6 +8,11 @@
 }
 html {
   font-size: 20px;
+  @media (min-width: 800px) {
+    & {
+      font-size: 22px;
+    }
+  }
 }
 :root {
   --titles-font-family: "Righteous", sans-serif;
@@ -31,12 +36,6 @@ body {
 @media (orientation: landscape) {
   body {
     background-size: 100vw auto;
-  }
-}
-
-@media (min-width: 800px) {
-  html {
-    font-size: 22px;
   }
 }
 

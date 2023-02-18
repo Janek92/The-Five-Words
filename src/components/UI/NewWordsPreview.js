@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import classes from "./NewWordsPreview.module.css";
+import classes from "./NewWordsPreview.module.scss";
 
 const NewWordsPreview = ({
   isPolish,

@@ -4,11 +4,14 @@ import { wordsActions } from "../../store/words-slice";
 import { downloadEndpoints } from "../../store/words-actions";
 import useError from "../../hooks/useError";
 import wordsList from "../../data/wordsList";
-import PageContent from "../UI/reusable/PageContent";
 import NewWordsPreview from "../UI/NewWordsPreview";
-import PagesTitle from "../UI/reusable/PagesTitle";
-import InitBtns from "../UI/reusable/InitBtns";
-import Alert from "../UI/reusable/Alert";
+import {
+  PagesTitle,
+  PagesContent,
+  TestInitBtns,
+  Alert,
+} from "../UI/reusable/reusable";
+
 import { set, ref } from "firebase/database";
 import { firebase } from "../../firebase";
 
@@ -135,7 +138,7 @@ const NewWords = () => {
   };
 
   return (
-    <PageContent>
+    <PagesContent>
       <PagesTitle>Nowe słówka</PagesTitle>
       {endpoints === 0 || endOfWords ? (
         <Alert>Poznałaś/eś już wszystkie słowa!</Alert>
@@ -152,11 +155,11 @@ const NewWords = () => {
           isLoading={isLoading}
         ></NewWordsPreview>
       ) : (
-        <InitBtns onClick={onGenerate} disabled={isLoading}>
+        <TestInitBtns onClick={onGenerate} disabled={isLoading}>
           wygeneruj
-        </InitBtns>
+        </TestInitBtns>
       )}
-    </PageContent>
+    </PagesContent>
   );
 };
 export default NewWords;

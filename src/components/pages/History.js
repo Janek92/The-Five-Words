@@ -1,14 +1,16 @@
 import { useSelector } from "react-redux";
 import { useState, useRef } from "react";
 import wordsList from "../../data/wordsList";
-import PageContent from "../UI/reusable/PageContent";
-import PagesTitle from "../UI/reusable/PagesTitle";
-import Alert from "../UI/reusable/Alert";
-import InitBtns from "../UI/reusable/InitBtns";
+import {
+  PagesTitle,
+  PagesContent,
+  TestInitBtns,
+  Alert,
+} from "../UI/reusable/reusable";
 import HistoryPreview from "../UI/HistoryPreview";
 
 const History = () => {
-  const initBtnRef = useRef();
+  const ref = useRef();
 
   const [isLoading, setIsLoading] = useState(false);
   const [translated, setTranslated] = useState(false);
@@ -19,7 +21,7 @@ const History = () => {
   const eventDelay = useSelector((state) => state.eventDelay);
 
   const viewHistoryWord = () => {
-    initBtnRef.current.blur();
+    ref.current.blur();
     setTranslated(false);
     const index = Math.floor(Math.random() * endpointsHistory.length);
     const nr = endpointsHistory[index];
@@ -60,7 +62,7 @@ const History = () => {
   };
 
   return (
-    <PageContent>
+    <PagesContent>
       <PagesTitle>Już znam</PagesTitle>
       {viewing ? (
         <HistoryPreview
@@ -74,15 +76,15 @@ const History = () => {
       {endpointsHistory.length === 0 ? (
         <Alert>brak słówek w historii</Alert>
       ) : (
-        <InitBtns
+        <TestInitBtns
           onClick={drawWordFromHistory}
-          ref={initBtnRef}
+          ref={ref}
           disabled={isLoading}
         >
           {viewing ? "wyświetl kolejne" : "wyświetl słowo"}
-        </InitBtns>
+        </TestInitBtns>
       )}
-    </PageContent>
+    </PagesContent>
   );
 };
 export default History;

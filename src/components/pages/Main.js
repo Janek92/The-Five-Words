@@ -1,8 +1,7 @@
-import PageContent from "../UI/reusable/PageContent";
-import PagesTitle from "../UI/reusable/PagesTitle";
+import { PagesTitle, PagesContent } from "../UI/reusable/reusable";
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import classes from "./Main.module.css";
+import classes from "./Main.module.scss";
 
 const Main = () => {
   const location = useLocation();
@@ -32,7 +31,7 @@ const Main = () => {
       : endpointsHistory.length;
 
   return (
-    <PageContent>
+    <PagesContent>
       <PagesTitle>Strona główna</PagesTitle>
       <h2 className={classes.malfunction}>{location.state}</h2>
       <div className={classes.statistics}>
@@ -56,7 +55,7 @@ const Main = () => {
           <span className={classes["bold-letters"]}>{amountOfHistory}</span>
         </p>
       </div>
-    </PageContent>
+    </PagesContent>
   );
 };
 export default Main;

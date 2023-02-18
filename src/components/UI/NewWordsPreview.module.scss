@@ -1,0 +1,160 @@
+@keyframes entering {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.--animating {
+  animation: entering 0.4s linear;
+}
+.word-preview {
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: var(--basic-color);
+  text-align: center;
+  font-family: var(--basic-font-family);
+  text-transform: uppercase;
+  width: 100%;
+  .polish,
+  .english {
+    width: 100%;
+    margin: 1rem 0;
+  }
+  .polish {
+    font-size: 1.5rem;
+  }
+  .english {
+    font-size: 1.2rem;
+  }
+  .type {
+    width: 100%;
+    font-size: 0.8rem;
+  }
+  
+  .translation,
+  .add,
+  .remove,
+  .end {
+    font-family: var(--basic-font-family);
+    font-weight: 500;
+    border-radius: 3rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    outline: none;
+    border: none;
+    background-color: #fff;
+    box-shadow: 2px 2px 6px 0 #000;
+    padding: 1rem;
+    transition: all 0.1s;
+    &:active{
+    transform: scale(0.98);
+    box-shadow: 2px 2px 1.2rem 0 #eaac33;
+  }
+  }
+  .translation,
+  .end {
+    width: 50%;
+    font-size: 0.8rem;
+  }
+  .word-preview > button:focus {
+    box-shadow: 2px 2px 0.7rem 0 #eaac33;
+  }
+  .translation {
+    margin-top: 0.5rem;
+  }
+  .add {
+    background-color: rgb(0, 255, 255);
+  }
+  .remove {
+    background-color: rgb(0, 255, 40);
+  }
+  .add,
+  .remove {
+    width: 55%;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  @media (orientation: portrait) and (min-width: 500px) {
+    & {
+      width: 70%;
+    }
+  }
+  @media (orientation: landscape) {
+    & {
+      width: 70%;
+    }
+    .polish,
+    .english {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    .translation,
+    .end {
+      width: 46%;
+      margin-left: 27%;
+      margin-right: 27%;
+    }
+    .add,
+    .remove {
+      width: 40%;
+    }
+    .add {
+      margin-left: 7%;
+      margin-right: 3%;
+    }
+    .remove {
+      margin-left: 3%;
+      margin-right: 7%;
+    }
+  }
+  @media (orientation: landscape) and (min-width: 800px) {
+    & {
+      width: 65%;
+    }
+  }
+
+  @media (orientation: landscape) and (min-width: 1200px) {
+    & {
+      width: 60%;
+    }
+    .translation,
+    .end {
+      cursor: pointer;
+      width: 30%;
+      margin-left: 35%;
+      margin-right: 35%;
+      &:hover{
+        box-shadow: 2px 2px 10px 2px rgb(255, 255, 255);
+      }
+    }
+    .add,
+    .remove {
+      cursor: pointer;
+      width: 30%;
+      &:hover{
+        box-shadow: 2px 2px 10px 2px rgb(255, 255, 255);
+      }
+    }
+    .add {
+      margin-left: 15%;
+      margin-right: 5%;
+    }
+    .remove {
+      margin-left: 5%;
+      margin-right: 15%;
+    }
+  }
+  @media (orientation: landscape) and (min-width: 1400px) {
+    & {
+      width: 50%;
+    }
+  }
+}
+
+
+
+
+
+

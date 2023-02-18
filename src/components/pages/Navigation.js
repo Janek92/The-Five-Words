@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import logo from "../../assets/5fivewords.png";
 import { GrMenu } from "react-icons/gr";
 import { GrClose } from "react-icons/gr";
-import classes from "./Navigation.module.css";
+import classes from "./Navigation.module.scss";
 import { useDispatch } from "react-redux";
 import { wordsActions } from "../../store/words-slice";
 import { firebase } from "../../firebase";
@@ -62,8 +62,8 @@ const Navigation = () => {
           </button>
         )}
         <nav className={classNamesMenu}>
-          <ul className={classes["nav__container"]}>
-            <li className={classes["nav__list-element"]}>
+          <ul className={classes.ul}>
+            <li className={classes.li}>
               <NavLink
                 onClick={onHideMenu}
                 to="/"
@@ -74,7 +74,7 @@ const Navigation = () => {
                 strona główna
               </NavLink>
             </li>
-            <li className={classes["nav__list-element"]}>
+            <li className={classes.li}>
               <NavLink
                 onClick={onHideMenu}
                 to="/daily"
@@ -85,7 +85,7 @@ const Navigation = () => {
                 Dzisiejsze
               </NavLink>
             </li>
-            <li className={classes["nav__list-element"]}>
+            <li className={classes.li}>
               <NavLink
                 onClick={onHideMenu}
                 to="/new"
@@ -96,7 +96,7 @@ const Navigation = () => {
                 nowe
               </NavLink>
             </li>
-            <li className={classes["nav__list-element"]}>
+            <li className={classes.li}>
               <NavLink
                 onClick={onHideMenu}
                 to="/history"
@@ -107,7 +107,7 @@ const Navigation = () => {
                 już znam
               </NavLink>
             </li>
-            <li className={classes["nav__list-element"]}>
+            <li className={classes.li}>
               <NavLink
                 onClick={onHideMenu}
                 to="/how-to-use"
@@ -118,7 +118,7 @@ const Navigation = () => {
                 jak korzystać
               </NavLink>
             </li>
-            <li className={classes["nav__list-element"]}>
+            <li className={classes.li}>
               <button onClick={onLogout} className={classes["logout-btn"]}>
                 wyloguj
               </button>

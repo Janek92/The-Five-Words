@@ -8,9 +8,8 @@ import { useDispatch } from "react-redux";
 import { firebase } from "../../firebase";
 import { wordsActions } from "../../store/words-slice";
 import { sendNewEndpoints } from "../../data/wordsList";
-import classes from "./Login.module.css";
-import PagesTitle from "../UI/reusable/PagesTitle";
-import Spinner from "../UI/reusable/Spinner";
+import classes from "./Login.module.scss";
+import { PagesTitle, Spinner } from "../UI/reusable/reusable";
 import logo from "../../assets/5fivewords.png";
 
 const Login = () => {
@@ -115,22 +114,22 @@ const Login = () => {
         className={classes.login}
       >
         {isLoading ? (
-          <div className={classes["login__spinner-area"]}>
+          <div className={classes["spinner-area"]}>
             <Spinner />
           </div>
         ) : null}
-        <p className={classes["login__location"]}>{location.state}</p>
+        <p className={classes.location}>{location.state}</p>
         <input
           ref={emailRef}
           onChange={onEmail}
-          className={classes["login__email"]}
+          className={classes.email}
           type="email"
           placeholder="email"
         />
         <input
           ref={passwordRef}
           onChange={onPassword}
-          className={classes["login__password"]}
+          className={classes.password}
           type="password"
           placeholder="password"
         />
@@ -138,23 +137,23 @@ const Login = () => {
           <input
             ref={passwordConfirmRef}
             onChange={onPasswordConfirm}
-            className={classes["login__password-confirm"]}
+            className={classes["password-confirm"]}
             type="password"
             placeholder="confirm password"
           />
         ) : null}
-        <button className={classes["login__button"]} type="submit">
+        <button className={classes.button} type="submit">
           {signUpForm ? "zarejestruj" : "zaloguj"}
         </button>
         {error ? (
-          <span className={classes["login__info"]}>
+          <span className={classes.info}>
             {signUpForm
               ? "za krótkie hasło lub niepoprawny email"
               : "zły email lub hasło"}
           </span>
         ) : null}
         {location.state ? null : (
-          <span onClick={onSignVersion} className={classes["login__change"]}>
+          <span onClick={onSignVersion} className={classes.change}>
             {signUpForm
               ? "zaloguj się tutaj - kliknij"
               : "nie masz konta? zarejestruj się tutaj - kliknij"}

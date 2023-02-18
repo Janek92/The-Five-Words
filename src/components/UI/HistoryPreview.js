@@ -1,5 +1,5 @@
-import classes from "./HistoryPreview.module.css";
-import InitBtns from "./reusable/InitBtns";
+import classes from "./HistoryPreview.module.scss";
+import { TestInitBtns } from "./reusable/reusable";
 
 const HistoryPreview = (props) => {
   return (
@@ -9,9 +9,9 @@ const HistoryPreview = (props) => {
       {props.translated ? (
         <h3 className={classes.english}>{props.eng}</h3>
       ) : (
-        <InitBtns translate="true" onClick={props.translate}>
+        <TestInitBtns version="translate" onClick={props.translate}>
           przetłumacz
-        </InitBtns>
+        </TestInitBtns>
       )}
     </div>
   );

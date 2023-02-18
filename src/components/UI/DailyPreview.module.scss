@@ -1,0 +1,27 @@
+.daily {
+  margin: 0.2rem;
+  width: 100%;
+  font-family: var(--basic-font-family);
+  text-align: center;
+  padding: 1rem 0;
+  text-transform: uppercase;
+  color: var(--basic-color);
+  & > * {
+    margin-bottom: 0.4rem;
+  }
+  .polish {
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  .type {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  @media (min-width: 1200px) {
+    & {
+      width: 30%;
+    }
+  }
+}
+

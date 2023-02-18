@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
-import classes from "./DailyPreview.module.css";
-import InitBtns from "./reusable/InitBtns";
+import { React, useState, useRef } from "react";
+import classes from "./DailyPreview.module.scss";
+// import InitBtns from "./reusable/InitBtns";
+import { TestInitBtns } from "../UI/reusable/reusable";
 import { useSelector } from "react-redux";
 
 const DailyPreview = (props) => {
-  const btnRef = useRef();
+  const ref = useRef();
 
   const [showTranslation, setShowTranslation] = useState(false);
 
@@ -13,7 +14,7 @@ const DailyPreview = (props) => {
   const onShowTranslate = () => {
     setTimeout(async () => {
       setShowTranslation((prev) => !prev);
-      btnRef.current.blur();
+      ref.current.blur();
     }, [eventDelay]);
   };
 
@@ -21,9 +22,9 @@ const DailyPreview = (props) => {
     <div className={classes.daily}>
       <p className={classes.polish}>{props.polish}</p>
       <p className={classes.type}>{props.type}</p>
-      <InitBtns translate="true" ref={btnRef} onClick={onShowTranslate}>
+      <TestInitBtns version="translate" ref={ref} onClick={onShowTranslate}>
         {showTranslation ? props.english : "przetłumacz"}
-      </InitBtns>
+      </TestInitBtns>
     </div>
   );
 };

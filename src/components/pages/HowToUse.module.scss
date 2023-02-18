@@ -2,10 +2,11 @@
   font-family: var(--basic-font-family);
   font-weight: 300;
   margin: 0 0.3rem;
+  .bold {
+    font-weight: 700;
+  }
+  .img {
+    width: 7rem;
+  }
 }
-.--bold {
-  font-weight: 700;
-}
-.img {
-  width: 7rem;
-}
+

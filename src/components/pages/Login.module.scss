@@ -7,77 +7,105 @@
   font-size: 0.5rem;
   padding: 0 0.2rem 0.2rem 0.2rem;
   width: 100%;
+  @media (orientation: landscape) {
+    & {
+      width: 6rem;
+      position: absolute;
+      top: 3rem;
+    }
+  }
+  @media (orientation: landscape) and (min-width: 1200px) {
+    
+    & {
+      width: 20%;
+      top: 4rem;
+    }
+    
+  }
 }
 .logo {
   width: 30%;
+  @media (orientation: landscape) {
+    & {
+      width: 6rem;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+  @media (orientation: landscape) and (min-width: 1200px) {
+    & {
+      width: 8rem;
+    }
+    
+  }
 }
 .login {
-  width: 100%;
+  width: 90%;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   font-family: var(--basic-font-family);
   position: relative;
   border-radius: 0.7rem;
-}
-.login__email,
-.login__password,
-.login__password-confirm,
-.login__button {
+
+  .email,
+.password,
+.password-confirm,
+.button {
   border-radius: 0.3rem;
   margin-bottom: 1rem;
   height: 1.5rem;
   font-size: 0.8rem;
   border: none;
   outline: none;
-}
-.login__email:focus,
-.login__password:focus,
-.login__password-confirm:focus,
-.login__button:focus {
+  &:focus {
   box-shadow: 0 0 0.8rem 0 var(--focus-color);
 }
-.login__email:focus::placeholder,
-.login__password:focus::placeholder,
-.login__password-confirm:focus::placeholder {
+}
+
+.email:focus::placeholder,
+.password:focus::placeholder,
+.password-confirm:focus::placeholder {
   transition: 0.7s;
   transform: translateX(-100%);
 }
 
-.login__email,
-.login__password,
-.login__password-confirm {
+.email,
+.password,
+.password-confirm {
   width: 90%;
   margin-bottom: 0.4rem;
 }
-.login__button {
+.button {
   min-width: 35%;
   margin: 0.4rem;
   font-family: var(--basic-font-family);
   text-transform: uppercase;
   padding: 0 0.5rem;
 }
-.login__info {
+.info {
   font-size: 0.8rem;
   color: red;
   margin-top: 0.4rem;
   text-align: center;
   width: 100%;
 }
-.login__change,
-.login__forgot-password {
+.change,
+.forgot-password {
   font-size: 0.8rem;
   text-transform: uppercase;
   text-align: center;
   width: 100%;
 }
-.login__change {
+.change {
   margin-top: 0.4rem;
 }
-.login__forgot-password {
+.forgot-password {
   margin-top: 0.6rem;
 }
-.login__location {
+.location {
   text-transform: uppercase;
   text-align: center;
   margin: 0.4rem 0;
@@ -85,7 +113,7 @@
   font-weight: 600;
   color: rgb(20, 157, 75);
 }
-.login__spinner-area {
+.spinner-area {
   width: 100%;
   height: 100%;
   display: flex;
@@ -95,59 +123,57 @@
   top: 0;
   left: 0;
   z-index: 1;
+  & ~ * {
+    filter: blur(2px);
+  }
 }
-.login__spinner-area ~ * {
-  filter: blur(2px);
+
+@media (min-width: 400px){
+  & {
+    width: 80%;
+  }
+}
+@media (min-width: 500px){
+  & {
+    width: 65%;
+  }
 }
 
 @media (orientation: landscape) {
-  .logo {
-    width: 6rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .app-description {
-    width: 6rem;
-    position: absolute;
-    top: 3rem;
-  }
-  .login {
+ 
+  & {
     width: 50%;
     margin: auto;
   }
 }
 
 @media (orientation: landscape) and (min-width: 1200px) {
-  .logo {
-    /* position: absolute;
-    top: 0;
-    left: 0; */
-    width: 8rem;
-  }
-  .app-description {
-    width: 20%;
-    /* position: absolute; */
-    top: 4rem;
-  }
-  .login {
+  
+  & {
     padding: 1rem;
     width: 50%;
     box-shadow: 0.2rem 0.2rem 0.5rem 0.1rem #000;
   }
-  .login__button:hover {
+  .button:hover {
     cursor: pointer;
     box-shadow: 0 0 0.8rem 0 var(--focus-color);
   }
-  .login__change:hover {
+  .change:hover {
     cursor: pointer;
     color: red;
     text-decoration: underline;
   }
 }
-
 @media (min-width: 1400px) {
-  .login {
+  & {
     width: 40%;
   }
 }
+}
+
+
+
+
+
+
+
