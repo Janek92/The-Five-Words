@@ -108,7 +108,15 @@ const Login = () => {
       ) : (
         <PagesTitle>logowanie</PagesTitle>
       )}
-
+      {signUpForm ? (
+        <div className={classes.caution}>
+          <p>
+            Uwaga! Jest to projekt niekomercyjny. Nie używaj swojego prawdziwego
+            adresu e-mail w celu rejestracji w aplikacji. Użyj dowolnego ciągu
+            znaków uwzględniając @.
+          </p>
+        </div>
+      ) : null}
       <form
         onSubmit={signUpForm ? onSignUp : onLogin}
         className={classes.login}
