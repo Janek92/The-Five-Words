@@ -27,6 +27,7 @@ const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
+  const emailErrorSpan = useRef();
 
   const onSignVersion = () => {
     setSignUpForm((prev) => !prev);
@@ -38,6 +39,19 @@ const Login = () => {
     if (signUpForm) {
       setPasswordConfirm("");
       passwordConfirmRef.current.value = "";
+    }
+  };
+
+  const onBlurEmail = (e) => {
+    if (
+      !emailRef.current.value.includes("@") &&
+      emailRef.current.value.length > 0
+    ) {
+      emailRef.current.style.backgroundColor = "#FFDFD8";
+      emailErrorSpan.current.style.display = "block";
+    } else {
+      emailRef.current.style.backgroundColor = "#fff";
+      emailErrorSpan.current.style.display = "none";
     }
   };
 
@@ -100,14 +114,20 @@ const Login = () => {
       <Link className={classes.link} to="/login">
         <img className={classes.logo} src={logo}></img>
       </Link>
+      {/* <--Logo */}
+      {/* Opis--> */}
       <h2 className={classes["app-description"]}>
         Aplikacja do nauki podstawowych, angielskich słów
       </h2>
+      {/* <--Opis */}
+      {/* Tytuł--> */}
       {signUpForm ? (
         <PagesTitle>rejestracja</PagesTitle>
       ) : (
         <PagesTitle>logowanie</PagesTitle>
       )}
+      {/* <--Tytuł */}
+      {/* Info o projekcie niekomercyjnym--> */}
       {signUpForm ? (
         <div className={classes.caution}>
           <p>
@@ -117,19 +137,26 @@ const Login = () => {
           </p>
         </div>
       ) : null}
-      <form
-        onSubmit={signUpForm ? onSignUp : onLogin}
-        className={classes.login}
-      >
+      {/* <--Info o projekcie niekomercyjnym */}
+      <form onSubmit={signUpForm ? onSignUp : onLogin} className={classes.form}>
+        {/* Spinner--> */}
         {isLoading ? (
           <div className={classes["spinner-area"]}>
             <Spinner />
           </div>
         ) : null}
+        {/* <--Spinner */}
+        {/* Info o wylogowaniu--> */}
         <p className={classes.location}>{location.state}</p>
+        {/* <--Info o wylogowaniu */}
+        {/* 3 inputy--> */}
+        <span ref={emailErrorSpan} className={classes["email-error-span"]}>
+          pole email musi zawierać znak @
+        </span>
         <input
           ref={emailRef}
           onChange={onEmail}
+          onBlur={onBlurEmail}
           className={classes.email}
           type="email"
           placeholder="email"
@@ -150,13 +177,16 @@ const Login = () => {
             placeholder="confirm password"
           />
         ) : null}
+        {/* <--3 inputy */}
+        {/* Przycisk submit--> */}
         <button className={classes.button} type="submit">
           {signUpForm ? "zarejestruj" : "zaloguj"}
         </button>
+        {/* <--Przycisk submit */}
         {error ? (
           <span className={classes.info}>
             {signUpForm
-              ? "za krótkie hasło lub niepoprawny email"
+              ? "za krótkie hasło lub zajęty email"
               : "zły email lub hasło"}
           </span>
         ) : null}

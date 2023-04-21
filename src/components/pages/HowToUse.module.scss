@@ -1,12 +1,41 @@
-.description {
-  font-family: var(--basic-font-family);
-  font-weight: 300;
-  margin: 0 0.3rem;
-  .bold {
-    font-weight: 700;
+.step {
+  border-bottom: 1px solid #000;
+  width: 100%;
+  .number {
+    width: 2rem;
+    height: 2rem;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--basic-font-family);
+    font-size: 1.4rem;
+    margin: 0.2rem 0.2rem 0 0.2rem;
   }
-  .img {
-    width: 7rem;
+  .description {
+    font-family: var(--basic-font-family);
+    font-weight: 300;
+    margin: 0 0.3rem;
+    font-size: 1rem;
+    .bold {
+      font-weight: 700;
+    }
+    .img {
+      height: 3rem;
+      @media (orientation: portrait) and (min-width: 768px) {
+        height: 3.2rem;
+      }
+      @media (orientation: landscape) and (min-width: 992px) {
+        height: 3.4rem;
+      }
+    }
+    @media (orientation: portrait) and (min-width: 768px) {
+      font-size: 1.1rem;
+    }
+    @media (orientation: landscape) and (min-width: 992px) {
+      font-size: 1.3rem;
+    }
   }
 }
-

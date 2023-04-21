@@ -1,8 +1,17 @@
 .malfunction {
   font-family: var(--basic-font-family);
   font-size: 0.9rem;
+  font-weight: 300;
+  text-transform: uppercase;
   color: #f00;
   text-align: center;
+  width: 100%;
+  @media (orientation: portrait) and (min-width: 768px) {
+    font-size: 1.2rem;
+  }
+  @media (orientation: landscape) and (min-width: 992px) {
+    font-size: 1.2rem;
+  }
 }
 
 .statistics {
@@ -13,38 +22,42 @@
   & * {
     margin: 0.4rem 0;
   }
-  
+
   .email {
     width: 100%;
     text-align: center;
     border-bottom: 1px solid black;
   }
-  
+
   .original-letters {
     text-transform: none;
   }
-  
+
   .bold-letters {
     font-weight: 700;
   }
-  
-  @media (orientation: landscape) and (min-width: 1000px) {
-    & {
-      margin-top: 1.5rem;
-    }
+
+  .bold-letters-new {
+    color: #f00;
+    font-weight: 700;
+  }
+
+  @media (orientation: portrait) and (min-width: 768px) {
+    font-size: 1rem;
+  }
+
+  @media (orientation: landscape) and (min-width: 992px) {
+    font-size: 1rem;
+    margin-top: 1.5rem;
     & * {
       margin: 0.6rem 0;
     }
   }
-  
-  @media (orientation: landscape) and (min-width: 1200px) {
-    & {
-      margin-top: 2rem;
-    }
+
+  @media (orientation: landscape) and (min-width: 1366px) {
+    margin-top: 2rem;
     & * {
       margin: 0.8rem 0;
     }
   }
 }
-
-

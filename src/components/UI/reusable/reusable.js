@@ -31,7 +31,7 @@ export const PageLoading = () => {
   );
 };
 
-export const TestInitBtns = React.forwardRef(
+export const InitBtns = React.forwardRef(
   ({ version = "default", children, onClick, disabled }, ref) => {
     const classNames = () => {
       if (version === "translate") {

@@ -11,17 +11,26 @@
   }
   .polish {
     font-size: 1.6rem;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
-  }
-  .type {
-    font-size: 0.9rem;
-    text-align: center;
-  }
-  @media (min-width: 1200px) {
-    & {
-      width: 30%;
+    @media (orientation: portrait) and (min-width: 768px) {
+      font-size: 1.9rem;
+    }
+    @media (orientation: landscape) and (min-width: 992px) {
+      font-size: 2.1rem;
     }
   }
+  .type {
+    font-size: 0.8rem;
+    text-align: center;
+    @media (orientation: portrait) and (min-width: 768px) {
+      font-size: 1rem;
+    }
+    @media (orientation: landscape) and (min-width: 992px) {
+      font-size: 1.1rem;
+    }
+  }
+  @media (orientation: landscape) and (min-width: 1280px) {
+    width: 17%;
+  }
 }
-

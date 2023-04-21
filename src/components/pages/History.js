@@ -4,7 +4,7 @@ import wordsList from "../../data/wordsList";
 import {
   PagesTitle,
   PagesContent,
-  TestInitBtns,
+  InitBtns,
   Alert,
 } from "../UI/reusable/reusable";
 import HistoryPreview from "../UI/HistoryPreview";
@@ -76,13 +76,9 @@ const History = () => {
       {endpointsHistory.length === 0 ? (
         <Alert>brak słówek w historii</Alert>
       ) : (
-        <TestInitBtns
-          onClick={drawWordFromHistory}
-          ref={ref}
-          disabled={isLoading}
-        >
+        <InitBtns onClick={drawWordFromHistory} ref={ref} disabled={isLoading}>
           {viewing ? "wyświetl kolejne" : "wyświetl słowo"}
-        </TestInitBtns>
+        </InitBtns>
       )}
     </PagesContent>
   );

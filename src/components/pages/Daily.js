@@ -7,7 +7,7 @@ import {
   PagesTitle,
   Spinner,
   PagesContent,
-  TestInitBtns,
+  InitBtns,
   Alert,
 } from "../UI/reusable/reusable";
 import DailyPreview from "../UI/DailyPreview";
@@ -83,7 +83,7 @@ const Daily = () => {
       .catch((error) => {
         setIsLoading(false);
         setError(error);
-        setMalfunction();
+        setMalfunction(true);
       });
   };
 
@@ -100,7 +100,7 @@ const Daily = () => {
       .catch((error) => {
         setIsLoading(false);
         setError(error);
-        setMalfunction();
+        setMalfunction(true);
       });
   };
 
@@ -130,7 +130,7 @@ const Daily = () => {
         })
         .catch((error) => {
           setError(error);
-          setMalfunction();
+          setMalfunction(true);
         });
 
       await sendToPractice([]);
@@ -140,15 +140,15 @@ const Daily = () => {
 
   return (
     <PagesContent>
-      <PagesTitle>Dzisiejsze</PagesTitle>
+      <PagesTitle>Powtórki</PagesTitle>
       {isLoading ? (
         <Spinner />
       ) : endpointsDaily.length === 0 && dailyWords.length === 0 ? (
         <Alert>brak słów w powtórkach</Alert>
       ) : dailyWords.length === 0 ? (
-        <TestInitBtns onClick={onInit} disabled={isLoading}>
+        <InitBtns onClick={onInit} disabled={isLoading}>
           pobierz słowa
-        </TestInitBtns>
+        </InitBtns>
       ) : (
         dailyWords.map((el) => (
           <DailyPreview
@@ -160,13 +160,13 @@ const Daily = () => {
         ))
       )}
       {dailyWords.length !== 0 ? (
-        <TestInitBtns
+        <InitBtns
           version="more columns"
           onClick={finishRepeats}
           disabled={isLoading}
         >
           dodaj do historii
-        </TestInitBtns>
+        </InitBtns>
       ) : null}
     </PagesContent>
   );

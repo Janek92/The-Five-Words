@@ -8,7 +8,7 @@ import NewWordsPreview from "../UI/NewWordsPreview";
 import {
   PagesTitle,
   PagesContent,
-  TestInitBtns,
+  InitBtns,
   Alert,
 } from "../UI/reusable/reusable";
 
@@ -155,9 +155,9 @@ const NewWords = () => {
           isLoading={isLoading}
         ></NewWordsPreview>
       ) : (
-        <TestInitBtns onClick={onGenerate} disabled={isLoading}>
+        <InitBtns onClick={onGenerate} disabled={isLoading}>
           wygeneruj
-        </TestInitBtns>
+        </InitBtns>
       )}
     </PagesContent>
   );

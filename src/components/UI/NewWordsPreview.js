@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import classes from "./NewWordsPreview.module.scss";
+import { GrAdd, GrTrash } from "react-icons/gr";
 
 const NewWordsPreview = ({
   isPolish,
@@ -32,32 +33,39 @@ const NewWordsPreview = ({
       <p className={classes.type} ref={wordType}>
         {fetchedWord.type}
       </p>
-      {isPolish ? (
-        <h3 className={classes.english}>{fetchedWord.eng}</h3>
-      ) : (
-        <button className={classes.translation} onClick={translate}>
-          przetłumacz
+      <div className={classes["translation-container"]}>
+        {isPolish ? (
+          <h3 className={classes.english}>{fetchedWord.eng}</h3>
+        ) : (
+          <button className={classes.translation} onClick={translate}>
+            przetłumacz
+          </button>
+        )}
+      </div>
+
+      <div className={classes["control-buttons-container"]}>
+        <button
+          className={classes.remove}
+          onClick={reject}
+          ref={btnRejectRef}
+          disabled={isLoading}
+        >
+          <GrTrash />
         </button>
-      )}
-      <button
-        className={classes.add}
-        onClick={add}
-        ref={btnAddRef}
-        disabled={isLoading}
-      >
-        dodaj
-      </button>
-      <button
-        className={classes.remove}
-        onClick={reject}
-        ref={btnRejectRef}
-        disabled={isLoading}
-      >
-        pomiń
-      </button>
-      <button className={classes.end} onClick={close}>
-        zakończ
-      </button>
+        <button
+          className={classes.add}
+          onClick={add}
+          ref={btnAddRef}
+          disabled={isLoading}
+        >
+          <GrAdd />
+        </button>
+      </div>
+      <div className={classes["end-container"]}>
+        <button className={classes.end} onClick={close}>
+          zakończ
+        </button>
+      </div>
     </div>
   );
 };

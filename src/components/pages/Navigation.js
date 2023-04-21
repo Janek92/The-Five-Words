@@ -77,17 +77,6 @@ const Navigation = () => {
             <li className={classes.li}>
               <NavLink
                 onClick={onHideMenu}
-                to="/daily"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-              >
-                Dzisiejsze
-              </NavLink>
-            </li>
-            <li className={classes.li}>
-              <NavLink
-                onClick={onHideMenu}
                 to="/new"
                 className={({ isActive }) =>
                   isActive ? classes.active : undefined
@@ -96,6 +85,18 @@ const Navigation = () => {
                 nowe
               </NavLink>
             </li>
+            <li className={classes.li}>
+              <NavLink
+                onClick={onHideMenu}
+                to="/daily"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+              >
+                Powtórki
+              </NavLink>
+            </li>
+
             <li className={classes.li}>
               <NavLink
                 onClick={onHideMenu}

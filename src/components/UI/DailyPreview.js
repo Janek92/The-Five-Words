@@ -1,7 +1,6 @@
 import { React, useState, useRef } from "react";
 import classes from "./DailyPreview.module.scss";
-// import InitBtns from "./reusable/InitBtns";
-import { TestInitBtns } from "../UI/reusable/reusable";
+import { InitBtns } from "../UI/reusable/reusable";
 import { useSelector } from "react-redux";
 
 const DailyPreview = (props) => {
@@ -22,9 +21,9 @@ const DailyPreview = (props) => {
     <div className={classes.daily}>
       <p className={classes.polish}>{props.polish}</p>
       <p className={classes.type}>{props.type}</p>
-      <TestInitBtns version="translate" ref={ref} onClick={onShowTranslate}>
+      <InitBtns version="translate" ref={ref} onClick={onShowTranslate}>
         {showTranslation ? props.english : "przetłumacz"}
-      </TestInitBtns>
+      </InitBtns>
     </div>
   );
 };

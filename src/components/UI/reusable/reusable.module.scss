@@ -3,27 +3,39 @@
     color: transparent;
   }
   to {
-    color: #000;
+    color: #858585;
   }
 }
 
-.pages-title{
-  color:#000;
-  font-size: 2.2rem;
+.pages-title {
+  color: #858585;
+  // text-decoration: underline;
+  font-size: 1.8rem;
   font-family: var(--titles-font-family);
-  font-weight: 700;
+  font-weight: 500;
   padding: 0.5rem;
   width: 100%;
   text-align: center;
   text-transform: uppercase;
   animation: entering 0.25s linear;
+  @media (orientation: portrait) and (min-width: 768px) {
+    font-size: 2rem;
+  }
+  @media (orientation: landscape) and (min-width: 992px) {
+    font-size: 2.2rem;
+  }
 }
 //_________________________
 @keyframes rotating {
-  from{transform:rotate(0)}to{transform:rotate(360deg)}
-};
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
-.spinner{
+.spinner {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -41,7 +53,9 @@
   }
 }
 //_________________________
-.pages-content{
+.pages-content {
+  border-radius: 20px;
+  // _____________
   width: 100%;
   padding: calc(0.5rem + var(--bar-menu)) 0 0.5rem 0;
   display: flex;
@@ -50,55 +64,51 @@
   @media (orientation: landscape) {
     padding: 0.5rem 0 0.5rem var(--bar-menu);
   }
-  @media (orientation: landscape) and (min-width: 1200px) {
+  @media (orientation: landscape) and (min-width: 992px) {
     padding: calc(0.5rem + var(--bar-menu)) 0 0.5rem 0;
   }
 }
 //_________________________
-.init-btns{
+.init-btns {
   text-transform: uppercase;
   font-size: 1.1rem;
   font-family: var(--basic-font-family);
   padding: 1.2rem;
-  outline: none;
+  // outline: none;
   border: none;
   background-color: #fff;
   box-shadow: 2px 2px 0.5rem 0 #000000;
   border-radius: 2rem;
   transition: all 0.1s;
 
-  &:focus {
-    box-shadow: 2px 2px 0.7rem 0 var(--focus-color);
-  }
+  // &:focus {
+  //   box-shadow: 2px 2px 0.7rem 0 var(--focus-color);
+  // }
 
   &:active {
     transform: scale(0.98);
-    box-shadow: 2px 2px 1.2rem 0 #eaac33;
+    box-shadow: 2px 2px 1.2rem 0 #000000;
   }
 
-  @media (orientation: landscape) and (min-width: 1200px) {
+  @media (orientation: landscape) and (min-width: 992px) {
     cursor: pointer;
     &:hover {
       box-shadow: 2px 2px 1rem 2px #000;
     }
   }
 }
-.--translate{
+.--translate {
   font-size: 0.9rem;
   font-weight: 700;
 }
-.--more-columns{
-  @media (min-width: 1200px) {
+.--more-columns {
+  @media (orientation: portrait) and (min-width: 992px) {
     width: 30%;
     margin: 0 35%;
   }
-  @media (min-width: 1600px) {
-    width: 20%;
-    margin: 0 40%;
-  }
 }
 //_________________________
-.alert{
+.alert {
   color: #000;
   text-transform: uppercase;
   font-size: 1.4rem;
@@ -110,10 +120,15 @@
 }
 //_________________________
 @keyframes pulsing {
-  from{transform: scale(1);}to{transform: scale(0.7);}
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.7);
+  }
 }
 
-.page-loading{
+.page-loading {
   width: 100vw;
   height: 100vh;
   display: flex;

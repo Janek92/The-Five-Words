@@ -32,7 +32,7 @@ const Main = () => {
 
   return (
     <PagesContent>
-      <PagesTitle>Strona główna</PagesTitle>
+      {/* <PagesTitle>Strona główna</PagesTitle> */}
       <h2 className={classes.malfunction}>{location.state}</h2>
       <div className={classes.statistics}>
         <p className={classes.email}>
@@ -44,7 +44,11 @@ const Main = () => {
         <p>Liczba słówek w poszczególnych sekcjach :</p>
         <p>
           "Nowe" :{" "}
-          <span className={classes["bold-letters"]}>{amountOfNew}</span>
+          <span
+            className={`${classes["bold-letters"]}, ${classes["bold-letters-new"]}`}
+          >
+            {amountOfNew}
+          </span>
         </p>
         <p>
           kolejka do dziennych :{" "}
